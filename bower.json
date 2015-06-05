@@ -5,7 +5,7 @@
     "./dist/react-bootstrap-datetimepicker.min.js"
   ],
   "dependencies": {
-      "react": ">=0.12",
+      "react": "*",
       "moment": "^2.8.2",
       "react-bootstrap": "^0.16.1"
   }
