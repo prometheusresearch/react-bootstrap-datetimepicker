@@ -48,7 +48,7 @@ DateTimeField = React.createClass({
       },
       viewDate: this.props.dateTime ? moment(this.props.dateTime, this.props.format, true).startOf("month") : moment(),
       selectedDate: moment(this.props.dateTime, this.props.format, true),
-      inputValue: typeof this.props.defaultText != 'undefined' ?  this.props.defaultText : moment(this.props.dateTime, this.props.format, true).format(this.resolvePropsInputFormat())
+      inputValue: this.props.dateTime ? moment(this.props.dateTime, this.props.format, true).format(this.resolvePropsInputFormat()) : this.props.defaultText
     };
   },
   componentWillReceiveProps: function(nextProps) {
