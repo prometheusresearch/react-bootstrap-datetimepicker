@@ -7,6 +7,6 @@
   "dependencies": {
       "react": "*",
       "moment": "^2.8.2",
-      "react-bootstrap": "^0.16.1"
+      "react-bootstrap": "prometheusresearch/react-bootstrap-bower#0cde01f8290a6bf173a7976df39ca8183dd63bb7"
   }
 }
