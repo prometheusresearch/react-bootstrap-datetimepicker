@@ -6,7 +6,7 @@ DateTimePicker = require('./DateTimePicker');
 
 moment = require('moment');
 
-var Glyphicon = require('react-bootstrap').Glyphicon;
+var Glyphicon = require('./Glyphicon');
 
 var Constants = require('./Constants');
 
