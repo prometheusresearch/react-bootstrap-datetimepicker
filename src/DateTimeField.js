@@ -35,7 +35,7 @@ var DateTimeField = React.createClass({
 
   getInitialState() {
     var date = this.props.dateTime ?
-      moment(this.props.dateTime, this.props.format, true).startOf("month") :
+      moment(this.props.dateTime, this.props.format, true) :
       moment();
     return {
       showDatePicker: this.props.mode !== Constants.MODE_TIME,
@@ -48,7 +48,7 @@ var DateTimeField = React.createClass({
         left: -9999,
         zIndex: '9999 !important'
       },
-      viewDate: date.clone(),
+      viewDate: date.clone().startOf('month'),
       selectedDate: date.clone(),
       inputValue: this.props.dateTime ?
         date.format(this.resolvePropsInputFormat()) :
