@@ -1,16 +1,13 @@
-var DateTimePickerHours, DateTimePickerMinutes, DateTimePickerTime, Glyphicon, React;
+'use strict';
 
-React = require('react');
-
-DateTimePickerMinutes = require('./DateTimePickerMinutes');
-
-DateTimePickerHours = require('./DateTimePickerHours');
-
+var React = require('react');
+var DateTimePickerMinutes = require('./DateTimePickerMinutes');
+var DateTimePickerHours = require('./DateTimePickerHours');
 var Glyphicon = require('./Glyphicon');
-
 var Constants = require('./Constants');
 
-DateTimePickerTime = React.createClass({
+var DateTimePickerTime = React.createClass({
+
   propTypes: {
     setSelectedHour: React.PropTypes.func.isRequired,
     setSelectedMinute: React.PropTypes.func.isRequired,
@@ -23,96 +20,102 @@ DateTimePickerTime = React.createClass({
     togglePeriod: React.PropTypes.func.isRequired,
     mode: React.PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME])
   },
-  getInitialState: function() {
+
+  getInitialState() {
     return {
       minutesDisplayed: false,
       hoursDisplayed: false
     };
   },
-  goBack: function() {
+
+  goBack() {
     return this.setState({
       minutesDisplayed: false,
       hoursDisplayed: false
     });
   },
-  showMinutes: function() {
+
+  showMinutes() {
     return this.setState({
       minutesDisplayed: true
     });
   },
-  showHours: function() {
+
+  showHours() {
     return this.setState({
       hoursDisplayed: true
     });
   },
-  renderMinutes: function() {
+
+  renderMinutes() {
     if (this.state.minutesDisplayed) {
-      return <DateTimePickerMinutes {...this.props} onSwitch={this.goBack} />;
-    } else {
-      return null;
+      return (
+        <DateTimePickerMinutes
+          {...this.props}
+          onSwitch={this.goBack}
+          onSelect={this.onSelectMinute}
+          />
+      );
     }
   },
-  renderHours: function() {
+
+  renderHours() {
     if (this.state.hoursDisplayed) {
-      return <DateTimePickerHours {...this.props} onSwitch={this.goBack} />;
-    } else {
-      return null;
+      return (
+        <DateTimePickerHours
+          {...this.props}
+          onSwitch={this.goBack}
+          onSelect={this.onSelectHour}
+          />
+      );
     }
   },
-  renderPicker: function() {
+
+  onSelectHour(e) {
+    this.goBack();
+    this.props.setSelectedHour(e);
+  },
+
+  onSelectMinute(e) {
+    this.goBack();
+    this.props.setSelectedMinute(e);
+  },
+
+  renderPicker() {
     if (!this.state.minutesDisplayed && !this.state.hoursDisplayed) {
       return (
-      <div className="timepicker-picker">
-        <table className="table-condensed">
-          <tbody>
-            <tr>
-              <td><a className="btn" onClick={this.props.addHour}><Glyphicon glyph="chevron-up" /></a></td>
-
-              <td className="separator"></td>
-
-              <td><a className="btn" onClick={this.props.addMinute}><Glyphicon glyph="chevron-up" /></a></td>
-
-              <td className="separator"></td>
-            </tr>
-
-            <tr>
-              <td><span className="timepicker-hour" onClick={this.showHours}>{this.props.selectedDate.format('h')}</span></td>
-
-              <td className="separator">:</td>
-
-              <td><span className="timepicker-minute" onClick={this.showMinutes}>{this.props.selectedDate.format('mm')}</span></td>
-
-              <td className="separator"></td>
-
-              <td><button className="btn btn-primary" onClick={this.props.togglePeriod} type="button">{this.props.selectedDate.format('A')}</button></td>
-            </tr>
-
-            <tr>
-              <td><a className="btn" onClick={this.props.subtractHour}><Glyphicon glyph="chevron-down" /></a></td>
-
-              <td className="separator"></td>
-
-              <td><a className="btn" onClick={this.props.subtractMinute}><Glyphicon glyph="chevron-down" /></a></td>
-
-              <td className="separator"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <div className="timepicker-picker">
+          <table className="table-condensed">
+            <tbody>
+              <tr>
+                <td><a className="btn" onClick={this.props.addHour}><Glyphicon glyph="chevron-up" /></a></td>
+                <td className="separator"></td>
+                <td><a className="btn" onClick={this.props.addMinute}><Glyphicon glyph="chevron-up" /></a></td>
+              </tr>
+              <tr>
+                <td><span className="timepicker-hour" onClick={this.showHours}>{this.props.selectedDate.format('HH')}</span></td>
+                <td className="separator">:</td>
+                <td><span className="timepicker-minute" onClick={this.showMinutes}>{this.props.selectedDate.format('mm')}</span></td>
+              </tr>
+              <tr>
+                <td><a className="btn" onClick={this.props.subtractHour}><Glyphicon glyph="chevron-down" /></a></td>
+                <td className="separator"></td>
+                <td><a className="btn" onClick={this.props.subtractMinute}><Glyphicon glyph="chevron-down" /></a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       );
-    } else {
-      return '';
     }
   },
-  render: function() {
+
+  render() {
     return (
-        <div className="timepicker">
-          {this.renderPicker()}
-
-          {this.renderHours()}
-
-          {this.renderMinutes()}
-        </div>
+      <div className="timepicker">
+        {this.renderPicker()}
+        {this.renderHours()}
+        {this.renderMinutes()}
+      </div>
     );
   }
 });

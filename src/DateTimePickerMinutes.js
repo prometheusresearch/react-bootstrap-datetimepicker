@@ -1,59 +1,76 @@
-var DateTimePickerMinutes, React;
+'use strict';
 
-React = require('react');
+var React = require('react');
 var Glyphicon = require('./Glyphicon');
 var Constants = require('./Constants');
+
+var Minute = React.createClass({
+
+  render() {
+    var {minute, ...props} = this.props;
+    return (
+      <td className="minute" onClick={this.onClick} onSelect={undefined}>
+        {minute}
+      </td>
+    );
+  },
+
+  onClick(e) {
+    this.props.onSelect(e);
+  }
+});
+
+var DateTimePickerMinutesStyle = {
+
+  self: {
+    display: 'block'
+  },
+
+  switch: {
+    width: '100%'
+  }
+};
   
-DateTimePickerMinutes = React.createClass({
+var DateTimePickerMinutes = React.createClass({
+
   propTypes: {
-    setSelectedMinute: React.PropTypes.func.isRequired,
+    onSelect: React.PropTypes.func.isRequired,
     onSwitch: React.PropTypes.func.isRequired
   },
-  renderSwitchButton: function() {
-    return this.props.mode === Constants.MODE_TIME ?
-        (
-            <ul className="list-unstyled">
-              <li>
-                <span className="btn picker-switch" style={{width:'100%'}} onClick={this.props.onSwitch}><Glyphicon glyph="time" /></span>
-              </li>
-            </ul>
-        ) :
-        null;
-  },
-  render: function() {
+
+  render() {
+    var {onSelect, onSwitch, ...props} = this.props;
     return (
-      <div className="timepicker-minutes" data-action="selectMinute" style={{display: 'block'}}>
-        {this.renderSwitchButton()}
+      <div className="timepicker-minutes" data-action="selectMinute" style={DateTimePickerMinutesStyle.self}>
+        <ul className="list-unstyled">
+          <li>
+            <span
+              className="btn picker-switch"
+              style={DateTimePickerMinutesStyle.switch}
+              onClick={onSwitch}>
+              <Glyphicon glyph="time" />
+            </span>
+          </li>
+        </ul>
         <table className="table-condensed">
           <tbody>
             <tr>
-              <td className="minute" onClick={this.props.setSelectedMinute}>00</td>
-
-              <td className="minute" onClick={this.props.setSelectedMinute}>05</td>
-
-              <td className="minute" onClick={this.props.setSelectedMinute}>10</td>
-
-              <td className="minute" onClick={this.props.setSelectedMinute}>15</td>
+              <Minute minute={0} onSelect={onSelect} />
+              <Minute minute={5} onSelect={onSelect} />
+              <Minute minute={10} onSelect={onSelect} />
+              <Minute minute={15} onSelect={onSelect} />
             </tr>
-
             <tr>
-              <td className="minute" onClick={this.props.setSelectedMinute}>20</td>
-
-              <td className="minute" onClick={this.props.setSelectedMinute}>25</td>
-
-              <td className="minute" onClick={this.props.setSelectedMinute}>30</td>
-
-              <td className="minute" onClick={this.props.setSelectedMinute}>35</td>
+              <Minute minute={20} onSelect={onSelect} />
+              <Minute minute={25} onSelect={onSelect} />
+              <Minute minute={30} onSelect={onSelect} />
+              <Minute minute={35} onSelect={onSelect} />
             </tr>
-
             <tr>
-              <td className="minute" onClick={this.props.setSelectedMinute}>40</td>
-
-              <td className="minute" onClick={this.props.setSelectedMinute}>45</td>
-
-              <td className="minute" onClick={this.props.setSelectedMinute}>50</td>
-
-              <td className="minute" onClick={this.props.setSelectedMinute}>55</td>
+              <Minute minute={40} onSelect={onSelect} />
+              <Minute minute={45} onSelect={onSelect} />
+              <Minute minute={55} onSelect={onSelect} />
+              <Minute minute={60} onSelect={onSelect} />
             </tr>
           </tbody>
         </table>

@@ -1,16 +1,13 @@
-var DateTimeField, DateTimePicker, Glyphicon, React, moment;
+'use strict';
 
-React = require('react');
+var React           = require('react');
+var moment          = require('moment');
+var DateTimePicker  = require('./DateTimePicker');
+var Glyphicon       = require('./Glyphicon');
+var Constants       = require('./Constants');
 
-DateTimePicker = require('./DateTimePicker');
+var DateTimeField = React.createClass({
 
-moment = require('moment');
-
-var Glyphicon = require('./Glyphicon');
-
-var Constants = require('./Constants');
-
-DateTimeField = React.createClass({
   propTypes: {
     dateTime: React.PropTypes.string,
     onChange: React.PropTypes.func,
@@ -22,7 +19,8 @@ DateTimeField = React.createClass({
     minDate: React.PropTypes.object,
     maxDate: React.PropTypes.object
   },
-  getDefaultProps: function() {
+
+  getDefaultProps() {
     return {
       format: 'x',
       showToday: true,
@@ -34,7 +32,8 @@ DateTimeField = React.createClass({
       }
     };
   },
-  getInitialState: function() {
+
+  getInitialState() {
     return {
       showDatePicker: this.props.mode !== Constants.MODE_TIME,
       showTimePicker: this.props.mode === Constants.MODE_TIME,
@@ -51,7 +50,8 @@ DateTimeField = React.createClass({
       inputValue: this.props.dateTime ? moment(this.props.dateTime, this.props.format, true).format(this.resolvePropsInputFormat()) : this.props.defaultText
     };
   },
-  componentWillReceiveProps: function(nextProps) {
+
+  componentWillReceiveProps(nextProps) {
     if(moment(nextProps.dateTime, nextProps.format, true).isValid()) {
       return this.setState({
         viewDate: moment(nextProps.dateTime, nextProps.format, true).startOf("month"),
@@ -65,7 +65,8 @@ DateTimeField = React.createClass({
       });
     }
   },
-  resolvePropsInputFormat: function() {
+
+  resolvePropsInputFormat() {
     if(this.props.inputFormat) return this.props.inputFormat;
     switch(this.props.mode) {
       case Constants.MODE_TIME:
@@ -76,8 +77,9 @@ DateTimeField = React.createClass({
         return "MM/DD/YY h:mm A";
     }
   },
-  onChange: function(event) {
-    var value = event.target == null ? event : event.target.value;
+
+  onChange(e) {
+    var value = e.target == null ? e : e.target.value;
     if (moment(value, this.state.inputFormat, true).isValid()) {
       this.setState({
         selectedDate: moment(value, this.state.inputFormat, true),
@@ -92,36 +94,43 @@ DateTimeField = React.createClass({
     });
 
   },
-  setSelectedDate: function(e) {
+
+  setSelectedDate(e) {
     var target = e.target;
     if (target.className && !target.className.match(/disabled/g)) {
       var month;
       if(target.className.indexOf("new") >= 0) month = this.state.viewDate.month() + 1;
       else if(target.className.indexOf("old") >= 0) month = this.state.viewDate.month() - 1;
       else month = this.state.viewDate.month();
-      return this.setState({
-        selectedDate: this.state.viewDate.clone().month(month).date(parseInt(e.target.innerHTML)).hour(this.state.selectedDate.hours()).minute(this.state.selectedDate.minutes())
-      }, function() {
-        this.closePicker();
+      var selectedDate = this.state.viewDate
+        .clone()
+        .month(month)
+        .date(parseInt(e.target.innerHTML))
+        .hour(this.state.selectedDate.hours())
+        .minute(this.state.selectedDate.minutes())
+      return this.setState({selectedDate}, () => {
         this.props.onChange(this.state.selectedDate.format(this.props.format));
         return this.setState({
-          inputValue: this.state.selectedDate.format(this.state.inputFormat)
+          inputValue: this.state.selectedDate.format(this.state.inputFormat),
+          showDatePicker: false,
+          showTimePicker: true
         });
       });
     }
   },
-  setSelectedHour: function(e) {
+
+  setSelectedHour(e) {
     return this.setState({
       selectedDate: this.state.selectedDate.clone().hour(parseInt(e.target.innerHTML)).minute(this.state.selectedDate.minutes())
     }, function() {
-      this.closePicker();
       this.props.onChange(this.state.selectedDate.format(this.props.format));
       return this.setState({
         inputValue: this.state.selectedDate.format(this.state.inputFormat)
       });
     });
   },
-  setSelectedMinute: function(e) {
+
+  setSelectedMinute(e) {
     return this.setState({
       selectedDate: this.state.selectedDate.clone().hour(this.state.selectedDate.hours()).minute(parseInt(e.target.innerHTML))
     }, function() {
@@ -132,17 +141,20 @@ DateTimeField = React.createClass({
       });
     });
   },
-  setViewMonth: function(month) {
+
+  setViewMonth(month) {
     return this.setState({
       viewDate: this.state.viewDate.clone().month(month)
     });
   },
-  setViewYear: function(year) {
+
+  setViewYear(year) {
     return this.setState({
       viewDate: this.state.viewDate.clone().year(year)
     });
   },
-  addMinute: function() {
+
+  addMinute() {
     return this.setState({
       selectedDate: this.state.selectedDate.clone().add(1, "minutes")
     }, function() {
@@ -152,7 +164,8 @@ DateTimeField = React.createClass({
       });
     });
   },
-  addHour: function() {
+
+  addHour() {
     return this.setState({
       selectedDate: this.state.selectedDate.clone().add(1, "hours")
     }, function() {
@@ -162,22 +175,26 @@ DateTimeField = React.createClass({
       });
     });
   },
-  addMonth: function() {
+
+  addMonth() {
     return this.setState({
       viewDate: this.state.viewDate.add(1, "months")
     });
   },
-  addYear: function() {
+
+  addYear() {
     return this.setState({
       viewDate: this.state.viewDate.add(1, "years")
     });
   },
-  addDecade: function() {
+
+  addDecade() {
     return this.setState({
       viewDate: this.state.viewDate.add(10, "years")
     });
   },
-  subtractMinute: function() {
+
+  subtractMinute() {
     return this.setState({
       selectedDate: this.state.selectedDate.clone().subtract(1, "minutes")
     }, function() {
@@ -187,7 +204,8 @@ DateTimeField = React.createClass({
       });
     });
   },
-  subtractHour: function() {
+
+  subtractHour() {
     return this.setState({
       selectedDate: this.state.selectedDate.clone().subtract(1, "hours")
     }, function() {
@@ -197,35 +215,41 @@ DateTimeField = React.createClass({
       });
     });
   },
-  subtractMonth: function() {
+
+  subtractMonth() {
     return this.setState({
       viewDate: this.state.viewDate.subtract(1, "months")
     });
   },
-  subtractYear: function() {
+
+  subtractYear() {
     return this.setState({
       viewDate: this.state.viewDate.subtract(1, "years")
     });
   },
-  subtractDecade: function() {
+
+  subtractDecade() {
     return this.setState({
       viewDate: this.state.viewDate.subtract(10, "years")
     });
   },
-  togglePeriod: function() {
+
+  togglePeriod() {
     if (this.state.selectedDate.hour() > 12) {
       return this.onChange(this.state.selectedDate.clone().subtract(12, 'hours').format(this.state.inputFormat));
     } else {
       return this.onChange(this.state.selectedDate.clone().add(12, 'hours').format(this.state.inputFormat));
     }
   },
-  togglePicker: function() {
+
+  togglePicker() {
     return this.setState({
       showDatePicker: !this.state.showDatePicker,
       showTimePicker: !this.state.showTimePicker
     });
   },
-  onClick: function() {
+
+  onClick() {
     var classes, gBCR, offset, placePosition, scrollTop, styles;
     if (this.state.showPicker) {
       return this.closePicker();
@@ -269,7 +293,8 @@ DateTimeField = React.createClass({
       });
     }
   },
-  closePicker: function(e) {
+
+  closePicker(e) {
     var style;
     style = this.state.widgetStyle;
     style['left'] = -9999;
@@ -279,7 +304,8 @@ DateTimeField = React.createClass({
       widgetStyle: style
     });
   },
-  renderOverlay: function() {
+
+  renderOverlay() {
     var styles;
     styles = {
       position: 'fixed',
@@ -290,51 +316,65 @@ DateTimeField = React.createClass({
       zIndex: '999'
     };
     if (this.state.showPicker) {
-      return (<div style={styles} onClick={this.closePicker} />);
+      return <div style={styles} onClick={this.closePicker} />;
     } else {
       return <span />;
     }
   },
-  render: function() {
+
+  render() {
     return (
-          <div>
-            {this.renderOverlay()}
-            <DateTimePicker ref="widget"
-                  widgetClasses={this.state.widgetClasses}
-                  widgetStyle={this.state.widgetStyle}
-                  showDatePicker={this.state.showDatePicker}
-                  showTimePicker={this.state.showTimePicker}
-                  viewDate={this.state.viewDate}
-                  selectedDate={this.state.selectedDate}
-                  showToday={this.props.showToday}
-                  viewMode={this.props.viewMode}
-                  daysOfWeekDisabled={this.props.daysOfWeekDisabled}
-                  mode={this.props.mode}
-                  minDate={this.props.minDate}
-                  maxDate={this.props.maxDate}
-                  addDecade={this.addDecade}
-                  addYear={this.addYear}
-                  addMonth={this.addMonth}
-                  addHour={this.addHour}
-                  addMinute={this.addMinute}
-                  subtractDecade={this.subtractDecade}
-                  subtractYear={this.subtractYear}
-                  subtractMonth={this.subtractMonth}
-                  subtractHour={this.subtractHour}
-                  subtractMinute={this.subtractMinute}
-                  setViewYear={this.setViewYear}
-                  setViewMonth={this.setViewMonth}
-                  setSelectedDate={this.setSelectedDate}
-                  setSelectedHour={this.setSelectedHour}
-                  setSelectedMinute={this.setSelectedMinute}
-                  togglePicker={this.togglePicker}
-                  togglePeriod={this.togglePeriod}
+      <div>
+        {this.renderOverlay()}
+        <DateTimePicker
+          ref="widget"
+          widgetClasses={this.state.widgetClasses}
+          widgetStyle={this.state.widgetStyle}
+          showDatePicker={this.state.showDatePicker}
+          showTimePicker={this.state.showTimePicker}
+          viewDate={this.state.viewDate}
+          selectedDate={this.state.selectedDate}
+          showToday={this.props.showToday}
+          viewMode={this.props.viewMode}
+          daysOfWeekDisabled={this.props.daysOfWeekDisabled}
+          mode={this.props.mode}
+          minDate={this.props.minDate}
+          maxDate={this.props.maxDate}
+          addDecade={this.addDecade}
+          addYear={this.addYear}
+          addMonth={this.addMonth}
+          addHour={this.addHour}
+          addMinute={this.addMinute}
+          subtractDecade={this.subtractDecade}
+          subtractYear={this.subtractYear}
+          subtractMonth={this.subtractMonth}
+          subtractHour={this.subtractHour}
+          subtractMinute={this.subtractMinute}
+          setViewYear={this.setViewYear}
+          setViewMonth={this.setViewMonth}
+          setSelectedDate={this.setSelectedDate}
+          setSelectedHour={this.setSelectedHour}
+          setSelectedMinute={this.setSelectedMinute}
+          togglePicker={this.togglePicker}
+          togglePeriod={this.togglePeriod}
+          />
+        <div className="input-group date" ref="datetimepicker">
+          <input
+            type="text"
+            className="form-control"
+            onChange={this.onChange}
+            value={this.state.inputValue}
+            {...this.props.inputProps}
             />
-            <div className="input-group date" ref="datetimepicker">
-              <input type="text" className="form-control" onChange={this.onChange} value={this.state.inputValue} {...this.props.inputProps}/>
-              <span className="input-group-addon" onClick={this.onClick} onBlur={this.onBlur} ref="dtpbutton"><Glyphicon glyph={this.state.buttonIcon} /></span>
-            </div>
-          </div>
+          <span
+            className="input-group-addon"
+            onClick={this.onClick}
+            onBlur={this.onBlur}
+            ref="dtpbutton">
+              <Glyphicon glyph={this.state.buttonIcon} />
+          </span>
+        </div>
+      </div>
     );
   }
 });
