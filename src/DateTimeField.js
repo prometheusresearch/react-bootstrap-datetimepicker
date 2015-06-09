@@ -110,11 +110,18 @@ var DateTimeField = React.createClass({
         .minute(this.state.selectedDate.minutes())
       return this.setState({selectedDate}, () => {
         this.props.onChange(this.state.selectedDate.format(this.props.format));
-        return this.setState({
-          inputValue: this.state.selectedDate.format(this.state.inputFormat),
-          showDatePicker: false,
-          showTimePicker: true
-        });
+        if (this.props.mode === Constants.MODE_DATETIME) {
+          return this.setState({
+            inputValue: this.state.selectedDate.format(this.state.inputFormat),
+            showDatePicker: false,
+            showTimePicker: true
+          });
+        } else {
+          this.closePicker();
+          return this.setState({
+            inputValue: this.state.selectedDate.format(this.state.inputFormat)
+          });
+        }
       });
     }
   },
