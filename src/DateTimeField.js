@@ -34,6 +34,9 @@ var DateTimeField = React.createClass({
   },
 
   getInitialState() {
+    var date = this.props.dateTime ?
+      moment(this.props.dateTime, this.props.format, true).startOf("month") :
+      moment();
     return {
       showDatePicker: this.props.mode !== Constants.MODE_TIME,
       showTimePicker: this.props.mode === Constants.MODE_TIME,
@@ -45,18 +48,21 @@ var DateTimeField = React.createClass({
         left: -9999,
         zIndex: '9999 !important'
       },
-      viewDate: this.props.dateTime ? moment(this.props.dateTime, this.props.format, true).startOf("month") : moment(),
-      selectedDate: moment(this.props.dateTime, this.props.format, true),
-      inputValue: this.props.dateTime ? moment(this.props.dateTime, this.props.format, true).format(this.resolvePropsInputFormat()) : this.props.defaultText
+      viewDate: date.clone(),
+      selectedDate: date.clone(),
+      inputValue: this.props.dateTime ?
+        date.format(this.resolvePropsInputFormat()) :
+        this.props.defaultText
     };
   },
 
   componentWillReceiveProps(nextProps) {
-    if(moment(nextProps.dateTime, nextProps.format, true).isValid()) {
+    var nextDate = moment(nextProps.dateTime, nextProps.format, true);
+    if(nextDate.isValid()) {
       return this.setState({
-        viewDate: moment(nextProps.dateTime, nextProps.format, true).startOf("month"),
-        selectedDate: moment(nextProps.dateTime, nextProps.format, true),
-        inputValue: moment(nextProps.dateTime, nextProps.format, true).format(nextProps.inputFormat)
+        viewDate: nextDate.clone().startOf("month"),
+        selectedDate: nextDate.clone(),
+        inputValue: nextDate.format(nextProps.inputFormat)
       });
     }
     if (nextProps.inputFormat !== this.props.inputFormat) {
@@ -80,10 +86,11 @@ var DateTimeField = React.createClass({
 
   onChange(e) {
     var value = e.target == null ? e : e.target.value;
-    if (moment(value, this.state.inputFormat, true).isValid()) {
+    var date = moment(value, this.state.inputFormat, true);
+    if (date.isValid()) {
       this.setState({
-        selectedDate: moment(value, this.state.inputFormat, true),
-        viewDate: moment(value, this.state.inputFormat, true).startOf("month")
+        selectedDate: date.clone(),
+        viewDate: date.clone().startOf("month")
       });
     }
 
@@ -107,7 +114,7 @@ var DateTimeField = React.createClass({
         .month(month)
         .date(parseInt(e.target.innerHTML))
         .hour(this.state.selectedDate.hours())
-        .minute(this.state.selectedDate.minutes())
+        .minute(this.state.selectedDate.minutes());
       return this.setState({selectedDate}, () => {
         this.props.onChange(this.state.selectedDate.format(this.props.format));
         if (this.props.mode === Constants.MODE_DATETIME) {
@@ -117,10 +124,10 @@ var DateTimeField = React.createClass({
             showTimePicker: true
           });
         } else {
-          this.closePicker();
-          return this.setState({
+          this.setState({
             inputValue: this.state.selectedDate.format(this.state.inputFormat)
           });
+          this.closePicker();
         }
       });
     }
