@@ -32,8 +32,8 @@ DateTimePickerYears = React.createClass({
     var year;
     year = parseInt(this.props.viewDate.year() / 10, 10) * 10;
     return (
-      <div className="datepicker-years" style={{display: "block"}}>
-        <table className="table-condensed">
+      <div className="datepicker-years" style={{...this.props.style, display: "block"}}>
+        <table className="table-condensed" style={this.props.tableStyle}>
           <thead>
             <tr>
               <th className="prev" onClick={this.props.subtractDecade}>‹</th>

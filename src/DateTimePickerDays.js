@@ -80,8 +80,8 @@ DateTimePickerDays = React.createClass({
   },
   render: function() {
     return (
-    <div className="datepicker-days" style={{display: 'block'}}>
-        <table className="table-condensed">
+    <div className="datepicker-days" style={{...this.props.style, display: 'block'}}>
+        <table className="table-condensed" style={this.props.tableStyle}>
           <thead>
             <tr>
               <th className="prev" onClick={this.props.subtractMonth}>‹</th>
