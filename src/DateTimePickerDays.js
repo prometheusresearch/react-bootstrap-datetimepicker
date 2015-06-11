@@ -43,15 +43,17 @@ DateTimePickerDays = React.createClass({
       } else if (prevMonth.year() > year || (prevMonth.year() === year && prevMonth.month() > month)) {
         classes['new'] = true;
       }
-      if (prevMonth.isSame(moment({
+      var dateActive = prevMonth.isSame(moment({
         y: this.props.selectedDate.year(),
         M: this.props.selectedDate.month(),
         d: this.props.selectedDate.date()
-      }))) {
+      }));
+      if (dateActive) {
         classes['active'] = true;
       }
+      var dateToday = prevMonth.isSame(moment(), 'day');
       if (this.props.showToday) {
-        if (prevMonth.isSame(moment(), 'day')) {
+        if (dateToday) {
           classes['today'] = true;
         }
       }
@@ -68,7 +70,22 @@ DateTimePickerDays = React.createClass({
           }
         }
       }
-      cells.push(<td key={prevMonth.month() + '-' + prevMonth.date()} className={React.addons.classSet(classes)} onClick={this.props.setSelectedDate}>{prevMonth.date()}</td>);
+      cells.push(
+        this.props.renderDay ?
+          this.props.renderDay({
+            key: prevMonth.month() + '-' + prevMonth.date(),
+            onClick: this.props.setSelectedDate,
+            value: prevMonth,
+            active: dateActive,
+            today: dateToday,
+            showToday: this.props.showToday,
+          }) :
+          <td key={prevMonth.month() + '-' + prevMonth.date()}
+              className={React.addons.classSet(classes)}
+              onClick={this.props.setSelectedDate}>
+            {prevMonth.date()}
+          </td>
+      );
       if (prevMonth.weekday() === moment().endOf('week').weekday()) {
         row = <tr key={prevMonth.month() + '-' + prevMonth.date()}>{cells}</tr>;
         html.push(row);

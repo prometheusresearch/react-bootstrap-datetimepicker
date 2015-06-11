@@ -88,6 +88,7 @@ var DateTimePickerDate = React.createClass({
     if (this.state.daysDisplayed) {
       return (
         <DateTimePickerDays
+          renderDay={this.props.renderDay}
           style={this.props.pickerStyle}
           tableStyle={this.props.pickerTableStyle}
           addMonth={this.props.addMonth}
@@ -111,6 +112,7 @@ var DateTimePickerDate = React.createClass({
     if (this.state.monthsDisplayed) {
       return (
         <DateTimePickerMonths
+          renderMonth={this.props.renderMonth}
           style={this.props.pickerStyle}
           tableStyle={this.props.pickerTableStyle}
           subtractYear={this.props.subtractYear}

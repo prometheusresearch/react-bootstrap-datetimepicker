@@ -19,12 +19,27 @@ DateTimePickerMonths = React.createClass({
     monthsShort = moment.monthsShort();
     i = 0;
     months = [];
+    var year = this.props.viewDate.year();
     while (i < 12) {
+      var active = i === month && this.props.viewDate.year() === this.props.selectedDate.year();
       classes = {
         month: true,
-        'active': i === month && this.props.viewDate.year() === this.props.selectedDate.year()
+        active: active
       };
-      months.push(<span key={i} className={React.addons.classSet(classes)} onClick={this.props.setViewMonth}>{monthsShort[i]}</span>);
+      months.push(
+        this.props.renderMonth ?
+          this.props.renderMonth({
+            key: i,
+            active: active,
+            month: i,
+            year: year,
+            value: monthsShort[i],
+            onClick: this.props.setViewMonth
+          }) :
+          <span key={i} className={React.addons.classSet(classes)} onClick={this.props.setViewMonth}>
+            {monthsShort[i]}
+          </span>
+      );
       i++;
     }
     return months;
