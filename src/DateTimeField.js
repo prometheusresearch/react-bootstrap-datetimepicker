@@ -86,20 +86,18 @@ var DateTimeField = React.createClass({
 
   onChange(e) {
     var value = e.target == null ? e : e.target.value;
+    var nextState = {inputValue: value};
     var date = moment(value, this.state.inputFormat, true);
     if (date.isValid()) {
-      this.setState({
+      nextState = {
+        ...nextState,
         selectedDate: date.clone(),
         viewDate: date.clone().startOf("month")
-      });
+      }
     }
-
-    return this.setState({
-      inputValue: value
-    }, function() {
-      return this.props.onChange(moment(this.state.inputValue, this.state.inputFormat, true).format(this.props.format));
-    });
-
+    this.setState(
+      nextState,
+      () => this.props.onChange(value === '' ? null : date.format(this.props.format)));
   },
 
   setSelectedDate(e) {
