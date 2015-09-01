@@ -18,6 +18,7 @@ export default class Year extends React.Component {
     });
     return (
       <span
+        tabIndex={0}
         className={className}
         onClick={this.onClick}>
         {year}

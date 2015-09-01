@@ -7,23 +7,21 @@ import autobind             from 'autobind-decorator';
 import cx                   from 'classnames';
 import moment               from 'moment';
 import React, {PropTypes}   from 'react';
+import Day                  from './Day';
 
-function renderDay({date, key, className, onClick}) {
-  return (
-    <td key={key} className={cx(className)} onClick={onClick}>
-      {date.date()}
-    </td>
-  );
+function renderDay(props) {
+  return <Day {...props} />;
 }
 
 export default class DayView extends React.Component {
 
   static propTypes = {
     viewDate: PropTypes.object.isRequired,
+    onViewDate: PropTypes.func.isRequired,
     selectedDate: PropTypes.object.isRequired,
+    onSelectedDate: PropTypes.func.isRequired,
     showToday: PropTypes.bool,
     daysOfWeekDisabled: PropTypes.array,
-    setSelectedDate: PropTypes.func.isRequired,
     showMonths: PropTypes.func.isRequired,
     minDate: PropTypes.object,
     maxDate: PropTypes.object
@@ -41,7 +39,9 @@ export default class DayView extends React.Component {
           <thead>
             <tr>
               <th className="prev" onClick={this.onPrevMonth}>‹</th>
-              <th className="switch" colSpan="5" onClick={this.props.showMonths}>{moment.months()[this.props.viewDate.month()]} {this.props.viewDate.year()}</th>
+              <th className="switch" colSpan="5" onClick={this.props.showMonths}>
+                {moment.months()[this.props.viewDate.month()]} {this.props.viewDate.year()}
+              </th>
               <th className="next" onClick={this.onNextMonth}>›</th>
             </tr>
             <tr>
@@ -108,7 +108,7 @@ export default class DayView extends React.Component {
       cells.push(this.props.renderDay({
         className: className,
         key: date.month() + '-' + date.date(),
-        onClick: this.props.setSelectedDate,
+        onClick: this.props.onSelectedDate,
         value: date,
         date: date,
         active: isActive,
@@ -130,7 +130,6 @@ export default class DayView extends React.Component {
 
     return rows;
   }
-
 }
 
 function startDateFor(date) {

@@ -10,17 +10,13 @@ import HourView           from './HourView';
 import Glyphicon          from './Glyphicon';
 import Constants          from './Constants';
 
-export default class DateTimePickerTime extends React.Component {
+export default class TimePicker extends React.Component {
 
   static propTypes = {
     viewDate: PropTypes.object.isRequired,
     selectedDate: PropTypes.object.isRequired,
     togglePeriod: PropTypes.func.isRequired,
-    mode: PropTypes.oneOf([
-      Constants.MODE_DATE,
-      Constants.MODE_DATETIME,
-      Constants.MODE_TIME
-    ]),
+    mode: PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME]),
     onSelectedDate: PropTypes.func.isRequired,
   };
 

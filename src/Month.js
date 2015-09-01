@@ -19,7 +19,7 @@ export default class Month extends React.Component {
       active: active
     };
     return (
-      <span className={cx(className)} onClick={this.onClick}>
+      <span tabIndex={0} className={cx(className)} onClick={this.onClick}>
         {MONTHS_SHORT[month]}
       </span>
     );
