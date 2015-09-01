@@ -154,18 +154,6 @@ var DateTimeField = React.createClass({
     });
   },
 
-  setViewMonth(month) {
-    return this.setState({
-      viewDate: this.state.viewDate.clone().month(month)
-    });
-  },
-
-  setViewYear(year) {
-    return this.setState({
-      viewDate: this.state.viewDate.clone().year(year)
-    });
-  },
-
   addMinute() {
     return this.setState({
       selectedDate: this.state.selectedDate.clone().add(1, "minutes")
@@ -185,24 +173,6 @@ var DateTimeField = React.createClass({
       return this.setState({
         inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
       });
-    });
-  },
-
-  addMonth() {
-    return this.setState({
-      viewDate: this.state.viewDate.add(1, "months")
-    });
-  },
-
-  addYear() {
-    return this.setState({
-      viewDate: this.state.viewDate.add(1, "years")
-    });
-  },
-
-  addDecade() {
-    return this.setState({
-      viewDate: this.state.viewDate.add(10, "years")
     });
   },
 
@@ -228,22 +198,8 @@ var DateTimeField = React.createClass({
     });
   },
 
-  subtractMonth() {
-    return this.setState({
-      viewDate: this.state.viewDate.subtract(1, "months")
-    });
-  },
-
-  subtractYear() {
-    return this.setState({
-      viewDate: this.state.viewDate.subtract(1, "years")
-    });
-  },
-
-  subtractDecade() {
-    return this.setState({
-      viewDate: this.state.viewDate.subtract(10, "years")
-    });
+  onViewDate(viewDate) {
+    this.setState({viewDate});
   },
 
   togglePeriod() {
@@ -352,18 +308,11 @@ var DateTimeField = React.createClass({
           mode={this.props.mode}
           minDate={this.props.minDate}
           maxDate={this.props.maxDate}
-          addDecade={this.addDecade}
-          addYear={this.addYear}
-          addMonth={this.addMonth}
           addHour={this.addHour}
           addMinute={this.addMinute}
-          subtractDecade={this.subtractDecade}
-          subtractYear={this.subtractYear}
-          subtractMonth={this.subtractMonth}
+          onViewDate={this.onViewDate}
           subtractHour={this.subtractHour}
           subtractMinute={this.subtractMinute}
-          setViewYear={this.setViewYear}
-          setViewMonth={this.setViewMonth}
           setSelectedDate={this.setSelectedDate}
           setSelectedHour={this.setSelectedHour}
           setSelectedMinute={this.setSelectedMinute}

@@ -1,69 +1,73 @@
-'use strict';
+/**
+ * @copyright 2014 Quri, Loïc CHOLLIER
+ * @copyright 2015 Prometheus Research, LLC
+ */
 
-var React               = require('react/addons');
-var DateTimePickerDate  = require('./DateTimePickerDate');
-var DateTimePickerTime  = require('./DateTimePickerTime');
-var Glyphicon           = require('./Glyphicon');
-var Constants           = require('./Constants');
+import React, {PropTypes} from 'react/addons';
+import cx                 from 'classnames';
+import DateTimePickerDate from './DateTimePickerDate';
+import DateTimePickerTime from './DateTimePickerTime';
+import Glyphicon          from './Glyphicon';
+import Constants          from './Constants';
 
-var DateTimePicker = React.createClass({
+export default class DateTimePicker extends React.Component {
 
-  propTypes: {
-    showDatePicker: React.PropTypes.bool,
-    showTimePicker: React.PropTypes.bool,
-    subtractMonth: React.PropTypes.func.isRequired,
-    addMonth: React.PropTypes.func.isRequired,
-    viewDate: React.PropTypes.object.isRequired,
-    selectedDate: React.PropTypes.object.isRequired,
-    showToday: React.PropTypes.bool,
-    viewMode: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number
+  static propTypes = {
+    showDatePicker: PropTypes.bool,
+    showTimePicker: PropTypes.bool,
+    viewDate: PropTypes.object.isRequired,
+    selectedDate: PropTypes.object.isRequired,
+    showToday: PropTypes.bool,
+    viewMode: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
     ]),
-    mode: React.PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME]),
-    daysOfWeekDisabled: React.PropTypes.array,
-    setSelectedDate: React.PropTypes.func.isRequired,
-    subtractYear: React.PropTypes.func.isRequired,
-    addYear: React.PropTypes.func.isRequired,
-    setViewMonth: React.PropTypes.func.isRequired,
-    setViewYear: React.PropTypes.func.isRequired,
-    subtractHour: React.PropTypes.func.isRequired,
-    addHour: React.PropTypes.func.isRequired,
-    subtractMinute: React.PropTypes.func.isRequired,
-    addMinute: React.PropTypes.func.isRequired,
-    addDecade: React.PropTypes.func.isRequired,
-    subtractDecade: React.PropTypes.func.isRequired,
-    togglePeriod: React.PropTypes.func.isRequired,
-    minDate: React.PropTypes.object,
-    maxDate: React.PropTypes.object
-  },
+    mode: PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME]),
+    daysOfWeekDisabled: PropTypes.array,
+    setSelectedDate: PropTypes.func.isRequired,
+    subtractHour: PropTypes.func.isRequired,
+    addHour: PropTypes.func.isRequired,
+    subtractMinute: PropTypes.func.isRequired,
+    addMinute: PropTypes.func.isRequired,
+    togglePeriod: PropTypes.func.isRequired,
+    minDate: PropTypes.object,
+    maxDate: PropTypes.object,
+
+    onViewDate: PropTypes.func.isRequired,
+  }
+
+  render() {
+    return (
+      <div className={cx(this.props.widgetClasses)} style={this.props.widgetStyle}>
+        <ul className="list-unstyled">
+          {this.renderDatePicker()}
+          {this.renderSwitchButton()}
+          {this.renderTimePicker()}
+        </ul>
+      </div>
+
+    );
+  }
 
   renderDatePicker() {
     if (this.props.showDatePicker) {
       return (
         <li>
           <DateTimePickerDate
-            addMonth={this.props.addMonth}
-            subtractMonth={this.props.subtractMonth}
             setSelectedDate={this.props.setSelectedDate}
             viewDate={this.props.viewDate}
             selectedDate={this.props.selectedDate}
             showToday={this.props.showToday}
             viewMode={this.props.viewMode}
             daysOfWeekDisabled={this.props.daysOfWeekDisabled}
-            subtractYear={this.props.subtractYear}
-            addYear={this.props.addYear}
-            setViewMonth={this.props.setViewMonth}
-            setViewYear={this.props.setViewYear}
-            addDecade={this.props.addDecade}
-            subtractDecade={this.props.subtractDecade}
+            onViewDate={this.props.onViewDate}
             minDate={this.props.minDate}
             maxDate={this.props.maxDate}
             />
         </li>
       );
     }
-  },
+  }
 
   renderTimePicker() {
     if (this.props.showTimePicker) {
@@ -84,7 +88,7 @@ var DateTimePicker = React.createClass({
         </li>
       );
     }
-  },
+  }
 
   renderSwitchButton() {
     if (this.props.mode === Constants.MODE_DATETIME) {
@@ -99,20 +103,6 @@ var DateTimePicker = React.createClass({
         </li>
       );
     }
-  },
-
-  render() {
-    return (
-      <div className={React.addons.classSet(this.props.widgetClasses)} style={this.props.widgetStyle}>
-        <ul className="list-unstyled">
-          {this.renderDatePicker()}
-          {this.renderSwitchButton()}
-          {this.renderTimePicker()}
-        </ul>
-      </div>
-
-    );
   }
-});
 
-module.exports = DateTimePicker;
+}

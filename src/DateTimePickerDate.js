@@ -1,151 +1,62 @@
-'use strict';
+/**
+ * @copyright 2014 Quri, Loïc CHOLLIER
+ * @copyright 2015 Prometheus Research, LLC
+ */
 
-var React                 = require('react');
-var DateTimePickerDays    = require('./DateTimePickerDays');
-var DateTimePickerMonths  = require('./DateTimePickerMonths');
-var DateTimePickerYears   = require('./DateTimePickerYears');
+import autobind             from 'autobind-decorator';
+import React, {PropTypes}   from 'react';
+import DayView              from './DayView';
+import MonthView            from './MonthView';
+import YearView             from './YearView';
 
-var DateTimePickerDate = React.createClass({
+const VIEW_MODES = {
+  days: {
+    daysDisplayed: true,
+    monthsDisplayed: false,
+    yearsDisplayed: false
+  },
+  months: {
+    daysDisplayed: false,
+    monthsDisplayed: true,
+    yearsDisplayed: false
+  },
+  years: {
+    daysDisplayed: false,
+    monthsDisplayed: false,
+    yearsDisplayed: true
+  }
+};
 
-  propTypes: {
-    subtractMonth: React.PropTypes.func.isRequired,
-    addMonth: React.PropTypes.func.isRequired,
-    viewDate: React.PropTypes.object.isRequired,
-    selectedDate: React.PropTypes.object.isRequired,
-    showToday: React.PropTypes.bool,
-    viewMode: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number
+const VIEW_MODES_KEYS = Object.keys(VIEW_MODES);
+
+export default class DateTimePickerDate extends React.Component {
+
+  static propTypes = {
+    viewDate: PropTypes.object.isRequired,
+    selectedDate: PropTypes.object.isRequired,
+    showToday: PropTypes.bool,
+    viewMode: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
     ]),
-    daysOfWeekDisabled: React.PropTypes.array,
-    setSelectedDate: React.PropTypes.func.isRequired,
-    subtractYear: React.PropTypes.func.isRequired,
-    addYear: React.PropTypes.func.isRequired,
-    setViewMonth: React.PropTypes.func.isRequired,
-    setViewYear: React.PropTypes.func.isRequired,
-    addDecade: React.PropTypes.func.isRequired,
-    subtractDecade: React.PropTypes.func.isRequired,
-    minDate: React.PropTypes.object,
-    maxDate: React.PropTypes.object
-  },
+    daysOfWeekDisabled: PropTypes.array,
+    setSelectedDate: PropTypes.func.isRequired,
+    minDate: PropTypes.object,
+    maxDate: PropTypes.object,
 
-  getInitialState() {
-    var viewModes = {
-      days: {
-        daysDisplayed: true,
-        monthsDisplayed: false,
-        yearsDisplayed: false
-      }, 
-      months: {
-        daysDisplayed: false,
-        monthsDisplayed: true,
-        yearsDisplayed: false
-      }, 
-      years: {
-        daysDisplayed: false,
-        monthsDisplayed: false,
-        yearsDisplayed: true
-      }
-    };
-    return (
-      viewModes[this.props.viewMode] ||
-      viewModes[Object.keys(viewModes)[this.props.viewMode]] ||
-      viewModes['days']
+    onViewDate: PropTypes.func.isRequired,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = (
+      VIEW_MODES[this.props.viewMode] ||
+      VIEW_MODES[VIEW_MODES_KEYS[this.props.viewMode]] ||
+      VIEW_MODES.days
     );
-  },
+  }
 
-  showMonths() {
-    return this.setState({
-      daysDisplayed: false,
-      monthsDisplayed: true
-    });
-  },
-
-  showYears() {
-    return this.setState({
-      monthsDisplayed: false,
-      yearsDisplayed: true
-    });
-  },
-
-  setViewYear(e) {
-    this.props.setViewYear(e.target.innerHTML);
-    return this.setState({
-      yearsDisplayed: false,
-      monthsDisplayed: true
-    });
-  },
-
-  setViewMonth(e) {
-    this.props.setViewMonth(e.target.innerHTML);
-    return this.setState({
-      monthsDisplayed: false,
-      daysDisplayed: true
-    });
-  },
-
-  renderDays() {
-    if (this.state.daysDisplayed) {
-      return (
-        <DateTimePickerDays
-          renderDay={this.props.renderDay}
-          style={this.props.pickerStyle}
-          tableStyle={this.props.pickerTableStyle}
-          addMonth={this.props.addMonth}
-          subtractMonth={this.props.subtractMonth}
-          setSelectedDate={this.props.setSelectedDate}
-          viewDate={this.props.viewDate}
-          selectedDate={this.props.selectedDate}
-          showToday={this.props.showToday}
-          daysOfWeekDisabled={this.props.daysOfWeekDisabled}
-          showMonths={this.showMonths}
-          minDate={this.props.minDate}
-          maxDate={this.props.maxDate}
-          />
-      );
-    } else {
-      return null;
-    }
-  },
-
-  renderMonths() {
-    if (this.state.monthsDisplayed) {
-      return (
-        <DateTimePickerMonths
-          renderMonth={this.props.renderMonth}
-          style={this.props.pickerStyle}
-          tableStyle={this.props.pickerTableStyle}
-          subtractYear={this.props.subtractYear}
-          addYear={this.props.addYear}
-          viewDate={this.props.viewDate}
-          selectedDate={this.props.selectedDate}
-          showYears={this.showYears}
-          setViewMonth={this.setViewMonth}
-          />
-      );
-    } else {
-      return null;
-    }
-  },
-
-  renderYears() {
-    if (this.state.yearsDisplayed) {
-      return (
-        <DateTimePickerYears
-          style={this.props.pickerStyle}
-          tableStyle={this.props.pickerTableStyle}
-          viewDate={this.props.viewDate}
-          selectedDate={this.props.selectedDate}
-          setViewYear={this.setViewYear}
-          addDecade={this.props.addDecade}
-          subtractDecade={this.props.subtractDecade}
-          />
-      );
-    } else {
-      return null;
-    }
-  },
-  render: function() {
+  render() {
     return (
       <div className="datepicker" style={this.props.style}>
         {this.renderDays()}
@@ -154,6 +65,95 @@ var DateTimePickerDate = React.createClass({
       </div>
     );
   }
-});
 
-module.exports = DateTimePickerDate;
+  renderDays() {
+    if (this.state.daysDisplayed) {
+      return (
+        <DayView
+          renderDay={this.props.renderDay}
+          style={this.props.pickerStyle}
+          tableStyle={this.props.pickerTableStyle}
+          setSelectedDate={this.props.setSelectedDate}
+          viewDate={this.props.viewDate}
+          selectedDate={this.props.selectedDate}
+          showToday={this.props.showToday}
+          daysOfWeekDisabled={this.props.daysOfWeekDisabled}
+          showMonths={this.showMonths}
+          minDate={this.props.minDate}
+          maxDate={this.props.maxDate}
+          onViewDate={this.props.onViewDate}
+          />
+      );
+    } else {
+      return null;
+    }
+  }
+
+  renderMonths() {
+    if (this.state.monthsDisplayed) {
+      return (
+        <MonthView
+          renderMonth={this.props.renderMonth}
+          style={this.props.pickerStyle}
+          tableStyle={this.props.pickerTableStyle}
+          viewDate={this.props.viewDate}
+          selectedDate={this.props.selectedDate}
+          showYears={this.showYears}
+          onViewDate={this.props.onViewDate}
+          onClose={this.onMonthsClose}
+          />
+      );
+    } else {
+      return null;
+    }
+  }
+
+  renderYears() {
+    if (this.state.yearsDisplayed) {
+      return (
+        <YearView
+          style={this.props.pickerStyle}
+          tableStyle={this.props.pickerTableStyle}
+          viewDate={this.props.viewDate}
+          selectedDate={this.props.selectedDate}
+          onViewDate={this.props.onViewDate}
+          onClose={this.onYearsClose}
+          />
+      );
+    } else {
+      return null;
+    }
+  }
+
+  @autobind
+  showMonths() {
+    return this.setState({
+      daysDisplayed: false,
+      monthsDisplayed: true
+    });
+  }
+
+  @autobind
+  showYears() {
+    return this.setState({
+      monthsDisplayed: false,
+      yearsDisplayed: true
+    });
+  }
+
+  @autobind
+  onYearsClose() {
+    this.setState({
+      yearsDisplayed: false,
+      monthsDisplayed: true
+    });
+  }
+
+  @autobind
+  onMonthsClose() {
+    this.setState({
+      monthsDisplayed: false,
+      daysDisplayed: true
+    });
+  }
+}

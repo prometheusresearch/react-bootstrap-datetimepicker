@@ -3,7 +3,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
 
   entry: {
-    'basic': './examples/basic/basic.jsx',
+    'basic': './examples/basic/basic.js',
   },
 
   output: {
@@ -17,17 +17,14 @@ module.exports = {
   resolve: {
     alias: {
       'react-bootstrap-datetimepicker': '../../src/DateTimeField'
-    },
-    extensions: ['', '.js', '.jsx']
+    }
   },
 
   module: {
     loaders: [
-      { test: /\.jsx$/, loader: 'jsx?harmony' },
+      { test: /\.js$/, loader: 'babel-loader?stage=0' },
     ]
   },
-
-
   devServer: {
     contentBase: 'examples/',
     stats: {colors: true},
