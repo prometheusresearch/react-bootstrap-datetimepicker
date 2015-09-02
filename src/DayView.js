@@ -115,24 +115,17 @@ export default class DayView extends React.Component {
     while (date.isBefore(endDate)) {
       let isActive = date.isSame(selectedDate, 'day');
       let isToday = date.isSame(today, 'day');
-      let className = {
-        day: true,
-        old: date.isBefore(viewDate, 'month'),
-        new: date.isAfter(viewDate, 'month') && !date.isBefore(viewDate, 'month'),
-        active: isActive,
-        today: showToday && isToday,
-        disabled: (
-          minDate && date.isBefore(minDate) ||
-          maxDate && date.isAfter(maxDate) ||
-          daysOfWeekDisabled && daysOfWeekDisabled.indexOf(date.date()) > -1
-        )
-      };
-
       cells.push(
         <td key={date.month() + '-' + date.date()} style={dayStyle}>
           {this.props.renderDay({
-            className: className,
             onClick: this.props.onSelectedDate,
+            outOfRange: date.isBefore(viewDate, 'month') || date.isAfter(viewDate, 'month'),
+            today: showToday && isToday,
+            disabled: (
+              minDate && date.isBefore(minDate) ||
+              maxDate && date.isAfter(maxDate) ||
+              daysOfWeekDisabled && daysOfWeekDisabled.indexOf(date.date()) > -1
+            ),
             value: date,
             date: date,
             active: isActive,

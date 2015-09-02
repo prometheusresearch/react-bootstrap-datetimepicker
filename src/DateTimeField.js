@@ -59,7 +59,7 @@ export default class DateTimeField extends React.Component {
     this._tether = null;
     this._setOpenDebounced = debounce(this.setOpen, 0);
     this.state = {
-      open: false,
+      open: true,
       showDatePicker: this.props.mode !== Constants.MODE_TIME,
       showTimePicker: this.props.mode === Constants.MODE_TIME,
       inputFormat: this.inputFormat,
@@ -227,8 +227,11 @@ export default class DateTimeField extends React.Component {
   }
 
   @autobind
-  onSelectedDate(selectedDate) {
-    this.setState({selectedDate}, this.onSelectedDateUpdated);
+  onSelectedDate(date) {
+    this.setState({
+      selectedDate: date,
+      viewDate: date,
+    }, this.onSelectedDateUpdated);
   }
 
   @autobind

@@ -23,6 +23,10 @@ export let Style = Stylesheet({
       WebkitUserSelect: 'none',
     },
 
+    dimmed: {
+      color: '#bbbbbb',
+    },
+
     bold: {
       fontWeight: 'bold',
     },
@@ -52,10 +56,11 @@ export default class Button extends React.Component {
 
   render() {
     let {
-      hover, focus, active, bold, size, color, backgroundColor,
+      hover, focus, active, bold, size, dimmed,
+      color, backgroundColor,
       onMouseEnter, onMouseLeave, ...props
     } = this.props;
-    let style = {...this.theme.self({hover, active, bold, focus}), ...size};
+    let style = {...this.theme.self({hover, active, bold, focus, dimmed}), ...size};
     if (color) {
       style.color = color;
     }
@@ -65,6 +70,7 @@ export default class Button extends React.Component {
     return (
       <a
         {...props}
+        role="button"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         style={style}
