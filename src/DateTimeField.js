@@ -59,7 +59,7 @@ export default class DateTimeField extends React.Component {
     this._tether = null;
     this._setOpenDebounced = debounce(this.setOpen, 0);
     this.state = {
-      open: true,
+      open: false,
       showDatePicker: this.props.mode !== Constants.MODE_TIME,
       showTimePicker: this.props.mode === Constants.MODE_TIME,
       inputFormat: this.inputFormat,
