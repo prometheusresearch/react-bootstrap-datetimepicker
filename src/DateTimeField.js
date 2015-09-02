@@ -71,6 +71,7 @@ export default class DateTimeField extends React.Component {
     super(props);
 
     this._tether = null;
+    this._tetherNeedPosition = null;
     this._setOpenDebounced = debounce(this._setOpen, 0);
 
     let date = this.props.dateTime ?
@@ -156,6 +157,20 @@ export default class DateTimeField extends React.Component {
     }
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if (nextState.activeMode !== this.state.activeMode) {
+      this._tetherNeedPosition = true;
+    }
+  }
+
+  componentDidUpdate() {
+    if (this._tetherNeedPosition) {
+      this._tetherNeedPosition = false;
+      console.log('reposition');
+      this._tether.position();
+    }
+  }
+
   get inputFormat() {
     return this._inputFormatFromProps(this.props);
   }
@@ -186,11 +201,6 @@ export default class DateTimeField extends React.Component {
   _onLayerDidMount(element) {
     let target = React.findDOMNode(this.refs.input);
     this._tether = new Tether({element, target, ...TETHER_CONFIG});
-  }
-
-  @autobind
-  _onLayerDidUpdate(element) {
-    this._tether.position();
   }
 
   @autobind

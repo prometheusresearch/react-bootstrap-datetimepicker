@@ -33,7 +33,9 @@ export default class Layer extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.willUnmount(this._element)
+    if (this.props.willUnmount) {
+      this.props.willUnmount(this._element)
+    }
     React.unmountComponentAtNode(this._element);
     document.body.removeChild(this._element);
     this._element = null;
@@ -42,12 +44,16 @@ export default class Layer extends React.Component {
 
   @autobind
   _didMount() {
-    this.props.didMount(this._element);
+    if (this.props.didMount) {
+      this.props.didMount(this._element);
+    }
   }
 
   @autobind
   _didUpdate() {
-    this.props.didUpdate(this._element);
+    if (this.props.didUpdate) {
+      this.props.didUpdate(this._element);
+    }
   }
 
   _createElement() {
