@@ -14,11 +14,11 @@ const MONTHS_SHORT = moment.monthsShort();
 export default class Month extends React.Component {
 
   render() {
-    let {active, month} = this.props;
+    let {active, month, ...props} = this.props;
     return (
       <Button
         size={{width: 75, height: 32}}
-        active={active}
+        {...props}
         onClick={this.onClick}>
         {MONTHS_SHORT[month]}
       </Button>
@@ -27,7 +27,9 @@ export default class Month extends React.Component {
 
   @autobind
   onClick() {
-    this.props.onClick(this.props.month);
+    if (this.props.onClick) {
+      this.props.onClick(this.props.month);
+    }
   }
 }
 

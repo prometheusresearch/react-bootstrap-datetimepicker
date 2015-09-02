@@ -13,6 +13,12 @@ import Button               from './Button';
 
 let Style = Stylesheet({
 
+  day: {
+    default: {
+      textAlign: 'center',
+    }
+  },
+
   dayOfWeek: {
     default: {
       textAlign: 'center',
@@ -51,13 +57,13 @@ export default class DayView extends React.Component {
         <table style={this.props.tableStyle}>
           <thead>
             <tr>
-              <th><Button bold onClick={this.onPrevMonth} size={{width: 32, height: 32}}>‹</Button></th>
+              <th><Button bold onClick={this.onPrevMonth} size={{width: '100%', height: 32}}>‹</Button></th>
               <th colSpan="5">
                 <Button bold size={{width: '100%'}} onClick={this.props.showMonths}>
                   {moment.months()[this.props.viewDate.month()]} {this.props.viewDate.year()}
                 </Button>
               </th>
-              <th><Button bold onClick={this.onNextMonth} size={{width: 32, height: 32}}>›</Button></th>
+              <th><Button bold onClick={this.onNextMonth} size={{width: '100%', height: 32}}>›</Button></th>
             </tr>
             <tr>
               <th style={dayOfWeekStyle}>Su</th>
@@ -89,6 +95,7 @@ export default class DayView extends React.Component {
   }
 
   renderDays() {
+    let dayStyle = Style.day();
     let {viewDate, selectedDate, daysOfWeekDisabled, showToday, minDate, maxDate} = this.props;
 
     let today = moment();
@@ -122,7 +129,7 @@ export default class DayView extends React.Component {
       };
 
       cells.push(
-        <td key={date.month() + '-' + date.date()}>
+        <td key={date.month() + '-' + date.date()} style={dayStyle}>
           {this.props.renderDay({
             className: className,
             onClick: this.props.onSelectedDate,

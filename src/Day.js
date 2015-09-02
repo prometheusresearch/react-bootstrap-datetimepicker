@@ -12,11 +12,11 @@ import Button               from './Button';
 export default class Day extends React.Component {
 
   render() {
-    let {date, className, active} = this.props;
+    let {date, className, active, ...props} = this.props;
     return (
       <Button
         size={{width: 32, height: 32}}
-        active={active}
+        {...props}
         tabIndex={0}
         onClick={this.onClick}>
         {date.date()}
@@ -26,6 +26,8 @@ export default class Day extends React.Component {
 
   @autobind
   onClick() {
-    this.props.onClick(this.props.date);
+    if (this.props.onClick) {
+      this.props.onClick(this.props.date);
+    }
   }
 }

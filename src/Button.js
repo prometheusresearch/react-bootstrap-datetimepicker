@@ -52,10 +52,16 @@ export default class Button extends React.Component {
 
   render() {
     let {
-      hover, focus, active, bold, size,
+      hover, focus, active, bold, size, color, backgroundColor,
       onMouseEnter, onMouseLeave, ...props
     } = this.props;
     let style = {...this.theme.self({hover, active, bold, focus}), ...size};
+    if (color) {
+      style.color = color;
+    }
+    if (backgroundColor) {
+      style.backgroundColor = backgroundColor;
+    }
     return (
       <a
         {...props}
