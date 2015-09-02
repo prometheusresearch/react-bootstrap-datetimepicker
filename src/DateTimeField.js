@@ -163,13 +163,6 @@ export default class DateTimeField extends React.Component {
     }
   }
 
-  componentDidUpdate() {
-    if (this._tetherNeedPosition) {
-      this._tetherNeedPosition = false;
-      this._tether.position();
-    }
-  }
-
   get inputFormat() {
     return this._inputFormatFromProps(this.props);
   }
@@ -200,6 +193,14 @@ export default class DateTimeField extends React.Component {
   _onLayerDidMount(element) {
     let target = React.findDOMNode(this.refs.input);
     this._tether = new Tether({element, target, ...TETHER_CONFIG});
+  }
+
+  @autobind
+  _onLayerDidUpdate() {
+    if (this._tetherNeedPosition) {
+      this._tetherNeedPosition = false;
+      this._tether.position();
+    }
   }
 
   @autobind
