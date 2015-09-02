@@ -7,15 +7,17 @@ import autobind           from 'autobind-decorator';
 import React, {PropTypes} from 'react';
 import Glyphicon          from './Glyphicon';
 import Constants          from './Constants';
-import Minute             from './Minute';
+import Button             from './Button';
 
 export default class Hour extends React.Component {
 
   render() {
     let {hour} = this.props;
     return (
-      <td className="hour" onClick={this.onClick}>
-        {hour}
+      <td>
+        <Button size={{width: 32}} onClick={this.onClick}>
+          {hour}
+        </Button>
       </td>
     );
   }

@@ -8,17 +8,8 @@ import React, {PropTypes} from 'react';
 import Glyphicon          from './Glyphicon';
 import Constants          from './Constants';
 import Minute             from './Minute';
+import Button             from './Button';
 
-let Style = {
-  self: {
-    display: 'block'
-  },
-
-  switch: {
-    width: '100%'
-  }
-};
-  
 export default class MinuteView extends React.Component {
 
   static propTypes = {
@@ -30,18 +21,11 @@ export default class MinuteView extends React.Component {
   render() {
     let {onClose} = this.props;
     return (
-      <div className="timepicker-minutes" data-action="selectMinute" style={Style.self}>
-        <ul className="list-unstyled">
-          <li>
-            <span
-              className="btn picker-switch"
-              style={Style.switch}
-              onClick={onClose}>
-              <Glyphicon glyph="time" />
-            </span>
-          </li>
-        </ul>
-        <table className="table-condensed">
+      <div data-action="selectMinute">
+        <Button size={{width: '100%'}} onClick={onClose}>
+          <Glyphicon glyph="time" />
+        </Button>
+        <table>
           <tbody>
             <tr>
               <Minute minute={0} onClick={this.onMinuteClick} />

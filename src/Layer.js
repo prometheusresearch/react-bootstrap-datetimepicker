@@ -25,6 +25,12 @@ export default class Layer extends React.Component {
       this._onMount);
   }
 
+  componentDidUpdate() {
+    this._component = React.render(
+      React.Children.only(this.props.children),
+      this._element);
+  }
+
   componentWillUnmount() {
     this.props.willUnmount(this._element)
     React.unmountComponentAtNode(this._element);

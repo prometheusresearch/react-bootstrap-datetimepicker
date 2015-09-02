@@ -4,17 +4,15 @@
  */
 
 import autobind             from 'autobind-decorator';
+import chunk                from 'lodash/array/chunk';
 import cx                   from 'classnames';
 import moment               from 'moment';
 import React, {PropTypes}   from 'react';
 import Month                from './Month';
+import Paginator            from './Paginator';
 
 const MONTHS_SHORT = moment.monthsShort();
 const YEAR_MONTH_RANGE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-
-function renderMonth(props) {
-  return <Month {...props} />;
-}
 
 export default class MonthView extends React.Component {
 
@@ -22,48 +20,39 @@ export default class MonthView extends React.Component {
     viewDate: PropTypes.object.isRequired,
     selectedDate: PropTypes.object.isRequired,
     showYears: PropTypes.func.isRequired,
-    renderMonth: PropTypes.func,
     onViewDate: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    renderMonth
+    Month
   };
 
   render() {
-    return (
-      <div className="datepicker-months" style={{...this.props.style, display: 'block'}}>
-        <table className="table-condensed" style={this.props.tableStyle}>
-          <thead>
-            <tr>
-              <th className="prev" onClick={this.onPrevYear}>‹</th>
-              <th className="switch" colSpan="5" onClick={this.props.showYears}>{this.props.viewDate.year()}</th>
-              <th className="next" onClick={this.onNextYear}>›</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colSpan="7">{this.renderMonths()}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    let {Month, viewDate, selectedDate} = this.props;
+    let viewYear = viewDate.year();
+    let selectedYear = selectedDate.year();
+    let selectedMonth = selectedDate.month();
+    let cells = YEAR_MONTH_RANGE.map(month =>
+      <Month
+        key={month}
+        active={month === selectedMonth && viewYear === selectedYear}
+        month={month}
+        year={viewYear}
+        value={MONTHS_SHORT[month]}
+        onClick={this.onMonthClick}
+        />
     );
-  }
-
-  renderMonths() {
-    let viewYear = this.props.viewDate.year();
-    let selectedYear = this.props.selectedDate.year();
-    let selectedMonth = this.props.selectedDate.month();
-    return YEAR_MONTH_RANGE.map(month => this.props.renderMonth({
-      key: month,
-      active: month === selectedMonth && viewYear === selectedYear,
-      month: month,
-      year: viewYear,
-      value: MONTHS_SHORT[month],
-      onClick: this.onMonthClick,
-    }));
+    let rows = chunk(cells, 3).map((row, idx) => <div key={idx}>{row}</div>);
+    return (
+      <Paginator
+        title={this.props.viewDate.year()}
+        onPrev={this.onPrevYear}
+        onNext={this.onNextYear}
+        onUp={this.props.showYears}>
+        {rows}
+      </Paginator>
+    );
   }
 
   @autobind

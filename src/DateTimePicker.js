@@ -8,7 +8,20 @@ import DatePicker         from './DatePicker';
 import TimePicker         from './TimePicker';
 import Glyphicon          from './Glyphicon';
 import Constants          from './Constants';
+import Focusable          from './Focusable';
+import Stylesheet         from './Stylesheet';
+import Button             from './Button';
 
+let Style = Stylesheet({
+
+  self: {
+    focus: {
+      outline: 'none'
+    }
+  }
+});
+
+@Focusable
 export default class DateTimePicker extends React.Component {
 
   static propTypes = {
@@ -32,47 +45,40 @@ export default class DateTimePicker extends React.Component {
   }
 
   render() {
+    let {focus} = this.props;
     return (
       <div
+        style={Style.self({focus})}
         tabIndex={0}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}>
-        <ul className="list-unstyled">
-          {this.props.showDatePicker &&
-            <li>
-              <DatePicker
-                viewDate={this.props.viewDate}
-                onViewDate={this.props.onViewDate}
-                selectedDate={this.props.selectedDate}
-                onSelectedDate={this.props.onSelectedDate}
-                showToday={this.props.showToday}
-                viewMode={this.props.viewMode}
-                daysOfWeekDisabled={this.props.daysOfWeekDisabled}
-                onViewDate={this.props.onViewDate}
-                minDate={this.props.minDate}
-                maxDate={this.props.maxDate}
-                />
-            </li>}
-          {this.props.mode === Constants.MODE_DATETIME &&
-            <li>
-              <span
-                className="btn picker-switch"
-                style={{width:'100%'}}
-                onClick={this.props.togglePicker}>
-                <Glyphicon glyph={this.props.showTimePicker ? 'calendar' : 'time'} />
-              </span>
-            </li>}
-          {this.props.showTimePicker &&
-            <li>
-              <TimePicker
-                viewDate={this.props.viewDate}
-                selectedDate={this.props.selectedDate}
-                onSelectedDate={this.props.onSelectedDate}
-                togglePeriod={this.props.togglePeriod}
-                mode={this.props.mode}
-                />
-            </li>}
-        </ul>
+        {this.props.showDatePicker &&
+          <DatePicker
+            viewDate={this.props.viewDate}
+            onViewDate={this.props.onViewDate}
+            selectedDate={this.props.selectedDate}
+            onSelectedDate={this.props.onSelectedDate}
+            showToday={this.props.showToday}
+            viewMode={this.props.viewMode}
+            daysOfWeekDisabled={this.props.daysOfWeekDisabled}
+            onViewDate={this.props.onViewDate}
+            minDate={this.props.minDate}
+            maxDate={this.props.maxDate}
+            />}
+        {this.props.mode === Constants.MODE_DATETIME &&
+          <Button
+            size={{width: '100%'}}
+            onClick={this.props.togglePicker}>
+            <Glyphicon glyph={this.props.showTimePicker ? 'calendar' : 'time'} />
+          </Button>}
+        {this.props.showTimePicker &&
+          <TimePicker
+            viewDate={this.props.viewDate}
+            selectedDate={this.props.selectedDate}
+            onSelectedDate={this.props.onSelectedDate}
+            togglePeriod={this.props.togglePeriod}
+            mode={this.props.mode}
+            />}
       </div>
 
     );

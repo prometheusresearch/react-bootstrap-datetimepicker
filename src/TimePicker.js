@@ -9,6 +9,7 @@ import MinuteView         from './MinuteView';
 import HourView           from './HourView';
 import Glyphicon          from './Glyphicon';
 import Constants          from './Constants';
+import Button             from './Button';
 
 export default class TimePicker extends React.Component {
 
@@ -55,19 +56,35 @@ export default class TimePicker extends React.Component {
           <table className="table-condensed">
             <tbody>
               <tr>
-                <td><a className="btn" onClick={this.onNextHour}><Glyphicon glyph="chevron-up" /></a></td>
-                <td className="separator"></td>
-                <td><a className="btn" onClick={this.onNextMinute}><Glyphicon glyph="chevron-up" /></a></td>
+                <td>
+                  <Button onClick={this.onNextHour}><Glyphicon glyph="chevron-up" /></Button>
+                </td>
+                <td />
+                <td>
+                  <Button onClick={this.onNextMinute}><Glyphicon glyph="chevron-up" /></Button>
+                </td>
               </tr>
               <tr>
-                <td><span className="timepicker-hour" onClick={this.showHours}>{this.props.selectedDate.format('HH')}</span></td>
-                <td className="separator">:</td>
-                <td><span className="timepicker-minute" onClick={this.showMinutes}>{this.props.selectedDate.format('mm')}</span></td>
+                <td>
+                  <Button onClick={this.showHours}>
+                    {this.props.selectedDate.format('HH')}
+                  </Button>
+                </td>
+                <td />
+                <td>
+                  <Button onClick={this.showMinutes}>
+                    {this.props.selectedDate.format('mm')}
+                  </Button>
+                </td>
               </tr>
               <tr>
-                <td><a className="btn" onClick={this.onPrevHour}><Glyphicon glyph="chevron-down" /></a></td>
-                <td className="separator"></td>
-                <td><a className="btn" onClick={this.onPrevMinute}><Glyphicon glyph="chevron-down" /></a></td>
+                <td>
+                  <Button onClick={this.onPrevHour}><Glyphicon glyph="chevron-down" /></Button>
+                </td>
+                <td />
+                <td>
+                  <Button onClick={this.onPrevMinute}><Glyphicon glyph="chevron-down" /></Button>
+                </td>
               </tr>
             </tbody>
           </table>

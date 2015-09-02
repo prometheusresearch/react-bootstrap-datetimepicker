@@ -9,6 +9,18 @@ var Basic = React.createClass({
 						<div className="row">
 							<div className="col-xs-12">
 								<h1>React Bootstrap DateTimePicker</h1>
+							</div>
+						</div>
+						<div className="row">
+							<div className="col-xs-12">
+								<DateTimeField />
+							</div>
+						</div>
+					 </div>
+		return <div className="container">
+						<div className="row">
+							<div className="col-xs-12">
+								<h1>React Bootstrap DateTimePicker</h1>
 								This project is a port of <a href="https://github.com/Eonasdan/bootstrap-datetimepicker">https://github.com/Eonasdan/bootstrap-datetimepicker</a> for React.js
 							</div>
 						</div>

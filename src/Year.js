@@ -6,23 +6,19 @@
 import autobind from 'autobind-decorator';
 import cx       from 'classnames';
 import React    from 'react';
+import Button   from './Button';
 
 export default class Year extends React.Component {
 
   render() {
     let {year, outOfRange, active} = this.props;
-    let className = cx({
-      year: true,
-      old: outOfRange,
-      active: active,
-    });
     return (
-      <span
-        tabIndex={0}
-        className={className}
+      <Button
+        size={{width: 75, height: 32}}
+        active={active}
         onClick={this.onClick}>
         {year}
-      </span>
+      </Button>
     );
   }
 

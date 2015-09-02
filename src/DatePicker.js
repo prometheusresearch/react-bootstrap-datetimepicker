@@ -57,7 +57,7 @@ export default class DatePicker extends React.Component {
 
   render() {
     return (
-      <div className="datepicker" style={this.props.style}>
+      <div style={this.props.style}>
         {this.state.daysDisplayed &&
           <DayView
             selectedDate={this.props.selectedDate}

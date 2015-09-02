@@ -8,10 +8,22 @@ import cx                   from 'classnames';
 import moment               from 'moment';
 import React, {PropTypes}   from 'react';
 import Day                  from './Day';
+import Stylesheet           from './Stylesheet';
+import Button               from './Button';
 
 function renderDay(props) {
   return <Day {...props} />;
 }
+
+let Style = Stylesheet({
+
+  dayOfWeek: {
+    default: {
+      textAlign: 'center',
+      padding: 5
+    }
+  }
+});
 
 export default class DayView extends React.Component {
 
@@ -33,25 +45,28 @@ export default class DayView extends React.Component {
   };
 
   render() {
+    let dayOfWeekStyle = Style.dayOfWeek();
     return (
-    <div className="datepicker-days" style={{...this.props.style, display: 'block'}}>
-        <table className="table-condensed" style={this.props.tableStyle}>
+      <div style={{...this.props.style, display: 'block'}}>
+        <table style={this.props.tableStyle}>
           <thead>
             <tr>
-              <th className="prev" onClick={this.onPrevMonth}>‹</th>
-              <th className="switch" colSpan="5" onClick={this.props.showMonths}>
-                {moment.months()[this.props.viewDate.month()]} {this.props.viewDate.year()}
+              <th><Button bold onClick={this.onPrevMonth} size={{width: 32, height: 32}}>‹</Button></th>
+              <th colSpan="5">
+                <Button bold size={{width: '100%'}} onClick={this.props.showMonths}>
+                  {moment.months()[this.props.viewDate.month()]} {this.props.viewDate.year()}
+                </Button>
               </th>
-              <th className="next" onClick={this.onNextMonth}>›</th>
+              <th><Button bold onClick={this.onNextMonth} size={{width: 32, height: 32}}>›</Button></th>
             </tr>
             <tr>
-              <th className="dow">Su</th>
-              <th className="dow">Mo</th>
-              <th className="dow">Tu</th>
-              <th className="dow">We</th>
-              <th className="dow">Th</th>
-              <th className="dow">Fr</th>
-              <th className="dow">Sa</th>
+              <th style={dayOfWeekStyle}>Su</th>
+              <th style={dayOfWeekStyle}>Mo</th>
+              <th style={dayOfWeekStyle}>Tu</th>
+              <th style={dayOfWeekStyle}>We</th>
+              <th style={dayOfWeekStyle}>Th</th>
+              <th style={dayOfWeekStyle}>Fr</th>
+              <th style={dayOfWeekStyle}>Sa</th>
             </tr>
           </thead>
           <tbody>
@@ -64,7 +79,8 @@ export default class DayView extends React.Component {
 
   @autobind
   onNextMonth() {
-    this.props.onViewDate(this.props.viewDate.clone().add(1, 'months'));
+    let viewDate = this.props.viewDate.clone().add(1, 'months');
+    this.props.onViewDate(viewDate);
   }
 
   @autobind

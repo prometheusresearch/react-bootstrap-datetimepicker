@@ -4,9 +4,12 @@
  */
 
 import autobind           from 'autobind-decorator';
+import chunk              from 'lodash/array/chunk';
 import cx                 from 'classnames';
 import React, {PropTypes} from 'react';
 import Year               from './Year';
+import Button             from './Button';
+import Paginator          from './Paginator';
 
 export default class YearView extends React.Component {
 
@@ -17,31 +20,15 @@ export default class YearView extends React.Component {
     onClose: PropTypes.func.isRequired,
   }
 
-  render() {
-    let year = parseInt(this.props.viewDate.year() / 10, 10) * 10;
-    return (
-      <div className="datepicker-years" style={{...this.props.style, display: "block"}}>
-        <table className="table-condensed" style={this.props.tableStyle}>
-          <thead>
-            <tr>
-              <th className="prev" onClick={this.onPrevDecade}>‹</th>
-              <th className="switch" colSpan="5">{year} - {year+9}</th>
-              <th className="next" onClick={this.onNextDecade}>›</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colSpan="7">{this.renderYears()}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
-  }
+  static defaultProps = {
+    Year
+  };
 
-  renderYears() {
-    let selectedYear = this.props.selectedDate.year();
-    return decadeYearRange(this.props.viewDate).map(item =>
+  render() {
+    let {viewDate, selectedDate, Year} = this.props;
+    let year = parseInt(viewDate.year() / 10, 10) * 10;
+    let selectedYear = selectedDate.year();
+    let cells = decadeYearRange(viewDate).map(item =>
       <Year
         key={item.year}
         year={item.year}
@@ -49,6 +36,15 @@ export default class YearView extends React.Component {
         outOfRange={item.outOfRange}
         onClick={this.onYearClick}
         />
+    );
+    let rows = chunk(cells, 3).map((row, idx) => <div key={idx}>{row}</div>);
+    return (
+      <Paginator
+        onPrev={this.onPrevDecade}
+        onNext={this.onNextDecade}
+        title={`${year} — ${year + 9}`}>
+        {rows}
+      </Paginator>
     );
   }
 

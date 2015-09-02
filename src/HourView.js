@@ -8,16 +8,7 @@ import React, {PropTypes} from 'react';
 import Glyphicon          from './Glyphicon';
 import Constants          from './Constants';
 import Hour               from './Hour';
-
-let Style = {
-  self: {
-    display: 'block'
-  },
-
-  switch: {
-    width: '100%'
-  }
-};
+import Button             from './Button';
 
 export default class HourView extends React.Component {
 
@@ -30,18 +21,11 @@ export default class HourView extends React.Component {
   render() {
     let {onClose} = this.props;
     return (
-      <div className="timepicker-hours" data-action="selectHour" style={Style.self}>
-        <ul className="list-unstyled">
-          <li>
-            <span
-              className="btn picker-switch"
-              style={Style.switch}
-              onClick={onClose}>
-              <Glyphicon glyph="time" />
-            </span>
-          </li>
-        </ul>
-        <table className="table-condensed">
+      <div data-action="selectHour">
+        <Button size={{width: '100%'}} onClick={onClose}>
+          <Glyphicon glyph="time" />
+        </Button>
+        <table>
           <tbody>
             <tr>
               <Hour hour={1} onClick={this.onHourClick} />

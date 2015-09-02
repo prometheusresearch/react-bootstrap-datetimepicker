@@ -5,6 +5,7 @@
 
 import autobind           from 'autobind-decorator';
 import React, {PropTypes} from 'react';
+import Button             from './Button';
 
 export default class Minute extends React.Component {
 
@@ -16,8 +17,10 @@ export default class Minute extends React.Component {
   render() {
     var {minute, ...props} = this.props;
     return (
-      <td className="minute" onClick={this.onClick}>
-        {minute}
+      <td>
+        <Button size={{width: 32}} onClick={this.onClick}>
+          {minute}
+        </Button>
       </td>
     );
   }

@@ -3,15 +3,27 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind       from 'autobind-decorator';
-import debounce       from 'lodash/function/debounce';
-import moment         from 'moment';
-import React          from 'react';
-import Tether         from 'tether';
-import Layer          from './Layer';
-import DateTimePicker from './DateTimePicker';
-import Glyphicon      from './Glyphicon';
-import Constants      from './Constants';
+import autobind           from 'autobind-decorator';
+import debounce           from 'lodash/function/debounce';
+import moment             from 'moment';
+import React, {PropTypes} from 'react';
+import Tether             from 'tether';
+import Layer              from './Layer';
+import DateTimePicker     from './DateTimePicker';
+import Glyphicon          from './Glyphicon';
+import Constants          from './Constants';
+
+let Style = {
+
+  dropdown: {
+    padding: '5px',
+    backgroundColor: '#fff',
+    backgroundClip: 'padding-box',
+    border: '1px solid rgba(0,0,0,.15)',
+    borderRadius: '4px',
+    boxShadow: '0 6px 12px rgba(0,0,0,.175)',
+  }
+};
 
 export default class DateTimeField extends React.Component {
 
@@ -62,8 +74,9 @@ export default class DateTimeField extends React.Component {
   render() {
     return (
       <div>
-        <div onFocus={this._onFocus} onBlur={this._onBlur} className="input-group date" ref="datetimepicker">
+        <div onFocus={this._onFocus} onBlur={this._onBlur} className="input-group date">
           <input
+            ref="input"
             type="text"
             className="form-control"
             onChange={this.onChange}
@@ -72,9 +85,8 @@ export default class DateTimeField extends React.Component {
             />
           <span
             className="input-group-addon"
-            onClick={this.open}
-            onBlur={this.close}
-            ref="dtpbutton">
+            onClick={this._onClick}
+            ref="button">
               <Glyphicon glyph={this.state.buttonIcon} />
           </span>
         </div>
@@ -82,50 +94,53 @@ export default class DateTimeField extends React.Component {
           <Layer
             didMount={this._onLayerDidMount}
             willUnmount={this._onLayerWillUnmount}>
-            <DateTimePicker
-              onFocus={this._onPickerFocus}
-              onBlur={this._onPickerBlur}
-              showDatePicker={this.state.showDatePicker}
-              showTimePicker={this.state.showTimePicker}
-              viewDate={this.state.viewDate}
-              selectedDate={this.state.selectedDate}
-              showToday={this.props.showToday}
-              viewMode={this.props.viewMode}
-              daysOfWeekDisabled={this.props.daysOfWeekDisabled}
-              mode={this.props.mode}
-              minDate={this.props.minDate}
-              maxDate={this.props.maxDate}
-              onViewDate={this.onViewDate}
-              onSelectedDate={this.onSelectedDate}
-              togglePicker={this.togglePicker}
-              togglePeriod={this.togglePeriod}
-              />
+            <div style={Style.dropdown}>
+              <DateTimePicker
+                onFocus={this._onPickerFocus}
+                onBlur={this._onPickerBlur}
+                showDatePicker={this.state.showDatePicker}
+                showTimePicker={this.state.showTimePicker}
+                viewDate={this.state.viewDate}
+                selectedDate={this.state.selectedDate}
+                showToday={this.props.showToday}
+                viewMode={this.props.viewMode}
+                daysOfWeekDisabled={this.props.daysOfWeekDisabled}
+                mode={this.props.mode}
+                minDate={this.props.minDate}
+                maxDate={this.props.maxDate}
+                onViewDate={this.onViewDate}
+                onSelectedDate={this.onSelectedDate}
+                togglePicker={this.togglePicker}
+                togglePeriod={this.togglePeriod}
+                />
+            </div>
           </Layer>}
       </div>
     );
   }
 
   @autobind
+  _onClick() {
+    React.findDOMNode(this.refs.input).focus();
+  }
+
+  @autobind
   _onFocus() {
-    console.log('onFocus', performance.now());
     this._setOpenDebounced(true);
   }
 
   @autobind
   _onBlur() {
-    console.log('onBlur', performance.now());
     this._setOpenDebounced(false);
   }
 
   @autobind
   _onPickerFocus() {
-    console.log('onPickerFocus', performance.now());
     this._setOpenDebounced(true);
   }
 
   @autobind
   _onPickerBlur() {
-    console.log('onPickerBlur', performance.now());
     this._setOpenDebounced(false);
   }
 
@@ -133,7 +148,7 @@ export default class DateTimeField extends React.Component {
   _onLayerDidMount(element) {
     this._tether = new Tether({
       element: element,
-      target: React.findDOMNode(this.refs.dtpbutton),
+      target: React.findDOMNode(this.refs.button),
       attachment: 'top left',
       targetAttachment: 'bottom left',
       constraints: [
@@ -234,19 +249,16 @@ export default class DateTimeField extends React.Component {
 
   @autobind
   setOpen(open) {
-    console.log('setOpen', open);
     this.setState({open});
   }
 
   @autobind
   open() {
-    console.log('open');
     this.setState(state => !state.open ? {open: true} : null);
   }
 
   @autobind
   close() {
-    console.log('close');
     this.setState(state => state.open ? {open: false} : null);
   }
 }
