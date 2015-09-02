@@ -166,7 +166,6 @@ export default class DateTimeField extends React.Component {
   componentDidUpdate() {
     if (this._tetherNeedPosition) {
       this._tetherNeedPosition = false;
-      console.log('reposition');
       this._tether.position();
     }
   }
