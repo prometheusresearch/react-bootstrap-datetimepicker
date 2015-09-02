@@ -4,7 +4,6 @@
  */
 
 import autobind             from 'autobind-decorator';
-import cx                   from 'classnames';
 import moment               from 'moment';
 import React, {PropTypes}   from 'react';
 import Day                  from './Day';
@@ -40,6 +39,7 @@ export default class DayView extends React.Component {
     onSelectedDate: PropTypes.func.isRequired,
     showToday: PropTypes.bool,
     showMonths: PropTypes.func.isRequired,
+    renderDay: PropTypes.func,
   };
 
   static defaultProps = {
@@ -110,7 +110,6 @@ export default class DayView extends React.Component {
           {this.props.renderDay({
             onClick: this.props.onSelectedDate,
             outOfRange: date.isBefore(viewDate, 'month') || date.isAfter(viewDate, 'month'),
-            today: showToday && isToday,
             value: date,
             date: date,
             active: isActive,
@@ -139,7 +138,7 @@ export default class DayView extends React.Component {
 function startDateFor(date) {
   let startDate = date.clone();
   startDate = startDate.subtract(1, 'months');
-  startDate = startDate.date(startDate.daysInMonth())
+  startDate = startDate.date(startDate.daysInMonth());
   startDate = startDate.startOf('week');
   return startDate;
 }

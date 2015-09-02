@@ -2,14 +2,19 @@
  * @copyright 2015, Prometheus Research, LLC
  */
 
-import autobind from 'autobind-decorator';
-import React from 'react';
+import autobind           from 'autobind-decorator';
+import React, {PropTypes} from 'react';
 
 export default function Focusable(Component) {
   let displayName = Component.displayName || Component.name;
 
   class Focusable extends React.Component {
     static displayName = `Focusable(${displayName})`;
+
+    static propTypes = {
+      onFocus: PropTypes.func,
+      onBlur: PropTypes.func,
+    };
 
     constructor(props) {
       super(props);

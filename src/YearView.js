@@ -5,10 +5,8 @@
 
 import autobind           from 'autobind-decorator';
 import chunk              from 'lodash/array/chunk';
-import cx                 from 'classnames';
 import React, {PropTypes} from 'react';
 import Year               from './Year';
-import Button             from './Button';
 import Paginator          from './Paginator';
 
 export default class YearView extends React.Component {
@@ -20,12 +18,8 @@ export default class YearView extends React.Component {
     onClose: PropTypes.func.isRequired,
   }
 
-  static defaultProps = {
-    Year
-  };
-
   render() {
-    let {viewDate, selectedDate, Year} = this.props;
+    let {viewDate, selectedDate} = this.props;
     let year = parseInt(viewDate.year() / 10, 10) * 10;
     let selectedYear = selectedDate.year();
     let cells = decadeYearRange(viewDate).map(item =>

@@ -5,13 +5,18 @@
 
 import autobind             from 'autobind-decorator';
 import moment               from 'moment';
-import cx                   from 'classnames';
 import React, {PropTypes}   from 'react';
 import Button               from './Button';
 
 const MONTHS_SHORT = moment.monthsShort();
 
 export default class Month extends React.Component {
+
+  static propTypes = {
+    month: PropTypes.number,
+    active: PropTypes.bool,
+    onClick: PropTypes.func,
+  };
 
   render() {
     let {active, month, ...props} = this.props;

@@ -5,7 +5,6 @@
 
 import autobind             from 'autobind-decorator';
 import chunk                from 'lodash/array/chunk';
-import cx                   from 'classnames';
 import moment               from 'moment';
 import React, {PropTypes}   from 'react';
 import Month                from './Month';
@@ -26,6 +25,7 @@ export default class MonthView extends React.Component {
     showYears: PropTypes.func.isRequired,
     onViewDate: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
+    renderMonth: PropTypes.func,
   };
 
   static defaultProps = {

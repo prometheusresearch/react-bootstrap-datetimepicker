@@ -1,22 +1,19 @@
-var React = require('react');
+/**
+ * @copyright 2014 Quri, Loïc CHOLLIER
+ * @copyright 2015 Prometheus Research, LLC
+ */
 
-var Glyphicon = React.createClass({
+import React, {PropTypes} from 'react';
+
+export default class Glyphicon extends React.Component {
+
+  static propTypes = {
+    glyph: PropTypes.string,
+  };
 
   render() {
-    var {children, className, glyph, ...props} = this.props;
-    className = `glyphicon-${glyph} glyphicon ${className}`;
-    return (
-      <span {...props} className={className}>
-        {children}
-      </span>
-    );
-  },
-
-  getDefaultProps() {
-    return {
-      className: ''
-    };
+    let {glyph, ...props} = this.props;
+    let className = `glyphicon-${glyph} glyphicon`;
+    return <span {...props} aria-hidden={true} className={className} />;
   }
-});
-
-module.exports = Glyphicon;
+}

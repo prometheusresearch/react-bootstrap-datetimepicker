@@ -2,10 +2,17 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind from 'autobind-decorator';
-import React    from 'react';
+import autobind            from 'autobind-decorator';
+import React, {PropTypes}  from 'react';
 
 export default class Layer extends React.Component {
+
+  static propTypes = {
+    didMount: PropTypes.func,
+    didUpdate: PropTypes.func,
+    willUnmount: PropTypes.func,
+    children: PropTypes.node,
+  };
 
   constructor(props) {
     super(props);
@@ -34,7 +41,7 @@ export default class Layer extends React.Component {
 
   componentWillUnmount() {
     if (this.props.willUnmount) {
-      this.props.willUnmount(this._element)
+      this.props.willUnmount(this._element);
     }
     React.unmountComponentAtNode(this._element);
     document.body.removeChild(this._element);

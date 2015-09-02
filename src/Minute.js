@@ -15,7 +15,7 @@ export default class Minute extends React.Component {
   };
 
   render() {
-    var {minute, ...props} = this.props;
+    let {minute, ...props} = this.props;
     return (
       <td>
         <Button size={{width: 32}} onClick={this.onClick}>

@@ -3,18 +3,25 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind from 'autobind-decorator';
-import cx       from 'classnames';
-import React    from 'react';
-import Button   from './Button';
+import autobind             from 'autobind-decorator';
+import React, {PropTypes}   from 'react';
+import Button               from './Button';
 
 export default class Year extends React.Component {
+
+  static propTypes = {
+    year: PropTypes.number,
+    outOfRange: PropTypes.bool,
+    active: PropTypes.bool,
+    onClick: PropTypes.func,
+  };
 
   render() {
     let {year, outOfRange, active} = this.props;
     return (
       <Button
         size={{width: 75, height: 32}}
+        dimmed={outOfRange}
         active={active}
         onClick={this.onClick}>
         {year}

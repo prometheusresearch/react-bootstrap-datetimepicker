@@ -2,9 +2,8 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind           from 'autobind-decorator';
 import React, {PropTypes} from 'react';
-import Stylesheet           from './Stylesheet';
+import Stylesheet         from './Stylesheet';
 import Button             from './Button';
 
 let Style = Stylesheet({
@@ -18,6 +17,14 @@ let Style = Stylesheet({
 });
 
 export default class Paginator extends React.Component {
+
+  static propTypes = {
+    onPrev: PropTypes.func,
+    onNext: PropTypes.func,
+    onUp: PropTypes.func,
+    title: PropTypes.node,
+    children: PropTypes.node,
+  };
 
   render() {
     let {onPrev, onNext, onUp, title, children} = this.props;

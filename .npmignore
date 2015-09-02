@@ -1,14 +1,2 @@
-*~
-node_modules
-.DS_Store
+src/
 npm-debug.log
-test_bundle.js
-test-built
-.idea
-docs
-examples
-bower.json
-dist
-webpack.config.js
-TODO.md
-karma.dev.js

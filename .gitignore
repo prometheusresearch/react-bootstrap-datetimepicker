@@ -1,10 +1,4 @@
-*~
-node_modules
-.DS_Store
+node_modules/
+coverage/
+lib/
 npm-debug.log
-test_bundle.js
-test-built/*
-.idea
-docs/*.html
-docs/assets/bundle.js
-lib/*

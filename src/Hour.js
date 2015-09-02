@@ -5,10 +5,14 @@
 
 import autobind           from 'autobind-decorator';
 import React, {PropTypes} from 'react';
-import Glyphicon          from './Glyphicon';
 import Button             from './Button';
 
 export default class Hour extends React.Component {
+
+  static propTypes = {
+    hour: PropTypes.number,
+    onClick: PropTypes.func,
+  };
 
   render() {
     let {hour} = this.props;
