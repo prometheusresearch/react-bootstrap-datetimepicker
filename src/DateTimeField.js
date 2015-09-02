@@ -10,8 +10,9 @@ import React, {PropTypes} from 'react';
 import Tether             from 'tether';
 import Layer              from './Layer';
 import DateTimePicker     from './DateTimePicker';
+import DatePicker         from './DatePicker';
+import TimePicker         from './TimePicker';
 import Glyphicon          from './Glyphicon';
-import Constants          from './Constants';
 
 let Style = {
 
@@ -49,7 +50,11 @@ export default class DateTimeField extends React.Component {
     inputProps: PropTypes.object,
     inputFormat: PropTypes.string,
     defaultText: PropTypes.string,
-    mode: PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME]),
+    mode: PropTypes.oneOf([
+      DateTimePicker.Mode.datetime,
+      DateTimePicker.Mode.time,
+      DateTimePicker.Mode.date
+    ]),
   };
 
   static defaultProps = {
@@ -64,18 +69,30 @@ export default class DateTimeField extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this._tether = null;
+    this._setOpenDebounced = debounce(this._setOpen, 0);
+
     let date = this.props.dateTime ?
       moment(this.props.dateTime, this.props.format, true) :
       moment();
-    this._tether = null;
-    this._setOpenDebounced = debounce(this._setOpen, 0);
+
+    let self = this.props.mode === DateTimePicker.Mode.time ?
+      DateTimePicker.Mode.time :
+      DateTimePicker.Mode.date;
+
     this.state = {
       open: false,
-      activeMode: this.props.mode === DateTimePicker.Mode.time ?
-        DateTimePicker.Mode.time :
-        DateTimePicker.Mode.date,
+
+      activeMode: {
+        self,
+        date: DatePicker.Mode.days,
+        time: TimePicker.Mode.time,
+      },
+
       viewDate: date.clone().startOf('month'),
       selectedDate: date.clone(),
+
       inputValue: this.props.dateTime ?
         date.format(this.inputFormat) :
         this.props.defaultText

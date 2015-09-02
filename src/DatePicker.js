@@ -4,57 +4,41 @@
  */
 
 import autobind           from 'autobind-decorator';
+import keyMirror          from 'keymirror';
 import React, {PropTypes} from 'react';
 import DayView            from './DayView';
 import MonthView          from './MonthView';
 import YearView           from './YearView';
 
-const VIEW_MODES = {
-  days: {
-    daysDisplayed: true,
-    monthsDisplayed: false,
-    yearsDisplayed: false
-  },
-  months: {
-    daysDisplayed: false,
-    monthsDisplayed: true,
-    yearsDisplayed: false
-  },
-  years: {
-    daysDisplayed: false,
-    monthsDisplayed: false,
-    yearsDisplayed: true
-  }
-};
-
-const VIEW_MODES_KEYS = Object.keys(VIEW_MODES);
+let Mode = keyMirror({
+  days: null,
+  months: null,
+  years: null,
+});
 
 export default class DatePicker extends React.Component {
 
+  static Mode = Mode;
+
   static propTypes = {
+    activeMode: PropTypes.oneOf([Mode.days, Mode.months, Mode.years]),
+    onActiveMode: PropTypes.func.isRequired,
     viewDate: PropTypes.object.isRequired,
+    onViewDate: PropTypes.func.isRequired,
     selectedDate: PropTypes.object.isRequired,
+    onSelectedDate: PropTypes.func.isRequired,
     showToday: PropTypes.bool,
     viewMode: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number
     ]),
-    onViewDate: PropTypes.func.isRequired,
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = (
-      VIEW_MODES[this.props.viewMode] ||
-      VIEW_MODES[VIEW_MODES_KEYS[this.props.viewMode]] ||
-      VIEW_MODES.days
-    );
   }
 
   render() {
+    let {activeMode} = this.props;
     return (
       <div style={this.props.style}>
-        {this.state.daysDisplayed &&
+        {activeMode === Mode.days &&
           <DayView
             selectedDate={this.props.selectedDate}
             onSelectedDate={this.props.onSelectedDate}
@@ -66,7 +50,7 @@ export default class DatePicker extends React.Component {
             showToday={this.props.showToday}
             showMonths={this.showMonths}
             />}
-        {this.state.monthsDisplayed &&
+        {activeMode === Mode.months &&
           <MonthView
             selectedDate={this.props.selectedDate}
             onSelectedDate={this.props.onSelectedDate}
@@ -76,9 +60,9 @@ export default class DatePicker extends React.Component {
             style={this.props.pickerStyle}
             tableStyle={this.props.pickerTableStyle}
             showYears={this.showYears}
-            onClose={this.onMonthsClose}
+            onClose={this.showDays}
             />}
-        {this.state.yearsDisplayed &&
+        {activeMode === Mode.years &&
           <YearView
             selectedDate={this.props.selectedDate}
             onSelectedDate={this.props.onSelectedDate}
@@ -86,7 +70,7 @@ export default class DatePicker extends React.Component {
             onViewDate={this.props.onViewDate}
             style={this.props.pickerStyle}
             tableStyle={this.props.pickerTableStyle}
-            onClose={this.onYearsClose}
+            onClose={this.showMonths}
             />}
       </div>
     );
@@ -94,33 +78,16 @@ export default class DatePicker extends React.Component {
 
   @autobind
   showMonths() {
-    return this.setState({
-      daysDisplayed: false,
-      monthsDisplayed: true
-    });
+    this.props.onActiveMode(Mode.months);
   }
 
   @autobind
   showYears() {
-    return this.setState({
-      monthsDisplayed: false,
-      yearsDisplayed: true
-    });
+    this.props.onActiveMode(Mode.years);
   }
 
   @autobind
-  onYearsClose() {
-    this.setState({
-      yearsDisplayed: false,
-      monthsDisplayed: true
-    });
-  }
-
-  @autobind
-  onMonthsClose() {
-    this.setState({
-      monthsDisplayed: false,
-      daysDisplayed: true
-    });
+  showDays() {
+    this.props.onActiveMode(Mode.days);
   }
 }

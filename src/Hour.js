@@ -6,7 +6,6 @@
 import autobind           from 'autobind-decorator';
 import React, {PropTypes} from 'react';
 import Glyphicon          from './Glyphicon';
-import Constants          from './Constants';
 import Button             from './Button';
 
 export default class Hour extends React.Component {

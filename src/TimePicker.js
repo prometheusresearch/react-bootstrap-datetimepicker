@@ -4,92 +4,88 @@
  */
 
 import autobind           from 'autobind-decorator';
+import keyMirror          from 'keymirror';
 import React, {PropTypes} from 'react';
 import MinuteView         from './MinuteView';
 import HourView           from './HourView';
 import Glyphicon          from './Glyphicon';
-import Constants          from './Constants';
 import Button             from './Button';
+
+let Mode = keyMirror({
+  time: null,
+  minutes: null,
+  hours: null,
+});
 
 export default class TimePicker extends React.Component {
 
+  static Mode = Mode;
+
   static propTypes = {
+    activeMode: PropTypes.oneOf([Mode.time, Mode.minutes, Mode.hours]).isRequired,
+    onActiveMode: PropTypes.func.isRequired,
     viewDate: PropTypes.object.isRequired,
+    onViewDate: PropTypes.func.isRequired,
     selectedDate: PropTypes.object.isRequired,
-    mode: PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME]),
     onSelectedDate: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      minutesDisplayed: false,
-      hoursDisplayed: false
-    };
-  }
-
   render() {
+    let {activeMode} = this.props;
     return (
-      <div className="timepicker">
-        {this.renderPicker()}
-        {this.state.hoursDisplayed &&
+      <div>
+        {activeMode === Mode.time &&
+          <div>
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <Button onClick={this.onNextHour}><Glyphicon glyph="chevron-up" /></Button>
+                  </td>
+                  <td />
+                  <td>
+                    <Button onClick={this.onNextMinute}><Glyphicon glyph="chevron-up" /></Button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <Button onClick={this._setHoursMode}>
+                      {this.props.selectedDate.format('HH')}
+                    </Button>
+                  </td>
+                  <td />
+                  <td>
+                    <Button onClick={this._setMinutesMode}>
+                      {this.props.selectedDate.format('mm')}
+                    </Button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <Button onClick={this.onPrevHour}><Glyphicon glyph="chevron-down" /></Button>
+                  </td>
+                  <td />
+                  <td>
+                    <Button onClick={this.onPrevMinute}><Glyphicon glyph="chevron-down" /></Button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>}
+        {activeMode === Mode.hours &&
           <HourView
             onSelectedDate={this.props.onSelectedDate}
             selectedDate={this.props.selectedDate}
-            onClose={this.goBack}
+            onClose={this._setTimeMode}
             />}
-        {this.state.minutesDisplayed &&
+        {activeMode === Mode.minutes &&
           <MinuteView
             onSelectedDate={this.props.onSelectedDate}
             selectedDate={this.props.selectedDate}
-            onClose={this.goBack}
+            onClose={this._setTimeMode}
             />}
       </div>
     );
-  }
-
-  renderPicker() {
-    if (!this.state.minutesDisplayed && !this.state.hoursDisplayed) {
-      return (
-        <div className="timepicker-picker">
-          <table className="table-condensed">
-            <tbody>
-              <tr>
-                <td>
-                  <Button onClick={this.onNextHour}><Glyphicon glyph="chevron-up" /></Button>
-                </td>
-                <td />
-                <td>
-                  <Button onClick={this.onNextMinute}><Glyphicon glyph="chevron-up" /></Button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <Button onClick={this.showHours}>
-                    {this.props.selectedDate.format('HH')}
-                  </Button>
-                </td>
-                <td />
-                <td>
-                  <Button onClick={this.showMinutes}>
-                    {this.props.selectedDate.format('mm')}
-                  </Button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <Button onClick={this.onPrevHour}><Glyphicon glyph="chevron-down" /></Button>
-                </td>
-                <td />
-                <td>
-                  <Button onClick={this.onPrevMinute}><Glyphicon glyph="chevron-down" /></Button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      );
-    }
   }
 
   @autobind
@@ -117,25 +113,18 @@ export default class TimePicker extends React.Component {
   }
 
   @autobind
-  goBack() {
-    return this.setState({
-      minutesDisplayed: false,
-      hoursDisplayed: false
-    });
+  _setTimeMode() {
+    this.props.onActiveMode(Mode.time);
   }
 
   @autobind
-  showMinutes() {
-    return this.setState({
-      minutesDisplayed: true
-    });
+  _setMinutesMode() {
+    this.props.onActiveMode(Mode.minutes);
   }
 
   @autobind
-  showHours() {
-    return this.setState({
-      hoursDisplayed: true
-    });
+  _setHoursMode() {
+    this.props.onActiveMode(Mode.hours);
   }
 
 }

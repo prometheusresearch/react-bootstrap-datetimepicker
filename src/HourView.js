@@ -6,7 +6,6 @@
 import autobind           from 'autobind-decorator';
 import React, {PropTypes} from 'react';
 import Glyphicon          from './Glyphicon';
-import Constants          from './Constants';
 import Hour               from './Hour';
 import Button             from './Button';
 
