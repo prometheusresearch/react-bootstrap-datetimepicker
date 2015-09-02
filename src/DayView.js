@@ -39,10 +39,7 @@ export default class DayView extends React.Component {
     selectedDate: PropTypes.object.isRequired,
     onSelectedDate: PropTypes.func.isRequired,
     showToday: PropTypes.bool,
-    daysOfWeekDisabled: PropTypes.array,
     showMonths: PropTypes.func.isRequired,
-    minDate: PropTypes.object,
-    maxDate: PropTypes.object
   };
 
   static defaultProps = {
@@ -96,18 +93,11 @@ export default class DayView extends React.Component {
 
   renderDays() {
     let dayStyle = Style.day();
-    let {viewDate, selectedDate, daysOfWeekDisabled, showToday, minDate, maxDate} = this.props;
+    let {viewDate, selectedDate, showToday} = this.props;
 
     let today = moment();
     let date = startDateFor(viewDate);
     let endDate = endDateFor(viewDate);
-
-    if (minDate) {
-      minDate = minDate.clone().subtract(1, 'days');
-    }
-    if (maxDate) {
-      maxDate = maxDate.clone();
-    }
 
     let rows = [];
     let cells = [];
@@ -121,11 +111,6 @@ export default class DayView extends React.Component {
             onClick: this.props.onSelectedDate,
             outOfRange: date.isBefore(viewDate, 'month') || date.isAfter(viewDate, 'month'),
             today: showToday && isToday,
-            disabled: (
-              minDate && date.isBefore(minDate) ||
-              maxDate && date.isAfter(maxDate) ||
-              daysOfWeekDisabled && daysOfWeekDisabled.indexOf(date.date()) > -1
-            ),
             value: date,
             date: date,
             active: isActive,

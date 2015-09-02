@@ -8,8 +8,8 @@ import React from 'react';
 export default function Focusable(Component) {
   let displayName = Component.displayName || Component.name;
 
-  return class extends React.Component {
-    static displayName = `Hoverable(${displayName})`;
+  class Focusable extends React.Component {
+    static displayName = `Focusable(${displayName})`;
 
     constructor(props) {
       super(props);
@@ -42,5 +42,13 @@ export default function Focusable(Component) {
         this.props.onBlur(e);
       }
     }
-  };
+  }
+
+  for (let key in Component) {
+    if (Component.hasOwnProperty(key)) {
+      Focusable[key] = Component[key];
+    }
+  }
+
+  return Focusable;
 }

@@ -3,7 +3,9 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import React, {PropTypes} from 'react/addons';
+import autobind           from 'autobind-decorator';
+import React, {PropTypes} from 'react';
+import keyMirror          from 'keymirror';
 import DatePicker         from './DatePicker';
 import TimePicker         from './TimePicker';
 import Glyphicon          from './Glyphicon';
@@ -21,12 +23,22 @@ let Style = Stylesheet({
   }
 });
 
+let Mode = keyMirror({
+  date: null,
+  time: null,
+  datetime: null,
+});
+
 @Focusable
 export default class DateTimePicker extends React.Component {
 
+  static Mode = Mode;
+
   static propTypes = {
-    showDatePicker: PropTypes.bool,
-    showTimePicker: PropTypes.bool,
+    activeMode: PropTypes.oneOf([
+      Mode.date,
+      Mode.time
+    ]),
     viewDate: PropTypes.object.isRequired,
     selectedDate: PropTypes.object.isRequired,
     showToday: PropTypes.bool,
@@ -34,52 +46,58 @@ export default class DateTimePicker extends React.Component {
       PropTypes.string,
       PropTypes.number
     ]),
-    mode: PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME]),
-    daysOfWeekDisabled: PropTypes.array,
-    togglePeriod: PropTypes.func.isRequired,
-    minDate: PropTypes.object,
-    maxDate: PropTypes.object,
-
+    mode: PropTypes.oneOf([
+      Mode.date,
+      Mode.time,
+      Mode.datetime
+    ]),
     onViewDate: PropTypes.func.isRequired,
     onSelectedDate: PropTypes.func.isRequired,
   }
 
   render() {
-    let {focus} = this.props;
+    let {
+      focus, activeMode, mode,
+      viewDate, onViewDate, selectedDate, onSelectedDate,
+    } = this.props;
     return (
       <div
         style={Style.self({focus})}
         tabIndex={0}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}>
-        {this.props.showDatePicker &&
+        {activeMode === Mode.date &&
           <DatePicker
-            viewDate={this.props.viewDate}
-            onViewDate={this.props.onViewDate}
-            selectedDate={this.props.selectedDate}
-            onSelectedDate={this.props.onSelectedDate}
+            viewDate={viewDate}
+            onViewDate={onViewDate}
+            selectedDate={selectedDate}
+            onSelectedDate={onSelectedDate}
             showToday={this.props.showToday}
             viewMode={this.props.viewMode}
-            daysOfWeekDisabled={this.props.daysOfWeekDisabled}
-            minDate={this.props.minDate}
-            maxDate={this.props.maxDate}
             />}
-        {this.props.mode === Constants.MODE_DATETIME &&
+        {mode === Mode.datetime &&
           <Button
             size={{width: '100%'}}
-            onClick={this.props.togglePicker}>
-            <Glyphicon glyph={this.props.showTimePicker ? 'calendar' : 'time'} />
+            onClick={this._onActiveMode}>
+            <Glyphicon glyph={activeMode === Mode.date ? 'time' : 'calendar'} />
           </Button>}
-        {this.props.showTimePicker &&
+        {activeMode === Mode.time &&
           <TimePicker
-            viewDate={this.props.viewDate}
-            selectedDate={this.props.selectedDate}
-            onSelectedDate={this.props.onSelectedDate}
-            togglePeriod={this.props.togglePeriod}
+            viewDate={viewDate}
+            selectedDate={selectedDate}
+            onSelectedDate={onSelectedDate}
             mode={this.props.mode}
             />}
       </div>
 
     );
+  }
+
+  @autobind
+  _onActiveMode() {
+    let activeMode = this.props.activeMode === Mode.date ?
+      Mode.time :
+      Mode.date;
+    this.props.onActiveMode(activeMode);
   }
 }

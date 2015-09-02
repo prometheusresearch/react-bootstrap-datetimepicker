@@ -39,10 +39,6 @@ export default class DatePicker extends React.Component {
       PropTypes.string,
       PropTypes.number
     ]),
-    daysOfWeekDisabled: PropTypes.array,
-    minDate: PropTypes.object,
-    maxDate: PropTypes.object,
-
     onViewDate: PropTypes.func.isRequired,
   }
 
@@ -68,10 +64,7 @@ export default class DatePicker extends React.Component {
             style={this.props.pickerStyle}
             tableStyle={this.props.pickerTableStyle}
             showToday={this.props.showToday}
-            daysOfWeekDisabled={this.props.daysOfWeekDisabled}
             showMonths={this.showMonths}
-            minDate={this.props.minDate}
-            maxDate={this.props.maxDate}
             />}
         {this.state.monthsDisplayed &&
           <MonthView

@@ -26,6 +26,20 @@ let Style = {
   }
 };
 
+const TETHER_CONFIG = {
+  attachment: 'top left',
+  targetAttachment: 'bottom left',
+  optimizations: {
+    moveElement: false
+  },
+  constraints: [
+    {
+      to: 'window',
+      attachment: 'together'
+    }
+  ]
+};
+
 export default class DateTimeField extends React.Component {
 
   static propTypes = {
@@ -36,16 +50,13 @@ export default class DateTimeField extends React.Component {
     inputFormat: PropTypes.string,
     defaultText: PropTypes.string,
     mode: PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME]),
-    minDate: PropTypes.object,
-    maxDate: PropTypes.object
   };
 
   static defaultProps = {
     format: 'x',
     showToday: true,
     viewMode: 'days',
-    daysOfWeekDisabled: [],
-    mode: Constants.MODE_DATETIME,
+    mode: DateTimePicker.Mode.datetime,
     onChange: function (x) {
       console.log(x);
     }
@@ -57,13 +68,12 @@ export default class DateTimeField extends React.Component {
       moment(this.props.dateTime, this.props.format, true) :
       moment();
     this._tether = null;
-    this._setOpenDebounced = debounce(this.setOpen, 0);
+    this._setOpenDebounced = debounce(this._setOpen, 0);
     this.state = {
       open: false,
-      showDatePicker: this.props.mode !== Constants.MODE_TIME,
-      showTimePicker: this.props.mode === Constants.MODE_TIME,
-      inputFormat: this.inputFormat,
-      buttonIcon: this.props.mode === Constants.MODE_TIME ? "time" : "calendar",
+      activeMode: this.props.mode === DateTimePicker.Mode.time ?
+        DateTimePicker.Mode.time :
+        DateTimePicker.Mode.date,
       viewDate: date.clone().startOf('month'),
       selectedDate: date.clone(),
       inputValue: this.props.dateTime ?
@@ -73,14 +83,15 @@ export default class DateTimeField extends React.Component {
   }
 
   render() {
+    let {mode} = this.props;
     return (
       <div>
-        <div onFocus={this._onFocus} onBlur={this._onBlur} className="input-group date">
+        <div onFocus={this._open} onBlur={this._close} className="input-group date">
           <input
             ref="input"
             type="text"
             className="form-control"
-            onChange={this.onChange}
+            onChange={this._onChange}
             value={this.state.inputValue}
             {...this.props.inputProps}
             />
@@ -88,7 +99,7 @@ export default class DateTimeField extends React.Component {
             className="input-group-addon"
             onClick={this._onClick}
             ref="button">
-              <Glyphicon glyph={this.state.buttonIcon} />
+              <Glyphicon glyph={mode === DateTimePicker.Mode.time ? 'time' : 'calendar'} />
           </span>
         </div>
         {this.state.open &&
@@ -98,27 +109,55 @@ export default class DateTimeField extends React.Component {
             willUnmount={this._onLayerWillUnmount}>
             <div style={Style.dropdown}>
               <DateTimePicker
-                onFocus={this._onPickerFocus}
-                onBlur={this._onPickerBlur}
-                showDatePicker={this.state.showDatePicker}
-                showTimePicker={this.state.showTimePicker}
+                mode={this.state.mode}
+                activeMode={this.state.activeMode}
+                onActiveMode={this._onActiveMode}
+                onFocus={this._open}
+                onBlur={this._close}
                 viewDate={this.state.viewDate}
                 selectedDate={this.state.selectedDate}
                 showToday={this.props.showToday}
                 viewMode={this.props.viewMode}
-                daysOfWeekDisabled={this.props.daysOfWeekDisabled}
                 mode={this.props.mode}
-                minDate={this.props.minDate}
-                maxDate={this.props.maxDate}
-                onViewDate={this.onViewDate}
-                onSelectedDate={this.onSelectedDate}
-                togglePicker={this.togglePicker}
-                togglePeriod={this.togglePeriod}
+                onViewDate={this._onViewDate}
+                onSelectedDate={this._onSelectedDate}
                 />
             </div>
           </Layer>}
       </div>
     );
+  }
+
+  componentWillReceiveProps(nextProps) {
+    var nextDate = moment(nextProps.dateTime, nextProps.format, true);
+    if(nextDate.isValid()) {
+      return this.setState({
+        viewDate: nextDate.clone().startOf("month"),
+        selectedDate: nextDate.clone(),
+        inputValue: nextDate.format(this._inputFormatFromProps(nextProps))
+      });
+    }
+  }
+
+  get inputFormat() {
+    return this._inputFormatFromProps(this.props);
+  }
+
+  _inputFormatFromProps(props) {
+    if (props.inputFormat) {
+      return props.inputFormat;
+    } else if (props.mode === DateTimePicker.Mode.time) {
+      return 'h:mm A';
+    } else if (props.mode === DateTimePicker.Mode.date) {
+      return "MM/DD/YY";
+    } else {
+      return "MM/DD/YY h:mm A";
+    }
+  }
+
+  @autobind
+  _onActiveMode(activeMode) {
+    this.setState({activeMode});
   }
 
   @autobind
@@ -127,42 +166,9 @@ export default class DateTimeField extends React.Component {
   }
 
   @autobind
-  _onFocus() {
-    this._setOpenDebounced(true);
-  }
-
-  @autobind
-  _onBlur() {
-    this._setOpenDebounced(false);
-  }
-
-  @autobind
-  _onPickerFocus() {
-    this._setOpenDebounced(true);
-  }
-
-  @autobind
-  _onPickerBlur() {
-    this._setOpenDebounced(false);
-  }
-
-  @autobind
   _onLayerDidMount(element) {
-    this._tether = new Tether({
-      element: element,
-      target: React.findDOMNode(this.refs.input),
-      attachment: 'top left',
-      targetAttachment: 'bottom left',
-      optimizations: {
-        moveElement: false
-      },
-      constraints: [
-        {
-          to: 'window',
-          attachment: 'together'
-        }
-      ]
-    });
+    let target = React.findDOMNode(this.refs.input);
+    this._tether = new Tether({element, target, ...TETHER_CONFIG});
   }
 
   @autobind
@@ -176,39 +182,11 @@ export default class DateTimeField extends React.Component {
     this._tether = null;
   }
 
-  componentWillReceiveProps(nextProps) {
-    var nextDate = moment(nextProps.dateTime, nextProps.format, true);
-    if(nextDate.isValid()) {
-      return this.setState({
-        viewDate: nextDate.clone().startOf("month"),
-        selectedDate: nextDate.clone(),
-        inputValue: nextDate.format(nextProps.inputFormat)
-      });
-    }
-    if (nextProps.inputFormat !== this.props.inputFormat) {
-      return this.setState({
-        inputFormat: nextProps.inputFormat
-      });
-    }
-  }
-
-  get inputFormat() {
-    if (this.props.inputFormat) {
-      return this.props.inputFormat;
-    } else if (this.props.mode === Constants.MODE_TIME) {
-      return 'h:mm A';
-    } else if (this.props.mode === Constants.MODE_DATE) {
-      return "MM/DD/YY";
-    } else {
-      return "MM/DD/YY h:mm A";
-    }
-  }
-
   @autobind
-  onChange(e) {
+  _onChange(e) {
     var value = e.target == null ? e : e.target.value;
     var nextState = {inputValue: value};
-    var date = moment(value, this.state.inputFormat, true);
+    var date = moment(value, this.inputFormat, true);
     if (date.isValid()) {
       nextState = {
         ...nextState,
@@ -222,20 +200,20 @@ export default class DateTimeField extends React.Component {
   }
 
   @autobind
-  onViewDate(viewDate) {
+  _onViewDate(viewDate) {
     this.setState({viewDate});
   }
 
   @autobind
-  onSelectedDate(date) {
+  _onSelectedDate(date) {
     this.setState({
       selectedDate: date,
       viewDate: date,
-    }, this.onSelectedDateUpdated);
+    }, this._onSelectedDateUpdated);
   }
 
   @autobind
-  onSelectedDateUpdated() {
+  _onSelectedDateUpdated() {
     let {selectedDate} = this.state;
     let inputValue = selectedDate.format(this.inputFormat);
     let value = selectedDate.format(this.props.format);
@@ -244,34 +222,17 @@ export default class DateTimeField extends React.Component {
   }
 
   @autobind
-  togglePeriod() {
-    if (this.state.selectedDate.hour() > 12) {
-      return this.onChange(this.state.selectedDate.clone().subtract(12, 'hours').format(this.state.inputFormat));
-    } else {
-      return this.onChange(this.state.selectedDate.clone().add(12, 'hours').format(this.state.inputFormat));
-    }
-  }
-
-  @autobind
-  togglePicker() {
-    return this.setState({
-      showDatePicker: !this.state.showDatePicker,
-      showTimePicker: !this.state.showTimePicker
-    });
-  }
-
-  @autobind
-  setOpen(open) {
+  _setOpen(open) {
     this.setState({open});
   }
 
   @autobind
-  open() {
-    this.setState(state => !state.open ? {open: true} : null);
+  _open() {
+    this._setOpenDebounced(true);
   }
 
   @autobind
-  close() {
-    this.setState(state => state.open ? {open: false} : null);
+  _close() {
+    this._setOpenDebounced(false);
   }
 }
