@@ -16,6 +16,7 @@ import Constants          from './Constants';
 let Style = {
 
   dropdown: {
+    zIndex: 15000,
     padding: '5px',
     backgroundColor: '#fff',
     backgroundClip: 'padding-box',
@@ -232,9 +233,9 @@ export default class DateTimeField extends React.Component {
 
   @autobind
   onSelectedDateUpdated() {
-    let {selectedDate, format} = this.state;
+    let {selectedDate} = this.state;
     let inputValue = selectedDate.format(this.inputFormat);
-    let value = selectedDate.format(format);
+    let value = selectedDate.format(this.props.format);
     this.props.onChange(value);
     this.setState({inputValue});
   }

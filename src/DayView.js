@@ -11,10 +11,6 @@ import Day                  from './Day';
 import Stylesheet           from './Stylesheet';
 import Button               from './Button';
 
-function renderDay(props) {
-  return <Day {...props} />;
-}
-
 let Style = Stylesheet({
 
   dayOfWeek: {
@@ -24,6 +20,10 @@ let Style = Stylesheet({
     }
   }
 });
+
+function renderDay(props) {
+  return <Day {...props} />;
+}
 
 export default class DayView extends React.Component {
 
@@ -41,7 +41,7 @@ export default class DayView extends React.Component {
 
   static defaultProps = {
     showToday: true,
-    renderDay: renderDay,
+    renderDay
   };
 
   render() {
@@ -121,16 +121,19 @@ export default class DayView extends React.Component {
         )
       };
 
-      cells.push(this.props.renderDay({
-        className: className,
-        key: date.month() + '-' + date.date(),
-        onClick: this.props.onSelectedDate,
-        value: date,
-        date: date,
-        active: isActive,
-        today: isToday,
-        showToday: showToday,
-      }));
+      cells.push(
+        <td key={date.month() + '-' + date.date()}>
+          {this.props.renderDay({
+            className: className,
+            onClick: this.props.onSelectedDate,
+            value: date,
+            date: date,
+            active: isActive,
+            today: isToday,
+            showToday: showToday,
+          })}
+        </td>
+      );
 
       if (date.weekday() === today.clone().endOf('week').weekday()) {
         rows.push(

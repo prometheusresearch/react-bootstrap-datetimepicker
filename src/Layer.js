@@ -52,6 +52,7 @@ export default class Layer extends React.Component {
 
   _createElement() {
     let element = document.createElement('div');
+    element.style.zIndex = '15000';
     document.body.appendChild(element);
     return element;
   }

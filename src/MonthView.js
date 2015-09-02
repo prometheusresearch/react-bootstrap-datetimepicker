@@ -14,6 +14,10 @@ import Paginator            from './Paginator';
 const MONTHS_SHORT = moment.monthsShort();
 const YEAR_MONTH_RANGE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
+function renderMonth(props) {
+  return <Month {...props} />;
+}
+
 export default class MonthView extends React.Component {
 
   static propTypes = {
@@ -25,24 +29,22 @@ export default class MonthView extends React.Component {
   };
 
   static defaultProps = {
-    Month
+    renderMonth
   };
 
   render() {
-    let {Month, viewDate, selectedDate} = this.props;
+    let {renderMonth, viewDate, selectedDate} = this.props;
     let viewYear = viewDate.year();
     let selectedYear = selectedDate.year();
     let selectedMonth = selectedDate.month();
-    let cells = YEAR_MONTH_RANGE.map(month =>
-      <Month
-        key={month}
-        active={month === selectedMonth && viewYear === selectedYear}
-        month={month}
-        year={viewYear}
-        value={MONTHS_SHORT[month]}
-        onClick={this.onMonthClick}
-        />
-    );
+    let cells = YEAR_MONTH_RANGE.map(month => renderMonth({
+      key: month,
+      active: month === selectedMonth && viewYear === selectedYear,
+      month: month,
+      year: viewYear,
+      value: MONTHS_SHORT[month],
+      onClick: this.onMonthClick
+    }));
     let rows = chunk(cells, 3).map((row, idx) => <div key={idx}>{row}</div>);
     return (
       <Paginator
