@@ -58,7 +58,7 @@ export default class DateTimeField extends React.Component {
     this._tether = null;
     this._setOpenDebounced = debounce(this.setOpen, 0);
     this.state = {
-      open: false,
+      open: true,
       showDatePicker: this.props.mode !== Constants.MODE_TIME,
       showTimePicker: this.props.mode === Constants.MODE_TIME,
       inputFormat: this.inputFormat,
@@ -148,7 +148,7 @@ export default class DateTimeField extends React.Component {
   _onLayerDidMount(element) {
     this._tether = new Tether({
       element: element,
-      target: React.findDOMNode(this.refs.button),
+      target: React.findDOMNode(this.refs.input),
       attachment: 'top left',
       targetAttachment: 'bottom left',
       constraints: [
