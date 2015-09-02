@@ -22,13 +22,14 @@ export default class Layer extends React.Component {
     this._component = React.render(
       React.Children.only(this.props.children),
       this._element,
-      this._onMount);
+      this._didMount);
   }
 
   componentDidUpdate() {
     this._component = React.render(
       React.Children.only(this.props.children),
-      this._element);
+      this._element,
+      this._didUpdate);
   }
 
   componentWillUnmount() {
@@ -40,8 +41,13 @@ export default class Layer extends React.Component {
   }
 
   @autobind
-  _onMount() {
+  _didMount() {
     this.props.didMount(this._element);
+  }
+
+  @autobind
+  _didUpdate() {
+    this.props.didUpdate(this._element);
   }
 
   _createElement() {

@@ -61,7 +61,6 @@ export default class DateTimePicker extends React.Component {
             showToday={this.props.showToday}
             viewMode={this.props.viewMode}
             daysOfWeekDisabled={this.props.daysOfWeekDisabled}
-            onViewDate={this.props.onViewDate}
             minDate={this.props.minDate}
             maxDate={this.props.maxDate}
             />}

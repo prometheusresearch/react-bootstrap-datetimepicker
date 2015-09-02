@@ -58,7 +58,7 @@ export default class DateTimeField extends React.Component {
     this._tether = null;
     this._setOpenDebounced = debounce(this.setOpen, 0);
     this.state = {
-      open: true,
+      open: false,
       showDatePicker: this.props.mode !== Constants.MODE_TIME,
       showTimePicker: this.props.mode === Constants.MODE_TIME,
       inputFormat: this.inputFormat,
@@ -93,6 +93,7 @@ export default class DateTimeField extends React.Component {
         {this.state.open &&
           <Layer
             didMount={this._onLayerDidMount}
+            didUpdate={this._onLayerDidUpdate}
             willUnmount={this._onLayerWillUnmount}>
             <div style={Style.dropdown}>
               <DateTimePicker
@@ -151,6 +152,9 @@ export default class DateTimeField extends React.Component {
       target: React.findDOMNode(this.refs.input),
       attachment: 'top left',
       targetAttachment: 'bottom left',
+      optimizations: {
+        moveElement: false
+      },
       constraints: [
         {
           to: 'window',
@@ -158,6 +162,11 @@ export default class DateTimeField extends React.Component {
         }
       ]
     });
+  }
+
+  @autobind
+  _onLayerDidUpdate(element) {
+    this._tether.position();
   }
 
   @autobind
