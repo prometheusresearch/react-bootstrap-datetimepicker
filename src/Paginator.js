@@ -5,7 +5,7 @@
 import React, {PropTypes} from 'react';
 import {Themeable}        from 'rethemeable';
 import Button             from './Button';
-import {Style, create}    from './Style';
+import Styled             from './Styled';
 
 @Themeable
 export default class Paginator extends React.Component {
@@ -18,13 +18,11 @@ export default class Paginator extends React.Component {
     children: PropTypes.node,
   };
 
-  static defaultTheme = create({
+  static defaultTheme = Styled({
 
     controls: {
-      default: {
-        height: 32,
-        textAlign: 'center'
-      }
+      height: 32,
+      textAlign: 'center'
     }
   }, 'Paginator');
 
@@ -32,13 +30,11 @@ export default class Paginator extends React.Component {
     let {onPrev, onNext, onUp, title, children} = this.props;
     return (
       <div>
-        <Style style={this.theme.controls}>
-          <div>
-            <Button bold onClick={onPrev} size={{width: '15%', height: 32}}>‹</Button>
-            <Button bold onClick={onUp} size={{width: '70%'}}>{title}</Button>
-            <Button bold onClick={onNext} size={{width: '15%', height: 32}}>›</Button>
-          </div>
-        </Style>
+        <this.theme.controls>
+          <Button bold onClick={onPrev} size={{width: '15%', height: 32}}>‹</Button>
+          <Button bold onClick={onUp} size={{width: '70%'}}>{title}</Button>
+          <Button bold onClick={onNext} size={{width: '15%', height: 32}}>›</Button>
+        </this.theme.controls>
         <div>
           {children}
         </div>

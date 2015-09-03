@@ -6,46 +6,40 @@
 import 'normalize.css';
 import React            from 'react';
 import moment           from 'moment';
-import {createStyled}   from './src/Style';
+import Styled           from './src/Styled';
 import DateTimeField    from './src/DateTimeField';
 
-let styled = createStyled({
+let styled = Styled({
+
+  default: {
+    boxSizing: 'border-box',
+  },
 
   root: {
-    default: {
-      height: '100%',
-      fontFamily: 'Helvetica, sans-serif',
-      backgroundColor: '#fafafa',
-    }
+    height: '100%',
+    fontFamily: 'Helvetica, sans-serif',
+    backgroundColor: '#fafafa',
   },
 
   pane: {
-    default: {
-      width: 600,
-      margin: '0 auto',
-      padding: '10px 0px',
-    }
+    width: 600,
+    margin: '0 auto',
+    padding: '10px 0px',
   },
 
   header: {
     Component: 'h1',
-    default: {
-      color: '#666',
-      margin: 0,
-      marginBottom: 25
-    }
+    color: '#666',
+    margin: 0,
+    marginBottom: 25
   },
 
   footer: {
-    default: {
-      backgroundColor: '#eaeaea',
-    }
+    backgroundColor: '#eaeaea',
   },
 
   demo: {
-    default: {
-      marginBottom: 20
-    }
+    marginBottom: 20
   }
 }, 'Example');
 

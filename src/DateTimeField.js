@@ -13,7 +13,7 @@ import DateTimePicker     from './DateTimePicker';
 import DatePicker         from './DatePicker';
 import TimePicker         from './TimePicker';
 import Glyphicon          from './Glyphicon';
-import {Style, create}    from './Style';
+import Styled             from './Styled';
 import {Themeable}        from 'rethemeable';
 
 const TETHER_CONFIG = {
@@ -57,17 +57,15 @@ export default class DateTimeField extends React.Component {
     }
   };
 
-  static defaultTheme = create({
+  static defaultTheme = Styled({
     dropdown: {
-      default: {
-        zIndex: 15000,
-        padding: 5,
-        backgroundColor: '#fff',
-        backgroundClip: 'padding-box',
-        border: '1px solid rgba(0,0,0,.15)',
-        borderRadius: 4,
-        boxShadow: '0 6px 12px rgba(0,0,0,.175)',
-      }
+      zIndex: 15000,
+      padding: 5,
+      backgroundColor: '#fff',
+      backgroundClip: 'padding-box',
+      border: '1px solid rgba(0,0,0,.15)',
+      borderRadius: 4,
+      boxShadow: '0 6px 12px rgba(0,0,0,.175)',
     }
   }, 'DateTimeField');
 
@@ -129,24 +127,22 @@ export default class DateTimeField extends React.Component {
             didMount={this._onLayerDidMount}
             didUpdate={this._onLayerDidUpdate}
             willUnmount={this._onLayerWillUnmount}>
-            <Style style={this.theme.dropdown}>
-              <div>
-                <DateTimePicker
-                  mode={this.state.mode}
-                  activeMode={this.state.activeMode}
-                  onActiveMode={this._onActiveMode}
-                  onFocus={this._open}
-                  onBlur={this._close}
-                  viewDate={this.state.viewDate}
-                  selectedDate={this.state.selectedDate}
-                  showToday={this.props.showToday}
-                  viewMode={this.props.viewMode}
-                  mode={this.props.mode}
-                  onViewDate={this._onViewDate}
-                  onSelectedDate={this._onSelectedDate}
-                  />
-              </div>
-            </Style>
+            <this.theme.dropdown>
+              <DateTimePicker
+                mode={this.state.mode}
+                activeMode={this.state.activeMode}
+                onActiveMode={this._onActiveMode}
+                onFocus={this._open}
+                onBlur={this._close}
+                viewDate={this.state.viewDate}
+                selectedDate={this.state.selectedDate}
+                showToday={this.props.showToday}
+                viewMode={this.props.viewMode}
+                mode={this.props.mode}
+                onViewDate={this._onViewDate}
+                onSelectedDate={this._onSelectedDate}
+                />
+            </this.theme.dropdown>
           </Layer>}
       </div>
     );

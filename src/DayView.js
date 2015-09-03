@@ -8,7 +8,7 @@ import moment               from 'moment';
 import React, {PropTypes}   from 'react';
 import Day                  from './Day';
 import {Themeable}          from 'rethemeable';
-import {Style, create}      from './Style';
+import Styled               from './Styled';
 import Button               from './Button';
 
 function renderDay(props) {
@@ -33,19 +33,17 @@ export default class DayView extends React.Component {
     renderDay
   };
 
-  static defaultTheme = create({
+  static defaultTheme = Styled({
 
     day: {
-      default: {
-        textAlign: 'center',
-      }
+      Component: 'td',
+      textAlign: 'center',
     },
 
     dayOfWeek: {
-      default: {
-        textAlign: 'center',
-        padding: 5
-      }
+      Component: 'th',
+      textAlign: 'center',
+      padding: 5
     }
   }, 'DayView');
 
@@ -64,27 +62,13 @@ export default class DayView extends React.Component {
               <th><Button bold onClick={this.onNextMonth} size={{width: '100%', height: 32}}>›</Button></th>
             </tr>
             <tr>
-              <Style style={this.theme.dayOfWeek}>
-                <th>Su</th>
-              </Style>
-              <Style style={this.theme.dayOfWeek}>
-                <th>Mo</th>
-              </Style>
-              <Style style={this.theme.dayOfWeek}>
-                <th>Tu</th>
-              </Style>
-              <Style style={this.theme.dayOfWeek}>
-                <th>We</th>
-              </Style>
-              <Style style={this.theme.dayOfWeek}>
-                <th>Th</th>
-              </Style>
-              <Style style={this.theme.dayOfWeek}>
-                <th>Fr</th>
-              </Style>
-              <Style style={this.theme.dayOfWeek}>
-                <th>Sa</th>
-              </Style>
+              <this.theme.dayOfWeek>Su</this.theme.dayOfWeek>
+              <this.theme.dayOfWeek>Mo</this.theme.dayOfWeek>
+              <this.theme.dayOfWeek>Tu</this.theme.dayOfWeek>
+              <this.theme.dayOfWeek>We</this.theme.dayOfWeek>
+              <this.theme.dayOfWeek>Th</this.theme.dayOfWeek>
+              <this.theme.dayOfWeek>Fr</this.theme.dayOfWeek>
+              <this.theme.dayOfWeek>Sa</this.theme.dayOfWeek>
             </tr>
           </thead>
           <tbody>
@@ -120,19 +104,17 @@ export default class DayView extends React.Component {
       let isActive = date.isSame(selectedDate, 'day');
       let isToday = date.isSame(today, 'day');
       cells.push(
-        <Style style={this.theme.day} key={date.month() + '-' + date.date()}>
-          <td>
-            {this.props.renderDay({
-              onClick: this.props.onSelectedDate,
-              outOfRange: date.isBefore(viewDate, 'month') || date.isAfter(viewDate, 'month'),
-              value: date,
-              date: date,
-              active: isActive,
-              today: isToday,
-              showToday: showToday,
-            })}
-          </td>
-        </Style>
+        <this.theme.day key={date.month() + '-' + date.date()}>
+          {this.props.renderDay({
+            onClick: this.props.onSelectedDate,
+            outOfRange: date.isBefore(viewDate, 'month') || date.isAfter(viewDate, 'month'),
+            value: date,
+            date: date,
+            active: isActive,
+            today: isToday,
+            showToday: showToday,
+          })}
+        </this.theme.day>
       );
 
       if (date.weekday() === today.clone().endOf('week').weekday()) {

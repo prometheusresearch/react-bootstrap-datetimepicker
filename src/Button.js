@@ -4,7 +4,7 @@
 
 import React, {PropTypes} from 'react';
 import {Themeable}        from 'rethemeable';
-import {Style, create}    from './Style';
+import Styled             from './Styled';
 
 @Themeable
 export default class Button extends React.Component {
@@ -16,26 +16,23 @@ export default class Button extends React.Component {
     size: PropTypes.object,
     color: PropTypes.string,
     backgroundColor: PropTypes.string,
-    
   };
 
   static defaultProps = {
     size: {}
   };
 
-  static defaultTheme = create({
-    self: {
-      default: {
-        borderRadius: 4,
-        padding: 5,
-        display: 'inline-block',
-        textDecoration: 'none',
-        cursor: 'pointer',
-        textAlign: 'center',
-        color: '#666',
-        userSelect: 'none',
-        WebkitUserSelect: 'none',
-      },
+  static defaultTheme = Styled({
+    root: {
+      borderRadius: 4,
+      padding: 5,
+      display: 'inline-block',
+      textDecoration: 'none',
+      cursor: 'pointer',
+      textAlign: 'center',
+      color: '#666',
+      userSelect: 'none',
+      WebkitUserSelect: 'none',
 
       dimmed: {
         color: '#bbbbbb',
@@ -68,18 +65,12 @@ export default class Button extends React.Component {
       ...props
     } = this.props;
     return (
-      <Style
-        style={this.theme.self}
+      <this.theme.root
+        {...props}
         state={{bold, dimmed, active}}
-        width={width}
-        height={height}
-        color={color}
-        backgroundColor={backgroundColor}>
-        <a
-          {...props}
-          role="button"
-          />
-      </Style>
+        style={{width, height, color, backgroundColor}}
+        role="button"
+        />
     );
   }
 }
