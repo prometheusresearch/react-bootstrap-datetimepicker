@@ -3,26 +3,69 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import React          from 'react';
-import DateTimeField  from './src/DateTimeField';
-import moment         from 'moment';
+import 'normalize.css';
+import React            from 'react';
+import moment           from 'moment';
+import {createStyled}   from './src/Style';
+import DateTimeField    from './src/DateTimeField';
+
+let styled = createStyled({
+
+  root: {
+    default: {
+      height: '100%',
+      fontFamily: 'Helvetica, sans-serif',
+      backgroundColor: '#fafafa',
+    }
+  },
+
+  pane: {
+    default: {
+      width: 600,
+      margin: '0 auto',
+      padding: '10px 0px',
+    }
+  },
+
+  header: {
+    Component: 'h1',
+    default: {
+      color: '#666',
+      margin: 0,
+      marginBottom: 25
+    }
+  },
+
+  footer: {
+    default: {
+      backgroundColor: '#eaeaea',
+    }
+  },
+
+  demo: {
+    default: {
+      marginBottom: 20
+    }
+  }
+}, 'Example');
 
 export default class Example extends React.Component {
 
 	render() {
 		return (
-		  <div className="container">
-        <div className="row">
-          <div className="col-xs-12">
-            <h1>React Bootstrap DateTimePicker</h1>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-xs-12">
+      <styled.root>
+        <styled.pane>
+          <styled.header>React Bootstrap DateTimePicker</styled.header>
+          <styled.demo>
             <DateTimeField />
-          </div>
-        </div>
-      </div>
+          </styled.demo>
+        </styled.pane>
+        <styled.footer>
+          <styled.pane>
+            Hello
+          </styled.pane>
+        </styled.footer>
+      </styled.root>
     );
 		return (
 		  <div className="container">

@@ -8,6 +8,7 @@ import uniqueId               from 'lodash/utility/uniqueId';
 import Stylesheet             from './Stylesheet';
 
 export Style                  from './Style';
+export createStyled           from './createStyled';
 
 export function create(sheet, id) {
   let f = (style, key) => [key, createStylesheet(style, id ? id + '__' + key : key)];
