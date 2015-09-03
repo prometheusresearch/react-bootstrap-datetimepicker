@@ -6,7 +6,6 @@
 import autobind             from 'autobind-decorator';
 import cx                   from 'classnames';
 import React, {PropTypes}   from 'react';
-import Hoverable            from './Hoverable';
 import Button               from './Button';
 
 export default class Day extends React.Component {

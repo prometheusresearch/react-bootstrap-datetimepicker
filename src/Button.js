@@ -2,79 +2,84 @@
  * @copyright 2015, Prometheus Research, LLC
  */
 
-import React        from 'react';
-import Stylesheet   from './Stylesheet';
-import Hoverable    from './Hoverable';
-import Focusable    from './Focusable';
-import {Themeable}  from 'rethemeable';
+import React, {PropTypes} from 'react';
+import {Themeable}        from 'rethemeable';
+import {Style, create}    from './Style';
 
-export let Style = Stylesheet({
-
-  self: {
-    default: {
-      borderRadius: 4,
-      padding: 5,
-      display: 'inline-block',
-      textDecoration: 'none',
-      cursor: 'pointer',
-      textAlign: 'center',
-      color: '#666',
-      userSelect: 'none',
-      WebkitUserSelect: 'none',
-    },
-
-    dimmed: {
-      color: '#bbbbbb',
-    },
-
-    bold: {
-      fontWeight: 'bold',
-    },
-
-    hover: {
-      color: '#262626',
-      backgroundColor: '#f5f5f5',
-    },
-
-    active: {
-      color: '#262626',
-      backgroundColor: '#dddddd',
-    },
-
-    focus: {
-      outline: '1px auto -webkit-focus-ring-color',
-    }
-  }
-});
-
-@Hoverable
-@Focusable
 @Themeable
 export default class Button extends React.Component {
 
-  static defaultTheme = Style;
+  static propTypes = {
+    active: PropTypes.bool,
+    bold: PropTypes.bool,
+    dimmed: PropTypes.bool,
+    size: PropTypes.object,
+    color: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    
+  };
+
+  static defaultProps = {
+    size: {}
+  };
+
+  static defaultTheme = create({
+    self: {
+      default: {
+        borderRadius: 4,
+        padding: 5,
+        display: 'inline-block',
+        textDecoration: 'none',
+        cursor: 'pointer',
+        textAlign: 'center',
+        color: '#666',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+      },
+
+      dimmed: {
+        color: '#bbbbbb',
+      },
+
+      bold: {
+        fontWeight: 'bold',
+      },
+
+      hover: {
+        color: '#262626',
+        backgroundColor: '#f5f5f5',
+      },
+
+      active: {
+        color: '#262626',
+        backgroundColor: '#dddddd !important',
+      },
+
+      focus: {
+        outline: '1px auto -webkit-focus-ring-color',
+      }
+    }
+  }, 'Button');
 
   render() {
     let {
-      hover, focus, active, bold, size, dimmed,
+      active, bold, size: {width, height}, dimmed,
       color, backgroundColor,
-      onMouseEnter, onMouseLeave, ...props
+      ...props
     } = this.props;
-    let style = {...this.theme.self({hover, active, bold, focus, dimmed}), ...size};
-    if (color) {
-      style.color = color;
-    }
-    if (backgroundColor) {
-      style.backgroundColor = backgroundColor;
-    }
     return (
-      <a
-        {...props}
-        role="button"
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-        style={style}
-        />
+      <Style
+        style={this.theme.self}
+        state={{bold, dimmed, active}}
+        width={width}
+        height={height}
+        color={color}
+        backgroundColor={backgroundColor}>
+        <a
+          {...props}
+          role="button"
+          />
+      </Style>
     );
   }
 }

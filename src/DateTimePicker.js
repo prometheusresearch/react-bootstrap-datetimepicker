@@ -6,21 +6,12 @@
 import autobind           from 'autobind-decorator';
 import React, {PropTypes} from 'react';
 import keyMirror          from 'keymirror';
+import {Themeable}        from 'rethemeable';
 import DatePicker         from './DatePicker';
 import TimePicker         from './TimePicker';
 import Glyphicon          from './Glyphicon';
-import Focusable          from './Focusable';
-import Stylesheet         from './Stylesheet';
 import Button             from './Button';
-
-let Style = Stylesheet({
-
-  self: {
-    focus: {
-      outline: 'none'
-    }
-  }
-});
+import {create, Style}    from './Style';
 
 let Mode = keyMirror({
   date: null,
@@ -28,7 +19,7 @@ let Mode = keyMirror({
   datetime: null,
 });
 
-@Focusable
+@Themeable
 export default class DateTimePicker extends React.Component {
 
   static Mode = Mode;
@@ -50,43 +41,51 @@ export default class DateTimePicker extends React.Component {
     ]),
   }
 
+  static defaultTheme = create({
+    self: {
+      focus: {
+        outline: 'none'
+      }
+    }
+  }, 'DateTimePicker');
+
   render() {
     let {
-      focus, activeMode, mode,
+      activeMode, mode,
       viewDate, onViewDate, selectedDate, onSelectedDate,
     } = this.props;
     return (
-      <div
-        style={Style.self({focus})}
-        tabIndex={0}
-        onFocus={this.props.onFocus}
-        onBlur={this.props.onBlur}>
-        {activeMode.self === Mode.date &&
-          <DatePicker
-            activeMode={activeMode.date}
-            onActiveMode={this._onActiveDateMode}
-            viewDate={viewDate}
-            onViewDate={onViewDate}
-            selectedDate={selectedDate}
-            onSelectedDate={onSelectedDate}
-            />}
-        {mode === Mode.datetime &&
-          <Button
-            size={{width: '100%'}}
-            onClick={this._onActiveMode}>
-            <Glyphicon glyph={activeMode.self === Mode.date ? 'time' : 'calendar'} />
-          </Button>}
-        {activeMode.self === Mode.time &&
-          <TimePicker
-            activeMode={activeMode.time}
-            onActiveMode={this._onActiveTimeMode}
-            viewDate={viewDate}
-            onViewDate={onViewDate}
-            selectedDate={selectedDate}
-            onSelectedDate={onSelectedDate}
-            />}
-      </div>
-
+      <Style style={this.theme.self}>
+        <div
+          tabIndex={0}
+          onFocus={this.props.onFocus}
+          onBlur={this.props.onBlur}>
+          {activeMode.self === Mode.date &&
+            <DatePicker
+              activeMode={activeMode.date}
+              onActiveMode={this._onActiveDateMode}
+              viewDate={viewDate}
+              onViewDate={onViewDate}
+              selectedDate={selectedDate}
+              onSelectedDate={onSelectedDate}
+              />}
+          {mode === Mode.datetime &&
+            <Button
+              size={{width: '100%'}}
+              onClick={this._onActiveMode}>
+              <Glyphicon glyph={activeMode.self === Mode.date ? 'time' : 'calendar'} />
+            </Button>}
+          {activeMode.self === Mode.time &&
+            <TimePicker
+              activeMode={activeMode.time}
+              onActiveMode={this._onActiveTimeMode}
+              viewDate={viewDate}
+              onViewDate={onViewDate}
+              selectedDate={selectedDate}
+              onSelectedDate={onSelectedDate}
+              />}
+        </div>
+      </Style>
     );
   }
 
