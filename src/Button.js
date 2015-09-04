@@ -33,6 +33,7 @@ export default class Button extends React.Component {
       color: '#666',
       userSelect: 'none',
       WebkitUserSelect: 'none',
+      border: '1px solid transparent',
 
       dimmed: {
         color: '#bbbbbb',
@@ -53,7 +54,8 @@ export default class Button extends React.Component {
       },
 
       focus: {
-        outline: '1px auto -webkit-focus-ring-color',
+        outline: 'none',
+        border: '1px solid #B7B7B7',
       }
     }
   }, 'Button');
