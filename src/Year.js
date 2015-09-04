@@ -17,7 +17,7 @@ export default class Year extends React.Component {
   };
 
   render() {
-    let {year, outOfRange, active} = this.props;
+    let {year, outOfRange, active, ...props} = this.props;
     return (
       <Button
         size={{width: 75, height: 32}}

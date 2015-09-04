@@ -23,6 +23,7 @@ export default class Month extends React.Component {
     return (
       <Button
         size={{width: 75, height: 32}}
+        active={active}
         {...props}
         tabIndex={0}
         onClick={this.onClick}>
