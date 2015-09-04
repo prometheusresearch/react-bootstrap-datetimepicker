@@ -18,7 +18,7 @@ export default class Day extends React.Component {
         dimmed={outOfRange}
         active={active}
         {...props}
-        tabIndex={0}
+        tabIndex={-1}
         onClick={this.onClick}>
         {date.date()}
       </Button>
