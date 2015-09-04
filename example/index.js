@@ -16,6 +16,7 @@ let styled = Stylesheet({
 
   default: {
     boxSizing: 'border-box',
+    position: 'relative',
   },
 
   root: {
