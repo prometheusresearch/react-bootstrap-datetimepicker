@@ -6,9 +6,9 @@
 import autobind             from 'autobind-decorator';
 import moment               from 'moment';
 import React, {PropTypes}   from 'react';
-import Day                  from './Day';
 import {Themeable}          from 'rethemeable';
-import Styled               from './Styled';
+import Stylesheet           from '@prometheusresearch/react-stylesheet';
+import Day                  from './Day';
 import Button               from './Button';
 
 function renderDay(props) {
@@ -33,7 +33,7 @@ export default class DayView extends React.Component {
     renderDay
   };
 
-  static defaultTheme = Styled({
+  static defaultTheme = Stylesheet({
 
     day: {
       Component: 'td',

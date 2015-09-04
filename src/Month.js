@@ -24,6 +24,7 @@ export default class Month extends React.Component {
       <Button
         size={{width: 75, height: 32}}
         {...props}
+        tabIndex={0}
         onClick={this.onClick}>
         {MONTHS_SHORT[month]}
       </Button>

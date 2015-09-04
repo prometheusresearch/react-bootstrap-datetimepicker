@@ -23,7 +23,9 @@ export default class Year extends React.Component {
         size={{width: 75, height: 32}}
         dimmed={outOfRange}
         active={active}
-        onClick={this.onClick}>
+        {...props}
+        onClick={this.onClick}
+        tabIndex={0}>
         {year}
       </Button>
     );

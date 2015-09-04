@@ -4,7 +4,7 @@
 
 import React, {PropTypes} from 'react';
 import {Themeable}        from 'rethemeable';
-import Styled             from './Styled';
+import Stylesheet         from '@prometheusresearch/react-stylesheet';
 
 @Themeable
 export default class Button extends React.Component {
@@ -22,7 +22,7 @@ export default class Button extends React.Component {
     size: {}
   };
 
-  static defaultTheme = Styled({
+  static defaultTheme = Stylesheet({
     root: {
       borderRadius: 4,
       padding: 5,

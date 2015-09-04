@@ -4,8 +4,8 @@
 
 import React, {PropTypes} from 'react';
 import {Themeable}        from 'rethemeable';
+import Stylesheet         from '@prometheusresearch/react-stylesheet';
 import Button             from './Button';
-import Styled             from './Styled';
 
 @Themeable
 export default class Paginator extends React.Component {
@@ -18,7 +18,7 @@ export default class Paginator extends React.Component {
     children: PropTypes.node,
   };
 
-  static defaultTheme = Styled({
+  static defaultTheme = Stylesheet({
 
     controls: {
       height: 32,

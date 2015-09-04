@@ -13,7 +13,7 @@ import DateTimePicker     from './DateTimePicker';
 import DatePicker         from './DatePicker';
 import TimePicker         from './TimePicker';
 import Glyphicon          from './Glyphicon';
-import Styled             from './Styled';
+import Stylesheet         from '@prometheusresearch/react-stylesheet';
 import {Themeable}        from 'rethemeable';
 
 const TETHER_CONFIG = {
@@ -57,7 +57,64 @@ export default class DateTimeField extends React.Component {
     }
   };
 
-  static defaultTheme = Styled({
+  static defaultTheme = Stylesheet({
+
+    default: {
+      boxSizing: 'border-box',
+    },
+
+    field: {
+      display: 'table'
+    },
+
+    input: {
+      Component: 'input',
+
+      display: 'table-cell',
+      float: 'left',
+      marginBottom: 0,
+      width: '100%',
+      height: 34,
+      padding: '6px 12px',
+      fontSize: '14px',
+      lineHeight: 1.42857143,
+      color: '#555',
+      backgroundColor: '#fff',
+      backgroundImage: 'none',
+      border: '1px solid #ccc',
+      borderRadius: 4,
+      boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075)',
+      transition: 'border-color ease-in-out .15s,box-shadow ease-in-out .15s',
+      borderTopRightRadius: 0,
+      borderBottomRightRadius: 0,
+
+      focus: {
+        borderColor: '#66afe9',
+        outline: 0,
+        boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)',
+      }
+    },
+
+    button: {
+      Component: 'span',
+
+      cursor: 'pointer',
+      display: 'table-cell',
+      padding: '6px 12px',
+      fontSize: '14px',
+      fontWeight: 400,
+      lineHeight: 1,
+      verticalAlign: 'middle',
+      color: '#555',
+      textAlign: 'center',
+      backgroundColor: '#eee',
+      border: '1px solid #ccc',
+      borderLeft: 'none',
+      borderRadius: 4,
+      borderTopLeftRadius: 0,
+      borderBottomLeftRadius: 0,
+    },
+
     dropdown: {
       zIndex: 15000,
       padding: 5,
@@ -85,7 +142,7 @@ export default class DateTimeField extends React.Component {
       DateTimePicker.Mode.date;
 
     this.state = {
-      open: true,
+      open: false,
 
       activeMode: {
         self,
@@ -106,22 +163,21 @@ export default class DateTimeField extends React.Component {
     let {mode} = this.props;
     return (
       <div>
-        <div onFocus={this._open} onBlur={this._close} className="input-group date">
-          <input
+        <this.theme.field onFocus={this._open} onBlur={this._close}>
+          <this.theme.input
             ref="input"
             type="text"
-            className="form-control"
             onChange={this._onChange}
             value={this.state.inputValue}
             {...this.props.inputProps}
             />
-          <span
-            className="input-group-addon"
+          <this.theme.button
             onClick={this._onClick}
+            role="button"
             ref="button">
               <Glyphicon glyph={mode === DateTimePicker.Mode.time ? 'time' : 'calendar'} />
-          </span>
-        </div>
+          </this.theme.button>
+        </this.theme.field>
         {this.state.open &&
           <Layer
             didMount={this._onLayerDidMount}

@@ -11,7 +11,7 @@ import DatePicker         from './DatePicker';
 import TimePicker         from './TimePicker';
 import Glyphicon          from './Glyphicon';
 import Button             from './Button';
-import Styled             from './Styled';
+import Stylesheet         from '@prometheusresearch/react-stylesheet';
 
 let Mode = keyMirror({
   date: null,
@@ -41,7 +41,7 @@ export default class DateTimePicker extends React.Component {
     ]),
   }
 
-  static defaultTheme = Styled({
+  static defaultTheme = Stylesheet({
     root: {
       focus: {
         outline: 'none'
