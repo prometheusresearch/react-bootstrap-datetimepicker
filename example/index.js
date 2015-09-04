@@ -12,6 +12,15 @@ import moment           from 'moment';
 import Stylesheet       from '@prometheusresearch/react-stylesheet';
 import DateTimeField    from '../src/DateTimeField';
 
+let colors = {
+  brand0: 'rgb(1, 60, 154)',
+  brand1: 'rgba(1, 60, 154, 0.18)',
+
+  base0: 'rgb(248, 248, 248)',
+  base1: 'rgb(255, 255, 255)',
+
+};
+
 let styled = Stylesheet({
 
   default: {
@@ -21,7 +30,7 @@ let styled = Stylesheet({
 
   root: {
     height: '100%',
-    backgroundColor: '#fafafa',
+    backgroundColor: colors.base0,
     overflow: 'hidden',
   },
 
@@ -42,13 +51,13 @@ let styled = Stylesheet({
     fontSize: '24pt',
     Component: 'h1',
     fontWeight: 'bold',
-    color: '#666',
+    color: colors.brand0,
   },
 
   footer: {
     boxShadow: '0px 3px 10px rgba(58, 58, 58, 0.39)',
     height: 80,
-    backgroundColor: '#fff',
+    backgroundColor: colors.base1,
   },
 
   footerLine: {
@@ -64,6 +73,9 @@ let styled = Stylesheet({
     marginBottom: 20,
     paddingBottom: 20,
     borderBottom: '1px solid #ccc',
+    lastChild: {
+      borderBottom: 'none',
+    }
   },
 
   code: {
@@ -71,8 +83,8 @@ let styled = Stylesheet({
     borderRadius: 0,
     backgroundColor: '#fefefe',
     border: 'none',
-    borderBottom: '1px solid #eee',
-    borderTop: '1px solid #eee',
+    borderBottom: `1px solid ${colors.brand1}`,
+    borderTop: `1px solid ${colors.brand1}`,
     fontSize: '80%',
     color: '#888',
     padding: 10,
