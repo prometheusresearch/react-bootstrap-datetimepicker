@@ -161,10 +161,12 @@ export default class DateTimeField extends React.Component {
 
   render() {
     let {mode} = this.props;
+    let {open} = this.state;
     return (
       <div>
         <this.theme.field onFocus={this._open} onBlur={this._close}>
           <this.theme.input
+            state={{focus: open}}
             ref="input"
             type="text"
             onChange={this._onChange}
@@ -178,7 +180,7 @@ export default class DateTimeField extends React.Component {
               <Glyphicon glyph={mode === DateTimePicker.Mode.time ? 'time' : 'calendar'} />
           </this.theme.button>
         </this.theme.field>
-        {this.state.open &&
+        {open &&
           <Layer
             didMount={this._onLayerDidMount}
             didUpdate={this._onLayerDidUpdate}
