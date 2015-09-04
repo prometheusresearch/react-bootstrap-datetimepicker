@@ -10,7 +10,7 @@ import './index.css';
 import React            from 'react';
 import moment           from 'moment';
 import Stylesheet       from '@prometheusresearch/react-stylesheet';
-import DateTimeField    from '../src/DateTimeField';
+import DateTimeField    from '../src';
 
 let colors = {
   brand0: 'rgb(1, 60, 154)',
