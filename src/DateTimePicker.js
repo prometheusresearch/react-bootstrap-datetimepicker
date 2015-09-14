@@ -6,7 +6,6 @@
 import autobind           from 'autobind-decorator';
 import React, {PropTypes} from 'react';
 import keyMirror          from 'keymirror';
-import {Themeable}        from 'rethemeable';
 import DatePicker         from './DatePicker';
 import TimePicker         from './TimePicker';
 import Glyphicon          from './Glyphicon';
@@ -19,7 +18,7 @@ let Mode = keyMirror({
   datetime: null,
 });
 
-@Themeable
+@Stylesheet
 export default class DateTimePicker extends React.Component {
 
   static Mode = Mode;
@@ -41,21 +40,24 @@ export default class DateTimePicker extends React.Component {
     ]),
   }
 
-  static defaultTheme = Stylesheet({
-    root: {
+  static stylesheet = {
+    Self: {
       focus: {
         outline: 'none'
       }
-    }
-  }, 'DateTimePicker');
+    },
+    DatePicker: DatePicker,
+    TimePicker: TimePicker,
+  };
 
   render() {
     let {
       activeMode, mode,
       viewDate, onViewDate, selectedDate, onSelectedDate,
     } = this.props;
+    let {Self, DatePicker, TimePicker} = this.stylesheet;
     return (
-      <this.theme.root
+      <Self
         tabIndex={0}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}>
@@ -83,7 +85,7 @@ export default class DateTimePicker extends React.Component {
             selectedDate={selectedDate}
             onSelectedDate={onSelectedDate}
             />}
-      </this.theme.root>
+      </Self>
     );
   }
 

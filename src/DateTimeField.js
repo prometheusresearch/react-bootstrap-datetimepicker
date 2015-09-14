@@ -14,7 +14,6 @@ import DatePicker         from './DatePicker';
 import TimePicker         from './TimePicker';
 import Glyphicon          from './Glyphicon';
 import Stylesheet         from '@prometheusresearch/react-stylesheet';
-import {Themeable}        from 'rethemeable';
 
 const TETHER_CONFIG = {
   attachment: 'top left',
@@ -30,7 +29,7 @@ const TETHER_CONFIG = {
   ]
 };
 
-@Themeable
+@Stylesheet
 export default class DateTimeField extends React.Component {
 
   static propTypes = {
@@ -57,17 +56,13 @@ export default class DateTimeField extends React.Component {
     }
   };
 
-  static defaultTheme = Stylesheet({
+  static stylesheet = {
 
-    default: {
-      boxSizing: 'border-box',
-    },
-
-    field: {
+    Field: {
       display: 'table'
     },
 
-    input: {
+    Input: {
       Component: 'input',
 
       display: 'table-cell',
@@ -95,7 +90,7 @@ export default class DateTimeField extends React.Component {
       }
     },
 
-    button: {
+    Button: {
       Component: 'span',
 
       cursor: 'pointer',
@@ -115,7 +110,7 @@ export default class DateTimeField extends React.Component {
       borderBottomLeftRadius: 0,
     },
 
-    dropdown: {
+    Dropdown: {
       zIndex: 15000,
       padding: 5,
       backgroundColor: '#fff',
@@ -124,7 +119,7 @@ export default class DateTimeField extends React.Component {
       borderRadius: 4,
       boxShadow: '0 6px 12px rgba(0,0,0,.175)',
     }
-  }, 'DateTimeField');
+  };
 
   constructor(props) {
     super(props);
@@ -162,10 +157,11 @@ export default class DateTimeField extends React.Component {
   render() {
     let {mode} = this.props;
     let {open} = this.state;
+    let {Field, Input, Button, Dropdown} = this.stylesheet;
     return (
       <div>
-        <this.theme.field onFocus={this._open} onBlur={this._close}>
-          <this.theme.input
+        <Field onFocus={this._open} onBlur={this._close}>
+          <Input
             state={{focus: open}}
             ref="input"
             type="text"
@@ -173,19 +169,19 @@ export default class DateTimeField extends React.Component {
             value={this.state.inputValue}
             {...this.props.inputProps}
             />
-          <this.theme.button
+          <Button
             onClick={this._onClick}
             role="button"
             ref="button">
               <Glyphicon glyph={mode === DateTimePicker.Mode.time ? 'time' : 'calendar'} />
-          </this.theme.button>
-        </this.theme.field>
+          </Button>
+        </Field>
         {open &&
           <Layer
             didMount={this._onLayerDidMount}
             didUpdate={this._onLayerDidUpdate}
             willUnmount={this._onLayerWillUnmount}>
-            <this.theme.dropdown>
+            <Dropdown>
               <DateTimePicker
                 mode={this.state.mode}
                 activeMode={this.state.activeMode}
@@ -200,7 +196,7 @@ export default class DateTimeField extends React.Component {
                 onViewDate={this._onViewDate}
                 onSelectedDate={this._onSelectedDate}
                 />
-            </this.theme.dropdown>
+            </Dropdown>
           </Layer>}
       </div>
     );

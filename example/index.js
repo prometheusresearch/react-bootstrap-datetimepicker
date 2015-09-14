@@ -9,7 +9,7 @@ import './index.css';
 
 import React            from 'react';
 import moment           from 'moment';
-import Stylesheet       from '@prometheusresearch/react-stylesheet';
+import {stylesheet}     from '@prometheusresearch/react-stylesheet';
 import DateTimeField    from '../src';
 
 let colors = {
@@ -21,12 +21,7 @@ let colors = {
 
 };
 
-let styled = Stylesheet({
-
-  default: {
-    boxSizing: 'border-box',
-    position: 'relative',
-  },
+let styled = stylesheet({
 
   root: {
     height: '100%',
@@ -58,6 +53,7 @@ let styled = Stylesheet({
     boxShadow: '0px 3px 10px rgba(58, 58, 58, 0.39)',
     height: 80,
     backgroundColor: colors.base1,
+    position: 'relative',
   },
 
   footerLine: {

@@ -3,10 +3,9 @@
  */
 
 import React, {PropTypes} from 'react';
-import {Themeable}        from 'rethemeable';
 import Stylesheet         from '@prometheusresearch/react-stylesheet';
 
-@Themeable
+@Stylesheet
 export default class Button extends React.Component {
 
   static propTypes = {
@@ -22,8 +21,8 @@ export default class Button extends React.Component {
     size: {}
   };
 
-  static defaultTheme = Stylesheet({
-    root: {
+  static stylesheet = {
+    Self: {
       borderRadius: 4,
       padding: 5,
       display: 'inline-block',
@@ -58,7 +57,7 @@ export default class Button extends React.Component {
         border: '1px solid #B7B7B7',
       }
     }
-  }, 'Button');
+  };
 
   render() {
     let {
@@ -67,7 +66,7 @@ export default class Button extends React.Component {
       ...props
     } = this.props;
     return (
-      <this.theme.root
+      <this.stylesheet.Self
         {...props}
         state={{bold, dimmed, active}}
         style={{width, height, color, backgroundColor}}

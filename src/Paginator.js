@@ -3,11 +3,10 @@
  */
 
 import React, {PropTypes} from 'react';
-import {Themeable}        from 'rethemeable';
 import Stylesheet         from '@prometheusresearch/react-stylesheet';
 import Button             from './Button';
 
-@Themeable
+@Stylesheet
 export default class Paginator extends React.Component {
 
   static propTypes = {
@@ -18,23 +17,22 @@ export default class Paginator extends React.Component {
     children: PropTypes.node,
   };
 
-  static defaultTheme = Stylesheet({
-
-    controls: {
+  static stylesheet = {
+    Controls: {
       height: 32,
       textAlign: 'center'
     }
-  }, 'Paginator');
+  };
 
   render() {
     let {onPrev, onNext, onUp, title, children} = this.props;
     return (
       <div>
-        <this.theme.controls>
+        <this.stylesheet.Controls>
           <Button bold onClick={onPrev} size={{width: '15%', height: 32}}>‹</Button>
           <Button bold onClick={onUp} size={{width: '70%'}}>{title}</Button>
           <Button bold onClick={onNext} size={{width: '15%', height: 32}}>›</Button>
-        </this.theme.controls>
+        </this.stylesheet.Controls>
         <div>
           {children}
         </div>
