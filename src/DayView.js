@@ -25,6 +25,8 @@ export default class DayView extends React.Component {
     showToday: PropTypes.bool,
     showMonths: PropTypes.func.isRequired,
     renderDay: PropTypes.func,
+    style: PropTypes.object,
+    tableStyle: PropTypes.object,
   };
 
   static defaultProps = {
@@ -33,6 +35,10 @@ export default class DayView extends React.Component {
   };
 
   static stylesheet = {
+
+    Root: {
+      display: 'block',
+    },
 
     DayWrapper: {
       Component: 'td',
@@ -47,19 +53,27 @@ export default class DayView extends React.Component {
   };
 
   render() {
-    let {DayOfWeek} = this.stylesheet;
+    let {Root, DayOfWeek} = this.stylesheet;
     return (
-      <div style={{...this.props.style, display: 'block'}}>
+      <Root style={this.props.style}>
         <table style={this.props.tableStyle}>
           <thead>
             <tr>
-              <th><Button bold onClick={this.onPrevMonth} size={{width: '100%', height: 32}}>‹</Button></th>
+              <th>
+                <Button bold onClick={this.onPrevMonth} size={{width: '100%', height: 32}}>
+                  ‹
+                </Button>
+              </th>
               <th colSpan="5">
                 <Button bold size={{width: '100%'}} onClick={this.props.showMonths}>
                   {moment.months()[this.props.viewDate.month()]} {this.props.viewDate.year()}
                 </Button>
               </th>
-              <th><Button bold onClick={this.onNextMonth} size={{width: '100%', height: 32}}>›</Button></th>
+              <th>
+                <Button bold onClick={this.onNextMonth} size={{width: '100%', height: 32}}>
+                  ›
+                </Button>
+              </th>
             </tr>
             <tr>
               <DayOfWeek>Su</DayOfWeek>
@@ -75,7 +89,7 @@ export default class DayView extends React.Component {
             {this.renderDays()}
           </tbody>
         </table>
-      </div>
+      </Root>
     );
   }
 

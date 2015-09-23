@@ -5,6 +5,7 @@
 
 import autobind           from 'autobind-decorator';
 import debounce           from 'lodash/function/debounce';
+import emptyFunction      from 'empty/function';
 import moment             from 'moment';
 import React, {PropTypes} from 'react';
 import Tether             from 'tether';
@@ -48,12 +49,8 @@ export default class DateTimeField extends React.Component {
 
   static defaultProps = {
     format: 'x',
-    showToday: true,
-    viewMode: 'days',
     mode: DateTimePicker.Mode.datetime,
-    onChange: function (x) {
-      console.log(x);
-    }
+    onChange: emptyFunction,
   };
 
   static stylesheet = {
@@ -190,8 +187,6 @@ export default class DateTimeField extends React.Component {
                 onBlur={this._close}
                 viewDate={this.state.viewDate}
                 selectedDate={this.state.selectedDate}
-                showToday={this.props.showToday}
-                viewMode={this.props.viewMode}
                 mode={this.props.mode}
                 onViewDate={this._onViewDate}
                 onSelectedDate={this._onSelectedDate}
@@ -203,10 +198,10 @@ export default class DateTimeField extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var nextDate = moment(nextProps.dateTime, nextProps.format, true);
+    let nextDate = moment(nextProps.dateTime, nextProps.format, true);
     if(nextDate.isValid()) {
       return this.setState({
-        viewDate: nextDate.clone().startOf("month"),
+        viewDate: nextDate.clone().startOf('month'),
         selectedDate: nextDate.clone(),
         inputValue: nextDate.format(this._inputFormatFromProps(nextProps))
       });
@@ -229,9 +224,9 @@ export default class DateTimeField extends React.Component {
     } else if (props.mode === DateTimePicker.Mode.time) {
       return 'h:mm A';
     } else if (props.mode === DateTimePicker.Mode.date) {
-      return "MM/DD/YY";
+      return 'MM/DD/YY';
     } else {
-      return "MM/DD/YY h:mm A";
+      return 'MM/DD/YY h:mm A';
     }
   }
 
@@ -260,22 +255,22 @@ export default class DateTimeField extends React.Component {
   }
 
   @autobind
-  _onLayerWillUnmount(element) {
+  _onLayerWillUnmount() {
     this._tether.disable();
     this._tether = null;
   }
 
   @autobind
   _onChange(e) {
-    var value = e.target == null ? e : e.target.value;
-    var nextState = {inputValue: value};
-    var date = moment(value, this.inputFormat, true);
+    let value = e.target == null ? e : e.target.value; // eslint-disable-line eqeqeq
+    let nextState = {inputValue: value};
+    let date = moment(value, this.inputFormat, true);
     if (date.isValid()) {
       nextState = {
         ...nextState,
         selectedDate: date.clone(),
-        viewDate: date.clone().startOf("month")
-      }
+        viewDate: date.clone().startOf('month')
+      };
     }
     this.setState(
       nextState,

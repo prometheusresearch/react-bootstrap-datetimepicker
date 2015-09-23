@@ -33,6 +33,9 @@ export default class DateTimePicker extends React.Component {
     selectedDate: PropTypes.object.isRequired,
     onSelectedDate: PropTypes.func.isRequired,
 
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
+
     mode: PropTypes.oneOf([
       Mode.date,
       Mode.time,

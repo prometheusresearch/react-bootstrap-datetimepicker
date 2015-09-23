@@ -4,14 +4,20 @@
  */
 
 import autobind             from 'autobind-decorator';
-import cx                   from 'classnames';
 import React, {PropTypes}   from 'react';
 import Button               from './Button';
 
 export default class Day extends React.Component {
 
+  static propTypes = {
+    date: PropTypes.object,
+    active: PropTypes.bool,
+    outOfRange: PropTypes.bool,
+    onClick: PropTypes.func,
+  };
+
   render() {
-    let {date, className, active, outOfRange, ...props} = this.props;
+    let {date, active, outOfRange, ...props} = this.props;
     return (
       <Button
         size={{width: 32, height: 32}}

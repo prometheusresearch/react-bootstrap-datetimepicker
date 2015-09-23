@@ -32,6 +32,11 @@ export default class DatePicker extends React.Component {
       PropTypes.string,
       PropTypes.number
     ]),
+    renderDay: PropTypes.func,
+    renderMonth: PropTypes.func,
+    style: PropTypes.object,
+    pickerStyle: PropTypes.object,
+    pickerTableStyle: PropTypes.object,
   }
 
   render() {
