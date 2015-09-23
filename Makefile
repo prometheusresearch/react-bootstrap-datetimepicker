@@ -25,7 +25,7 @@ ci:
 test-coverage:
 	@NODE_ENV=test $(NODE) $(BIN)/isparta cover $(BIN)/_mocha -- $(TESTS)
 
-version-major version-minor version-patch: lint test
+version-major version-minor version-patch: lint
 	@npm version $(@:version-%=%)
 
 publish: build
