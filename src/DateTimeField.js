@@ -302,6 +302,17 @@ export default class DateTimeField extends React.Component {
     let value = selectedDate.format(this.props.format);
     this.props.onChange(value);
     this.setState({inputValue});
+    if (this.props.mode === DateTimePicker.Mode.datetime) {
+      if (this.state.activeMode.self === DateTimePicker.Mode.date) {
+        this._onActiveMode({
+          ...this.state.activeMode,
+          self: DateTimePicker.Mode.time
+        });
+        React.findDOMNode(this.refs.input).focus();
+      }
+    } else if (this.props.mode === DateTimePicker.Mode.date) {
+      this._close();
+    }
   }
 
   @autobind
