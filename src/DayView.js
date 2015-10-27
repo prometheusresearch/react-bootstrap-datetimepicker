@@ -3,18 +3,18 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind             from 'autobind-decorator';
-import moment               from 'moment';
-import React, {PropTypes}   from 'react';
-import Stylesheet           from '@prometheusresearch/react-stylesheet';
-import Day                  from './Day';
-import Button               from './Button';
+import autobind                       from 'autobind-decorator';
+import moment                         from 'moment';
+import React, {PropTypes}             from 'react';
+import {styleable, createStylesheet}  from '@prometheusresearch/react-stylesheet';
+import Day                            from './Day';
+import Button                         from './Button';
 
 function renderDay(props) {
   return <Day {...props} />;
 }
 
-@Stylesheet
+@styleable
 export default class DayView extends React.Component {
 
   static propTypes = {
@@ -34,7 +34,7 @@ export default class DayView extends React.Component {
     renderDay
   };
 
-  static stylesheet = {
+  static stylesheet = createStylesheet({
 
     Root: {
       display: 'block',
@@ -50,7 +50,7 @@ export default class DayView extends React.Component {
       textAlign: 'center',
       padding: 5
     }
-  };
+  });
 
   render() {
     let {Root, DayOfWeek} = this.stylesheet;

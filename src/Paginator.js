@@ -2,11 +2,11 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import React, {PropTypes} from 'react';
-import Stylesheet         from '@prometheusresearch/react-stylesheet';
-import Button             from './Button';
+import React, {PropTypes}             from 'react';
+import {styleable, createStylesheet}  from '@prometheusresearch/react-stylesheet';
+import Button                         from './Button';
 
-@Stylesheet
+@styleable
 export default class Paginator extends React.Component {
 
   static propTypes = {
@@ -17,12 +17,12 @@ export default class Paginator extends React.Component {
     children: PropTypes.node,
   };
 
-  static stylesheet = {
+  static stylesheet = createStylesheet({
     Controls: {
       height: 32,
       textAlign: 'center'
     }
-  };
+  });
 
   render() {
     let {onPrev, onNext, onUp, title, children} = this.props;

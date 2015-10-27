@@ -3,18 +3,18 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind           from 'autobind-decorator';
-import debounce           from 'lodash/function/debounce';
-import emptyFunction      from 'empty/function';
-import moment             from 'moment';
-import React, {PropTypes} from 'react';
-import Tether             from 'tether';
-import Layer              from './Layer';
-import DateTimePicker     from './DateTimePicker';
-import DatePicker         from './DatePicker';
-import TimePicker         from './TimePicker';
-import Glyphicon          from './Glyphicon';
-import Stylesheet         from '@prometheusresearch/react-stylesheet';
+import autobind                      from 'autobind-decorator';
+import debounce                      from 'lodash/function/debounce';
+import emptyFunction                 from 'empty/function';
+import moment                        from 'moment';
+import React, {PropTypes}            from 'react';
+import Tether                        from 'tether';
+import Layer                         from './Layer';
+import DateTimePicker                from './DateTimePicker';
+import DatePicker                    from './DatePicker';
+import TimePicker                    from './TimePicker';
+import Glyphicon                     from './Glyphicon';
+import {styleable, createStylesheet} from '@prometheusresearch/react-stylesheet';
 
 const TETHER_CONFIG = {
   attachment: 'top left',
@@ -30,7 +30,7 @@ const TETHER_CONFIG = {
   ]
 };
 
-@Stylesheet
+@styleable
 export default class DateTimeField extends React.Component {
 
   static propTypes = {
@@ -53,7 +53,7 @@ export default class DateTimeField extends React.Component {
     onChange: emptyFunction,
   };
 
-  static stylesheet = {
+  static stylesheet = createStylesheet({
 
     Field: {
       display: 'table'
@@ -116,7 +116,7 @@ export default class DateTimeField extends React.Component {
       borderRadius: 4,
       boxShadow: '0 6px 12px rgba(0,0,0,.175)',
     }
-  };
+  });
 
   constructor(props) {
     super(props);

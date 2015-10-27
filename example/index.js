@@ -7,10 +7,10 @@ import 'normalize.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 
-import React            from 'react';
-import moment           from 'moment';
-import {stylesheet}     from '@prometheusresearch/react-stylesheet';
-import DateTimeField    from '../src';
+import React              from 'react';
+import moment             from 'moment';
+import {createStylesheet} from '@prometheusresearch/react-stylesheet';
+import DateTimeField      from '../src';
 
 let colors = {
   brand0: 'rgb(1, 60, 154)',
@@ -21,7 +21,7 @@ let colors = {
 
 };
 
-let styled = stylesheet({
+let styled = createStylesheet({
 
   root: {
     height: '100%',

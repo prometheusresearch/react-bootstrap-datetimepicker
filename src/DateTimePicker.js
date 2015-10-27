@@ -3,14 +3,14 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind           from 'autobind-decorator';
-import React, {PropTypes} from 'react';
-import keyMirror          from 'keymirror';
-import DatePicker         from './DatePicker';
-import TimePicker         from './TimePicker';
-import Glyphicon          from './Glyphicon';
-import Button             from './Button';
-import Stylesheet         from '@prometheusresearch/react-stylesheet';
+import autobind                      from 'autobind-decorator';
+import React, {PropTypes}            from 'react';
+import keyMirror                     from 'keymirror';
+import DatePicker                    from './DatePicker';
+import TimePicker                    from './TimePicker';
+import Glyphicon                     from './Glyphicon';
+import Button                        from './Button';
+import {styleable, createStylesheet} from '@prometheusresearch/react-stylesheet';
 
 let Mode = keyMirror({
   date: null,
@@ -18,7 +18,7 @@ let Mode = keyMirror({
   datetime: null,
 });
 
-@Stylesheet
+@styleable
 export default class DateTimePicker extends React.Component {
 
   static Mode = Mode;
@@ -43,7 +43,7 @@ export default class DateTimePicker extends React.Component {
     ]),
   }
 
-  static stylesheet = {
+  static stylesheet = createStylesheet({
     Self: {
       focus: {
         outline: 'none'
@@ -51,7 +51,7 @@ export default class DateTimePicker extends React.Component {
     },
     DatePicker: DatePicker,
     TimePicker: TimePicker,
-  };
+  });
 
   render() {
     let {
