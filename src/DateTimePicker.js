@@ -10,7 +10,8 @@ import DatePicker                    from './DatePicker';
 import TimePicker                    from './TimePicker';
 import Glyphicon                     from './Glyphicon';
 import Button                        from './Button';
-import {styleable, createStylesheet} from '@prometheusresearch/react-stylesheet';
+import * as Stylesheet               from 'react-stylesheet';
+import {style as styleDOM}           from 'react-dom-stylesheet';
 
 let Mode = keyMirror({
   date: null,
@@ -18,7 +19,6 @@ let Mode = keyMirror({
   datetime: null,
 });
 
-@styleable
 export default class DateTimePicker extends React.Component {
 
   static Mode = Mode;
@@ -43,7 +43,7 @@ export default class DateTimePicker extends React.Component {
     ]),
   }
 
-  static stylesheet = createStylesheet({
+  static stylesheet = Stylesheet.create({
     Self: {
       focus: {
         outline: 'none'
@@ -51,14 +51,14 @@ export default class DateTimePicker extends React.Component {
     },
     DatePicker: DatePicker,
     TimePicker: TimePicker,
-  });
+  }, {styleDOM});
 
   render() {
     let {
       activeMode, mode,
       viewDate, onViewDate, selectedDate, onSelectedDate,
     } = this.props;
-    let {Self, DatePicker, TimePicker} = this.stylesheet;
+    let {Self, DatePicker, TimePicker} = this.constructor.stylesheet;
     return (
       <Self
         tabIndex={0}

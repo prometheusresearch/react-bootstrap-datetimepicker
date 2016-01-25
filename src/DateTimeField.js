@@ -8,13 +8,15 @@ import debounce                      from 'lodash/function/debounce';
 import emptyFunction                 from 'empty/function';
 import moment                        from 'moment';
 import React, {PropTypes}            from 'react';
+import ReactDOM                      from 'react-dom';
 import Tether                        from 'tether';
 import Layer                         from './Layer';
 import DateTimePicker                from './DateTimePicker';
 import DatePicker                    from './DatePicker';
 import TimePicker                    from './TimePicker';
 import Glyphicon                     from './Glyphicon';
-import {styleable, createStylesheet} from '@prometheusresearch/react-stylesheet';
+import * as Stylesheet               from 'react-stylesheet';
+import {style as styleDOM}           from 'react-dom-stylesheet';
 
 const TETHER_CONFIG = {
   attachment: 'top left',
@@ -30,7 +32,6 @@ const TETHER_CONFIG = {
   ]
 };
 
-@styleable
 export default class DateTimeField extends React.Component {
 
   static propTypes = {
@@ -53,7 +54,7 @@ export default class DateTimeField extends React.Component {
     onChange: emptyFunction,
   };
 
-  static stylesheet = createStylesheet({
+  static stylesheet = Stylesheet.create({
 
     Field: {
       display: 'table'
@@ -116,7 +117,7 @@ export default class DateTimeField extends React.Component {
       borderRadius: 4,
       boxShadow: '0 6px 12px rgba(0,0,0,.175)',
     }
-  });
+  }, {styleDOM});
 
   constructor(props) {
     super(props);
@@ -154,7 +155,7 @@ export default class DateTimeField extends React.Component {
   render() {
     let {mode} = this.props;
     let {open} = this.state;
-    let {Field, Input, Button, Dropdown} = this.stylesheet;
+    let {Field, Input, Button, Dropdown} = this.constructor.stylesheet;
     return (
       <div>
         <Field onFocus={this._open} onBlur={this._close}>
@@ -237,12 +238,12 @@ export default class DateTimeField extends React.Component {
 
   @autobind
   _onClick() {
-    React.findDOMNode(this.refs.input).focus();
+    ReactDOM.findDOMNode(this.refs.input).focus();
   }
 
   @autobind
   _onLayerDidMount(element) {
-    let target = React.findDOMNode(this.refs.input);
+    let target = ReactDOM.findDOMNode(this.refs.input);
     this._tether = new Tether({element, target, ...TETHER_CONFIG});
   }
 
@@ -303,7 +304,7 @@ export default class DateTimeField extends React.Component {
           ...this.state.activeMode,
           self: DateTimePicker.Mode.time
         });
-        React.findDOMNode(this.refs.input).focus();
+        ReactDOM.findDOMNode(this.refs.input).focus();
       }
     } else if (this.props.mode === DateTimePicker.Mode.date) {
       this._close();

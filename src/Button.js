@@ -3,9 +3,9 @@
  */
 
 import React, {PropTypes} from 'react';
-import {styleable, createStylesheet} from '@prometheusresearch/react-stylesheet';
+import * as Stylesheet from 'react-stylesheet';
+import {style as styleDOM} from 'react-dom-stylesheet'
 
-@styleable
 export default class Button extends React.Component {
 
   static propTypes = {
@@ -21,7 +21,7 @@ export default class Button extends React.Component {
     size: {}
   };
 
-  static stylesheet = createStylesheet({
+  static stylesheet = Stylesheet.create({
     Self: {
       borderRadius: 4,
       padding: 5,
@@ -57,7 +57,7 @@ export default class Button extends React.Component {
         border: '1px solid #B7B7B7',
       }
     }
-  });
+  }, {styleDOM});
 
   render() {
     let {
@@ -65,8 +65,9 @@ export default class Button extends React.Component {
       color, backgroundColor,
       ...props
     } = this.props;
+    let stylesheet = this.constructor.stylesheet;
     return (
-      <this.stylesheet.Self
+      <stylesheet.Self
         {...props}
         state={{bold, dimmed, active}}
         style={{width, height, color, backgroundColor}}

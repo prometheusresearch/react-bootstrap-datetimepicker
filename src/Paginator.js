@@ -3,10 +3,10 @@
  */
 
 import React, {PropTypes}             from 'react';
-import {styleable, createStylesheet}  from '@prometheusresearch/react-stylesheet';
+import * as Stylesheet                from 'react-stylesheet';
+import {style as styleDOM}            from 'react-dom-stylesheet';
 import Button                         from './Button';
 
-@styleable
 export default class Paginator extends React.Component {
 
   static propTypes = {
@@ -17,22 +17,23 @@ export default class Paginator extends React.Component {
     children: PropTypes.node,
   };
 
-  static stylesheet = createStylesheet({
+  static stylesheet = Stylesheet.create({
     Controls: {
       height: 32,
       textAlign: 'center'
     }
-  });
+  }, {styleDOM});
 
   render() {
     let {onPrev, onNext, onUp, title, children} = this.props;
+    let stylesheet = this.constructor.stylesheet;
     return (
       <div>
-        <this.stylesheet.Controls>
+        <stylesheet.Controls>
           <Button bold onClick={onPrev} size={{width: '15%', height: 32}}>‹</Button>
           <Button bold onClick={onUp} size={{width: '70%'}}>{title}</Button>
           <Button bold onClick={onNext} size={{width: '15%', height: 32}}>›</Button>
-        </this.stylesheet.Controls>
+        </stylesheet.Controls>
         <div>
           {children}
         </div>

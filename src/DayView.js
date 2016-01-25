@@ -6,7 +6,8 @@
 import autobind                       from 'autobind-decorator';
 import moment                         from 'moment';
 import React, {PropTypes}             from 'react';
-import {styleable, createStylesheet}  from '@prometheusresearch/react-stylesheet';
+import * as Stylesheet                from 'react-stylesheet';
+import {style as styleDOM}            from 'react-dom-stylesheet';
 import Day                            from './Day';
 import Button                         from './Button';
 
@@ -14,7 +15,6 @@ function renderDay(props) {
   return <Day {...props} />;
 }
 
-@styleable
 export default class DayView extends React.Component {
 
   static propTypes = {
@@ -34,7 +34,7 @@ export default class DayView extends React.Component {
     renderDay
   };
 
-  static stylesheet = createStylesheet({
+  static stylesheet = Stylesheet.create({
 
     Root: {
       display: 'block',
@@ -50,10 +50,10 @@ export default class DayView extends React.Component {
       textAlign: 'center',
       padding: 5
     }
-  });
+  }, {styleDOM});
 
   render() {
-    let {Root, DayOfWeek} = this.stylesheet;
+    let {Root, DayOfWeek} = this.constructor.stylesheet;
     return (
       <Root style={this.props.style}>
         <table style={this.props.tableStyle}>
@@ -105,7 +105,7 @@ export default class DayView extends React.Component {
   }
 
   renderDays() {
-    let {DayWrapper} = this.stylesheet;
+    let {DayWrapper} = this.constructor.stylesheet;
     let {viewDate, selectedDate, showToday} = this.props;
 
     let today = moment();

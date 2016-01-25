@@ -4,6 +4,7 @@
 
 import autobind            from 'autobind-decorator';
 import React, {PropTypes}  from 'react';
+import ReactDOM            from 'react-dom';
 
 export default class Layer extends React.Component {
 
@@ -26,14 +27,14 @@ export default class Layer extends React.Component {
 
   componentDidMount() {
     this._element = this._createElement();
-    this._component = React.render(
+    this._component = ReactDOM.render(
       React.Children.only(this.props.children),
       this._element,
       this._didMount);
   }
 
   componentDidUpdate() {
-    this._component = React.render(
+    this._component = ReactDOM.render(
       React.Children.only(this.props.children),
       this._element,
       this._didUpdate);
@@ -43,7 +44,7 @@ export default class Layer extends React.Component {
     if (this.props.willUnmount) {
       this.props.willUnmount(this._element);
     }
-    React.unmountComponentAtNode(this._element);
+    ReactDOM.unmountComponentAtNode(this._element);
     document.body.removeChild(this._element);
     this._element = null;
     this._component = null;
