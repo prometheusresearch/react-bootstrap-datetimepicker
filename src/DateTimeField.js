@@ -56,6 +56,8 @@ export default class DateTimeField extends React.Component {
 
   static stylesheet = Stylesheet.create({
 
+    Root: 'div',
+
     Field: {
       display: 'table'
     },
@@ -155,9 +157,9 @@ export default class DateTimeField extends React.Component {
   render() {
     let {mode} = this.props;
     let {open} = this.state;
-    let {Field, Input, Button, Dropdown} = this.constructor.stylesheet;
+    let {Root, Field, Input, Button, Dropdown} = this.constructor.stylesheet;
     return (
-      <div>
+      <Root>
         <Field onFocus={this._open} onBlur={this._close}>
           <Input
             state={{focus: open}}
@@ -171,7 +173,7 @@ export default class DateTimeField extends React.Component {
             onClick={this._onClick}
             role="button"
             ref="button">
-              <Glyphicon glyph={mode === DateTimePicker.Mode.time ? 'time' : 'calendar'} />
+            <Glyphicon glyph={mode === DateTimePicker.Mode.time ? 'time' : 'calendar'} />
           </Button>
         </Field>
         {open &&
@@ -194,7 +196,7 @@ export default class DateTimeField extends React.Component {
                 />
             </Dropdown>
           </Layer>}
-      </div>
+      </Root>
     );
   }
 
