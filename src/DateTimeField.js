@@ -183,7 +183,6 @@ export default class DateTimeField extends React.Component {
             willUnmount={this._onLayerWillUnmount}>
             <Dropdown>
               <DateTimePicker
-                mode={this.state.mode}
                 activeMode={this.state.activeMode}
                 onActiveMode={this._onActiveMode}
                 onFocus={this._open}
