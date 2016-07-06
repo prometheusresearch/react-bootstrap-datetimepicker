@@ -4,7 +4,7 @@
 
 import React, {PropTypes} from 'react';
 import * as Stylesheet from 'react-stylesheet';
-import {style as styleDOM} from 'react-dom-stylesheet'
+import {style as styleHostComponent} from 'react-dom-stylesheet'
 
 export default class Button extends React.Component {
 
@@ -57,7 +57,7 @@ export default class Button extends React.Component {
         border: '1px solid #B7B7B7',
       }
     }
-  }, {styleDOM});
+  }, {styleHostComponent});
 
   render() {
     let {

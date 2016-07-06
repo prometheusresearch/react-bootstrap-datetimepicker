@@ -11,7 +11,7 @@ import TimePicker                    from './TimePicker';
 import Glyphicon                     from './Glyphicon';
 import Button                        from './Button';
 import * as Stylesheet               from 'react-stylesheet';
-import {style as styleDOM}           from 'react-dom-stylesheet';
+import {style as styleHostComponent}           from 'react-dom-stylesheet';
 
 let Mode = keyMirror({
   date: null,
@@ -51,7 +51,7 @@ export default class DateTimePicker extends React.Component {
     },
     DatePicker: DatePicker,
     TimePicker: TimePicker,
-  }, {styleDOM});
+  }, {styleHostComponent});
 
   render() {
     let {

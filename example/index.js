@@ -10,7 +10,7 @@ import './index.css';
 import React              from 'react';
 import moment             from 'moment';
 import {create as createStylesheet} from 'react-stylesheet';
-import {style as styleDOM} from 'react-dom-stylesheet';
+import {style as styleHostComponent} from 'react-dom-stylesheet';
 import DateTimeField      from '../src';
 
 let colors = {
@@ -87,7 +87,7 @@ let styled = createStylesheet({
     padding: 10,
     marginBottom: 10
   }
-}, {styleDOM});
+}, {styleHostComponent});
 
 export default class Example extends React.Component {
 

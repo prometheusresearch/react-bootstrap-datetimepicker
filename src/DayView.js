@@ -7,7 +7,7 @@ import autobind                       from 'autobind-decorator';
 import moment                         from 'moment';
 import React, {PropTypes}             from 'react';
 import * as Stylesheet                from 'react-stylesheet';
-import {style as styleDOM}            from 'react-dom-stylesheet';
+import {style as styleHostComponent}            from 'react-dom-stylesheet';
 import Day                            from './Day';
 import Button                         from './Button';
 
@@ -50,7 +50,7 @@ export default class DayView extends React.Component {
       textAlign: 'center',
       padding: 5
     }
-  }, {styleDOM});
+  }, {styleHostComponent});
 
   render() {
     let {Root, DayOfWeek} = this.constructor.stylesheet;

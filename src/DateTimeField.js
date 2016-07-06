@@ -16,7 +16,7 @@ import DatePicker                    from './DatePicker';
 import TimePicker                    from './TimePicker';
 import Glyphicon                     from './Glyphicon';
 import * as Stylesheet               from 'react-stylesheet';
-import {style as styleDOM}           from 'react-dom-stylesheet';
+import {style as styleHostComponent}           from 'react-dom-stylesheet';
 
 const TETHER_CONFIG = {
   attachment: 'top left',
@@ -119,7 +119,7 @@ export default class DateTimeField extends React.Component {
       borderRadius: 4,
       boxShadow: '0 6px 12px rgba(0,0,0,.175)',
     }
-  }, {styleDOM});
+  }, {styleHostComponent});
 
   constructor(props) {
     super(props);

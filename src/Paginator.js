@@ -4,7 +4,7 @@
 
 import React, {PropTypes}             from 'react';
 import * as Stylesheet                from 'react-stylesheet';
-import {style as styleDOM}            from 'react-dom-stylesheet';
+import {style as styleHostComponent}            from 'react-dom-stylesheet';
 import Button                         from './Button';
 
 export default class Paginator extends React.Component {
@@ -22,7 +22,7 @@ export default class Paginator extends React.Component {
       height: 32,
       textAlign: 'center'
     }
-  }, {styleDOM});
+  }, {styleHostComponent});
 
   render() {
     let {onPrev, onNext, onUp, title, children} = this.props;
