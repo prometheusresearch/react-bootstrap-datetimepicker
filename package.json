@@ -1,6 +1,6 @@
 {
   "name": "@prometheusresearch/react-datetimepicker",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "DateTime Picker component for  React",
   "homepage": "http://github.com/prometheusresearch/react-datetimepicker",
   "repository": {
