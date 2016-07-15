@@ -4,11 +4,11 @@
  */
 
 import autobind                      from 'autobind-decorator';
+import * as Icon from './Icon';
 import React, {PropTypes}            from 'react';
 import keyMirror                     from 'keymirror';
 import DatePicker                    from './DatePicker';
 import TimePicker                    from './TimePicker';
-import Glyphicon                     from './Glyphicon';
 import Button                        from './Button';
 import * as Stylesheet               from 'react-stylesheet';
 import {style as styleHostComponent}           from 'react-dom-stylesheet';
@@ -75,10 +75,10 @@ export default class DateTimePicker extends React.Component {
             />}
         {mode === Mode.datetime &&
           <Button
-            size={{width: '100%'}}
-            onClick={this._onActiveMode}>
-            <Glyphicon glyph={activeMode.self === Mode.date ? 'time' : 'calendar'} />
-          </Button>}
+            width={7}
+            icon={activeMode.self === Mode.date ? <Icon.Clock /> : <Icon.Calendar />}
+            onClick={this._onActiveMode}
+            />}
         {activeMode.self === Mode.time &&
           <TimePicker
             activeMode={activeMode.time}

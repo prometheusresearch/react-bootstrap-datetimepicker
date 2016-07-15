@@ -1,15 +1,13 @@
 /**
  * @copyright 2014 Quri, Loïc CHOLLIER
- * @copyright 2015 Prometheus Research, LLC
+ * @copyright 2015-present Prometheus Research, LLC
  */
 
-import autobind           from 'autobind-decorator';
-import keyMirror          from 'keymirror';
-import React, {PropTypes} from 'react';
-import MinuteView         from './MinuteView';
-import HourView           from './HourView';
-import Glyphicon          from './Glyphicon';
-import Button             from './Button';
+import * as React from 'react';
+import * as ReactUI from '@prometheusresearch/react-ui';
+import {css} from '@prometheusresearch/react-ui/stylesheet';
+import keyMirror from 'keymirror';
+import Button from './Button';
 
 let Mode = keyMirror({
   time: null,
@@ -17,114 +15,139 @@ let Mode = keyMirror({
   hours: null,
 });
 
+const HOUR_RANGE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+class HourButton extends React.Component {
+
+  state = {hover: false};
+
+  onMouseEnter = () => this.setState({hover: true});
+  onMouseLeave = () => this.setState({hover: false});
+
+  render() {
+    let {date, selectedDate, onSelectedDate, ...props} = this.props;
+    let {hover} = this.state;
+    let selected = selectedDate.hour() === date.hour();
+    return (
+      <ReactUI.Block
+        style={{borderBottom: hover
+          ? css.border(1, css.rgb(180))
+          : css.border(1,css.color.transparent)}}
+        onMouseEnter={this.onMouseEnter}
+        onMouseLeave={this.onMouseLeave}>
+        <Button cellSize={24} width={1} emphasis={selected} onClick={this.onClick}>
+          {date.format('HH')}
+        </Button>
+        <MinuteButton
+          hover={hover}
+          selectedDate={selectedDate}
+          renderSelected={minutes => minutes <= 20}
+          date={date}
+          date={date.clone().add(15, 'minutes')}
+          onSelectedDate={onSelectedDate}
+          />
+        <MinuteButton
+          hover={hover}
+          selectedDate={selectedDate}
+          renderSelected={minutes => minutes > 20 && minutes < 40}
+          date={date.clone().add(30, 'minutes')}
+          onSelectedDate={onSelectedDate}
+          />
+        <MinuteButton
+          hover={hover}
+          selectedDate={selectedDate}
+          renderSelected={minutes => minutes >= 40}
+          date={date.clone().add(45, 'minutes')}
+          onSelectedDate={onSelectedDate}
+          />
+      </ReactUI.Block>
+    );
+  }
+
+  onClick = () =>
+    this.props.onSelectedDate(this.props.date);
+}
+
+class MinuteButton extends React.Component {
+
+  render() {
+    let {date, hover, selectedDate, renderSelected, ...props} = this.props;
+    let selected = (
+      selectedDate.hour() === date.hour() &&
+      selectedDate.minutes() === date.minutes()
+    );
+    if (
+      renderSelected && !hover &&
+      renderSelected(selectedDate.minutes()) &&
+      selectedDate.hour() === date.hour()
+    ) {
+      selected = true;
+      date = selectedDate;
+    }
+    let children = hover || selected
+      ? ` : ${date.format('mm')}`
+      : null;
+    return (
+      <Button
+        onClick={this.onClick}
+        width={1.1}
+        cellSize={24}
+        emphasis={selected}>
+        {children}
+      </Button>
+    );
+  }
+
+  onClick = () =>
+    this.props.onSelectedDate(this.props.date);
+}
+
 export default class TimePicker extends React.Component {
 
   static Mode = Mode;
 
   static propTypes = {
-    activeMode: PropTypes.oneOf([Mode.time, Mode.minutes, Mode.hours]).isRequired,
-    onActiveMode: PropTypes.func.isRequired,
-    viewDate: PropTypes.object.isRequired,
-    onViewDate: PropTypes.func.isRequired,
-    selectedDate: PropTypes.object.isRequired,
-    onSelectedDate: PropTypes.func.isRequired,
+    onActiveMode: React.PropTypes.func.isRequired,
+    viewDate: React.PropTypes.object.isRequired,
+    onViewDate: React.PropTypes.func.isRequired,
+    selectedDate: React.PropTypes.object.isRequired,
+    onSelectedDate: React.PropTypes.func.isRequired,
   };
 
   render() {
-    let {activeMode} = this.props;
+    let {viewDate, selectedDate, onSelectedDate} = this.props;
+    let startDate = startOfDay(viewDate);
+    let dayRange = HOUR_RANGE.map(d => startDate.clone().add(d, 'hours'));
+    let nightRange = HOUR_RANGE.map(d => startDate.clone().add(d + 12, 'hours'));
     return (
-      <div>
-        {activeMode === Mode.time &&
-          <div>
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                    <Button onClick={this.onNextHour}><Glyphicon glyph="chevron-up" /></Button>
-                  </td>
-                  <td />
-                  <td>
-                    <Button onClick={this.onNextMinute}><Glyphicon glyph="chevron-up" /></Button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <Button onClick={this._setHoursMode}>
-                      {this.props.selectedDate.format('HH')}
-                    </Button>
-                  </td>
-                  <td />
-                  <td>
-                    <Button onClick={this._setMinutesMode}>
-                      {this.props.selectedDate.format('mm')}
-                    </Button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <Button onClick={this.onPrevHour}><Glyphicon glyph="chevron-down" /></Button>
-                  </td>
-                  <td />
-                  <td>
-                    <Button onClick={this.onPrevMinute}><Glyphicon glyph="chevron-down" /></Button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>}
-        {activeMode === Mode.hours &&
-          <HourView
-            onSelectedDate={this.props.onSelectedDate}
-            selectedDate={this.props.selectedDate}
-            onClose={this._setTimeMode}
-            />}
-        {activeMode === Mode.minutes &&
-          <MinuteView
-            onSelectedDate={this.props.onSelectedDate}
-            selectedDate={this.props.selectedDate}
-            onClose={this._setTimeMode}
-            />}
-      </div>
+      <ReactUI.Block style={{borderTop: css.border(1, css.rgb(180))}}>
+        <ReactUI.Block inline style={{borderRight: css.border(1, css.rgb(180))}}>
+          {dayRange.map(date =>
+            <ReactUI.Block>
+              <HourButton
+                key={date.hour()}
+                date={date}
+                selectedDate={selectedDate}
+                onSelectedDate={onSelectedDate}
+                />
+            </ReactUI.Block>)}
+        </ReactUI.Block>
+        <ReactUI.Block inline>
+          {nightRange.map(date =>
+            <ReactUI.Block>
+              <HourButton
+                key={date.hour()}
+                date={date}
+                selectedDate={selectedDate}
+                onSelectedDate={onSelectedDate}
+                />
+            </ReactUI.Block>)}
+        </ReactUI.Block>
+      </ReactUI.Block>
     );
   }
+}
 
-  @autobind
-  onPrevHour() {
-    let selectedDate = this.props.selectedDate.subtract(1, 'hours');
-    this.props.onSelectedDate(selectedDate);
-  }
-
-  @autobind
-  onNextHour() {
-    let selectedDate = this.props.selectedDate.add(1, 'hours');
-    this.props.onSelectedDate(selectedDate);
-  }
-
-  @autobind
-  onPrevMinute() {
-    let selectedDate = this.props.selectedDate.subtract(1, 'minutes');
-    this.props.onSelectedDate(selectedDate);
-  }
-
-  @autobind
-  onNextMinute() {
-    let selectedDate = this.props.selectedDate.add(1, 'minutes');
-    this.props.onSelectedDate(selectedDate);
-  }
-
-  @autobind
-  _setTimeMode() {
-    this.props.onActiveMode(Mode.time);
-  }
-
-  @autobind
-  _setMinutesMode() {
-    this.props.onActiveMode(Mode.minutes);
-  }
-
-  @autobind
-  _setHoursMode() {
-    this.props.onActiveMode(Mode.hours);
-  }
-
+function startOfDay(date) {
+  return date.clone().hours(0).minutes(0).seconds(0);
 }

@@ -3,24 +3,25 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
+import * as ReactUI from '@prometheusresearch/react-ui';
+import {css, style} from '@prometheusresearch/react-ui/stylesheet';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as Icon from './Icon';
 import autobind                      from 'autobind-decorator';
 import debounce                      from 'lodash/function/debounce';
 import emptyFunction                 from 'empty/function';
 import moment                        from 'moment';
-import React, {PropTypes}            from 'react';
-import ReactDOM                      from 'react-dom';
 import Tether                        from 'tether';
 import Layer                         from './Layer';
 import DateTimePicker                from './DateTimePicker';
 import DatePicker                    from './DatePicker';
 import TimePicker                    from './TimePicker';
-import Glyphicon                     from './Glyphicon';
-import * as Stylesheet               from 'react-stylesheet';
-import {style as styleHostComponent}           from 'react-dom-stylesheet';
 
 const TETHER_CONFIG = {
   attachment: 'top left',
   targetAttachment: 'bottom left',
+  offset: '-5px 0px',
   optimizations: {
     moveElement: false
   },
@@ -32,16 +33,41 @@ const TETHER_CONFIG = {
   ]
 };
 
+let IconButton = style(ReactUI.Button, {
+  textWidth: 300,
+
+  text: css.rgb(136),
+  textHover: css.rgb(68),
+  textFocus: css.rgb(0, 126, 229),
+  textActive: css.rgb(68),
+  textDisabled: css.rgb(200),
+
+  background: css.rgb(255),
+  backgroundHover: css.rgb(255),
+  backgroundFocus: css.rgb(255),
+  backgroundActive: css.rgb(255),
+  backgroundDisabled: css.rgb(255),
+
+  border: css.color.transparent,
+  borderHover: css.color.transparent,
+  borderFocus: css.color.transparent,
+  borderActive: css.color.transparent,
+  borderDisabled: css.color.transparent,
+
+  shadowFocus: css.none,
+  shadowActive: css.none,
+}, {displayName: 'IconButton'});
+
 export default class DateTimeField extends React.Component {
 
   static propTypes = {
-    dateTime: PropTypes.string,
-    onChange: PropTypes.func,
-    format: PropTypes.string,
-    inputProps: PropTypes.object,
-    inputFormat: PropTypes.string,
-    defaultText: PropTypes.string,
-    mode: PropTypes.oneOf([
+    dateTime: React.PropTypes.string,
+    onChange: React.PropTypes.func,
+    format: React.PropTypes.string,
+    inputProps: React.PropTypes.object,
+    inputFormat: React.PropTypes.string,
+    defaultText: React.PropTypes.string,
+    mode: React.PropTypes.oneOf([
       DateTimePicker.Mode.datetime,
       DateTimePicker.Mode.time,
       DateTimePicker.Mode.date
@@ -53,73 +79,6 @@ export default class DateTimeField extends React.Component {
     mode: DateTimePicker.Mode.datetime,
     onChange: emptyFunction,
   };
-
-  static stylesheet = Stylesheet.create({
-
-    Root: 'div',
-
-    Field: {
-      display: 'table'
-    },
-
-    Input: {
-      Component: 'input',
-
-      display: 'table-cell',
-      float: 'left',
-      marginBottom: 0,
-      width: '100%',
-      height: 34,
-      padding: '6px 12px',
-      fontSize: '14px',
-      lineHeight: 1.42857143,
-      color: '#555',
-      backgroundColor: '#fff',
-      backgroundImage: 'none',
-      border: '1px solid #ccc',
-      borderRadius: 4,
-      boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075)',
-      transition: 'border-color ease-in-out .15s,box-shadow ease-in-out .15s',
-      borderTopRightRadius: 0,
-      borderBottomRightRadius: 0,
-
-      focus: {
-        borderColor: '#66afe9',
-        outline: 0,
-        boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)',
-      }
-    },
-
-    Button: {
-      Component: 'span',
-
-      cursor: 'pointer',
-      display: 'table-cell',
-      padding: '6px 12px',
-      fontSize: '14px',
-      fontWeight: 400,
-      lineHeight: 1,
-      verticalAlign: 'middle',
-      color: '#555',
-      textAlign: 'center',
-      backgroundColor: '#eee',
-      border: '1px solid #ccc',
-      borderLeft: 'none',
-      borderRadius: 4,
-      borderTopLeftRadius: 0,
-      borderBottomLeftRadius: 0,
-    },
-
-    Dropdown: {
-      zIndex: 15000,
-      padding: 5,
-      backgroundColor: '#fff',
-      backgroundClip: 'padding-box',
-      border: '1px solid rgba(0,0,0,.15)',
-      borderRadius: 4,
-      boxShadow: '0 6px 12px rgba(0,0,0,.175)',
-    }
-  }, {styleHostComponent});
 
   constructor(props) {
     super(props);
@@ -157,31 +116,38 @@ export default class DateTimeField extends React.Component {
   render() {
     let {mode} = this.props;
     let {open} = this.state;
-    let {Root, Field, Input, Button, Dropdown} = this.constructor.stylesheet;
     return (
-      <Root>
-        <Field onFocus={this._open} onBlur={this._close}>
-          <Input
-            state={{focus: open}}
+      <ReactUI.Block>
+        <ReactUI.Block onFocus={this._open} onBlur={this._close}>
+          <ReactUI.Input
+            style={{paddingLeft: 36}}
+            variant={{focus: open}}
             ref="input"
             type="text"
             onChange={this._onChange}
             value={this.state.inputValue}
             {...this.props.inputProps}
             />
-          <Button
-            onClick={this._onClick}
-            role="button"
-            ref="button">
-            <Glyphicon glyph={mode === DateTimePicker.Mode.time ? 'time' : 'calendar'} />
-          </Button>
-        </Field>
+          <ReactUI.Block
+            top={5}
+            left={5}
+            position="absolute">
+            <IconButton
+              variant={{focus: open}}
+              style={{padding: '4px 8px'}}
+              ref="button"
+              size="small"
+              onClick={this._onClick}
+              icon={mode === 'time' ? <Icon.Clock /> : <Icon.Calendar />}
+              />
+          </ReactUI.Block>
+        </ReactUI.Block>
         {open &&
           <Layer
             didMount={this._onLayerDidMount}
             didUpdate={this._onLayerDidUpdate}
             willUnmount={this._onLayerWillUnmount}>
-            <Dropdown>
+            <ReactUI.Card>
               <DateTimePicker
                 activeMode={this.state.activeMode}
                 onActiveMode={this._onActiveMode}
@@ -193,9 +159,9 @@ export default class DateTimeField extends React.Component {
                 onViewDate={this._onViewDate}
                 onSelectedDate={this._onSelectedDate}
                 />
-            </Dropdown>
+            </ReactUI.Card>
           </Layer>}
-      </Root>
+      </ReactUI.Block>
     );
   }
 

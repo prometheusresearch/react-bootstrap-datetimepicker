@@ -1,32 +1,61 @@
 /**
  * @copyright 2014 Quri, Loïc CHOLLIER
- * @copyright 2015 Prometheus Research, LLC
+ * @copyright 2015-present Prometheus Research, LLC
  */
 
-import autobind                       from 'autobind-decorator';
-import moment                         from 'moment';
-import React, {PropTypes}             from 'react';
-import * as Stylesheet                from 'react-stylesheet';
-import {style as styleHostComponent}            from 'react-dom-stylesheet';
-import Day                            from './Day';
-import Button                         from './Button';
+import moment from 'moment';
+import React from 'react';
+import * as ReactUI from '@prometheusresearch/react-ui';
+import {css, create} from '@prometheusresearch/react-ui/stylesheet';
+
+import * as Icon from './Icon';
+import Button from './Button';
 
 function renderDay(props) {
   return <Day {...props} />;
 }
 
+class Day extends React.Component {
+
+  static propTypes = {
+    date: React.PropTypes.object,
+    active: React.PropTypes.bool,
+    outOfRange: React.PropTypes.bool,
+    onClick: React.PropTypes.func,
+  };
+
+  render() {
+    let {date, active, outOfRange, ...props} = this.props;
+    return (
+      <Button
+        dim={outOfRange}
+        active={active}
+        tabIndex={-1}
+        onClick={this.onClick}>
+        {date.date()}
+      </Button>
+    );
+  }
+
+  onClick = () => {
+    if (this.props.onClick) {
+      this.props.onClick(this.props.date);
+    }
+  };
+}
+
 export default class DayView extends React.Component {
 
   static propTypes = {
-    viewDate: PropTypes.object.isRequired,
-    onViewDate: PropTypes.func.isRequired,
-    selectedDate: PropTypes.object.isRequired,
-    onSelectedDate: PropTypes.func.isRequired,
-    showToday: PropTypes.bool,
-    showMonths: PropTypes.func.isRequired,
-    renderDay: PropTypes.func,
-    style: PropTypes.object,
-    tableStyle: PropTypes.object,
+    viewDate: React.PropTypes.object.isRequired,
+    onViewDate: React.PropTypes.func.isRequired,
+    selectedDate: React.PropTypes.object.isRequired,
+    onSelectedDate: React.PropTypes.func.isRequired,
+    showToday: React.PropTypes.bool,
+    showMonths: React.PropTypes.func.isRequired,
+    renderDay: React.PropTypes.func,
+    style: React.PropTypes.object,
+    tableStyle: React.PropTypes.object,
   };
 
   static defaultProps = {
@@ -34,45 +63,45 @@ export default class DayView extends React.Component {
     renderDay
   };
 
-  static stylesheet = Stylesheet.create({
-
-    Root: {
-      display: 'block',
-    },
-
-    DayWrapper: {
-      Component: 'td',
-      textAlign: 'center',
-    },
+  static stylesheet = create({
 
     DayOfWeek: {
       Component: 'th',
       textAlign: 'center',
-      padding: 5
+      height: 30,
+      width: 30,
+      padding: 5,
+      fontSize: '90%',
+      color: css.rgb(136),
+      fontWeight: 'normal',
     }
-  }, {styleHostComponent});
+  });
 
   render() {
-    let {Root, DayOfWeek} = this.constructor.stylesheet;
+    let {DayOfWeek} = this.constructor.stylesheet;
     return (
-      <Root style={this.props.style}>
+      <ReactUI.Block style={this.props.style}>
         <table style={this.props.tableStyle}>
           <thead>
             <tr>
               <th>
-                <Button bold onClick={this.onPrevMonth} size={{width: '100%', height: 32}}>
-                  ‹
-                </Button>
+                <Button
+                  onClick={this.onPrevMonth}
+                  icon={<Icon.AngleLeft />}
+                  />
               </th>
               <th colSpan="5">
-                <Button bold size={{width: '100%'}} onClick={this.props.showMonths}>
+                <Button
+                  width={5}
+                  onClick={this.props.showMonths}>
                   {moment.months()[this.props.viewDate.month()]} {this.props.viewDate.year()}
                 </Button>
               </th>
               <th>
-                <Button bold onClick={this.onNextMonth} size={{width: '100%', height: 32}}>
-                  ›
-                </Button>
+                <Button
+                  onClick={this.onNextMonth}
+                  icon={<Icon.AngleRight />}
+                  />
               </th>
             </tr>
             <tr>
@@ -89,23 +118,11 @@ export default class DayView extends React.Component {
             {this.renderDays()}
           </tbody>
         </table>
-      </Root>
+      </ReactUI.Block>
     );
   }
 
-  @autobind
-  onNextMonth() {
-    let viewDate = this.props.viewDate.clone().add(1, 'months');
-    this.props.onViewDate(viewDate);
-  }
-
-  @autobind
-  onPrevMonth() {
-    this.props.onViewDate(this.props.viewDate.clone().subtract(1, 'months'));
-  }
-
   renderDays() {
-    let {DayWrapper} = this.constructor.stylesheet;
     let {viewDate, selectedDate, showToday} = this.props;
 
     let today = moment();
@@ -119,7 +136,7 @@ export default class DayView extends React.Component {
       let isActive = date.isSame(selectedDate, 'day');
       let isToday = date.isSame(today, 'day');
       cells.push(
-        <DayWrapper key={date.month() + '-' + date.date()}>
+        <td key={date.month() + '-' + date.date()}>
           {this.props.renderDay({
             onClick: this.props.onSelectedDate,
             outOfRange: date.isBefore(viewDate, 'month') || date.isAfter(viewDate, 'month'),
@@ -129,7 +146,7 @@ export default class DayView extends React.Component {
             today: isToday,
             showToday: showToday,
           })}
-        </DayWrapper>
+        </td>
       );
 
       if (date.weekday() === today.clone().endOf('week').weekday()) {
@@ -146,6 +163,16 @@ export default class DayView extends React.Component {
 
     return rows;
   }
+
+  onNextMonth = () => {
+    let viewDate = this.props.viewDate.clone().add(1, 'months');
+    this.props.onViewDate(viewDate);
+  };
+
+  onPrevMonth = () => {
+    this.props.onViewDate(this.props.viewDate.clone().subtract(1, 'months'));
+  };
+
 }
 
 function startDateFor(date) {

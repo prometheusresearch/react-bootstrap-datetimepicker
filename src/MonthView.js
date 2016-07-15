@@ -1,14 +1,14 @@
 /**
  * @copyright 2014 Quri, Loïc CHOLLIER
- * @copyright 2015 Prometheus Research, LLC
+ * @copyright 2015-present Prometheus Research, LLC
  */
 
-import autobind             from 'autobind-decorator';
-import chunk                from 'lodash/array/chunk';
-import moment               from 'moment';
-import React, {PropTypes}   from 'react';
-import Month                from './Month';
-import Paginator            from './Paginator';
+import chunk from 'lodash/array/chunk';
+import moment from 'moment';
+import React from 'react';
+
+import Paginator from './Paginator';
+import Button from './Button';
 
 const MONTHS_SHORT = moment.monthsShort();
 const YEAR_MONTH_RANGE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -17,15 +17,48 @@ function renderMonth(props) {
   return <Month {...props} />;
 }
 
+class Month extends React.Component {
+
+  static propTypes = {
+    month: React.PropTypes.number,
+    active: React.PropTypes.bool,
+    onClick: React.PropTypes.func,
+  };
+
+  static defaultProps = {
+    onClick: function() {},
+  };
+
+  render() {
+    let {active, month, ...props} = this.props;
+    return (
+      <Button
+        {...props}
+        width={7 / 3}
+        active={active}
+        tabIndex={0}
+        onClick={this.onClick}>
+        {MONTHS_SHORT[month]}
+      </Button>
+    );
+  }
+
+  onClick = () => {
+    if (this.props.onClick) {
+      this.props.onClick(this.props.month);
+    }
+  };
+}
+
 export default class MonthView extends React.Component {
 
   static propTypes = {
-    viewDate: PropTypes.object.isRequired,
-    selectedDate: PropTypes.object.isRequired,
-    showYears: PropTypes.func.isRequired,
-    onViewDate: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired,
-    renderMonth: PropTypes.func,
+    viewDate: React.PropTypes.object.isRequired,
+    selectedDate: React.PropTypes.object.isRequired,
+    showYears: React.PropTypes.func.isRequired,
+    onViewDate: React.PropTypes.func.isRequired,
+    onClose: React.PropTypes.func.isRequired,
+    renderMonth: React.PropTypes.func,
   };
 
   static defaultProps = {
@@ -57,19 +90,16 @@ export default class MonthView extends React.Component {
     );
   }
 
-  @autobind
-  onNextYear() {
+  onNextYear = () => {
     this.props.onViewDate(this.props.viewDate.clone().add(1, 'years'));
-  }
+  };
 
-  @autobind
-  onPrevYear() {
+  onPrevYear = () => {
     this.props.onViewDate(this.props.viewDate.clone().subtract(1, 'years'));
-  }
+  };
 
-  @autobind
-  onMonthClick(month) {
+  onMonthClick = (month) => {
     this.props.onViewDate(this.props.viewDate.clone().month(month));
     this.props.onClose();
-  }
+  };
 }

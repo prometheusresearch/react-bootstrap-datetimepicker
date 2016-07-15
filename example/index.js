@@ -91,6 +91,11 @@ let styled = createStylesheet({
 
 export default class Example extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {value: null};
+  }
+
 	render() {
 		return (
       <styled.root>
@@ -106,64 +111,14 @@ export default class Example extends React.Component {
               <styled.code>
 {`<DateTimeField />`}
               </styled.code>
-              <DateTimeField />
-            </styled.demo>
-
-            <styled.demo>
-              <p>
-                Set placeholder:
-              </p>
-              <styled.code>
-{`<DateTimeField
-  defaultText="Please select a date"
-  />`}
-              </styled.code>
+              <pre>{JSON.stringify(this.state.value, null, 2)}</pre>
               <DateTimeField
-                defaultText="Please select a date"
+                mode="datetime"
+                value={this.state.value}
+                onChange={value => this.setState({value})}
                 />
             </styled.demo>
 
-            <styled.demo>
-              <p>
-                Custom input format:
-              </p>
-              <styled.code>
-{`<DateTimeField
-  inputFormat="DD-MM-YYYY"
-  />`}
-              </styled.code>
-              <DateTimeField
-                inputFormat="DD-MM-YYYY"
-                />
-            </styled.demo>
-
-            <styled.demo>
-              <p>
-                Time picker mode:
-              </p>
-              <styled.code>
-{`<DateTimeField
-  mode="time"
-  />`}
-              </styled.code>
-              <DateTimeField
-                  mode="time"
-                  />
-            </styled.demo>
-
-            <styled.demo>
-              <p>
-                Date picker mode:
-              </p>
-              <styled.code>
-{`<DateTimeField
-  mode="date"
-  />`}
-              </styled.code>
-              <DateTimeField
-                  mode="date"
-                  />
-            </styled.demo>
           </styled.pane>
         </styled.content>
         <styled.footer>

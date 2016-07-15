@@ -2,77 +2,53 @@
  * @copyright 2015, Prometheus Research, LLC
  */
 
-import React, {PropTypes} from 'react';
-import * as Stylesheet from 'react-stylesheet';
-import {style as styleHostComponent} from 'react-dom-stylesheet'
+import * as React from 'react';
+import * as ReactUI from '@prometheusresearch/react-ui';
+import {style, css} from '@prometheusresearch/react-ui/stylesheet';
 
-export default class Button extends React.Component {
+const CELL_SIZE = 30;
 
-  static propTypes = {
-    active: PropTypes.bool,
-    bold: PropTypes.bool,
-    dimmed: PropTypes.bool,
-    size: PropTypes.object,
-    color: PropTypes.string,
-    backgroundColor: PropTypes.string,
+let ButtonBase = style(ReactUI.Button, {
+  textWidth: 300,
+
+  text: css.rgb(70),
+  textHover: css.rgb(68),
+  textFocus: css.rgb(68),
+  textActive: css.rgb(255),
+  textDisabled: '#dadada',
+
+  background: css.color.transparent,
+  backgroundHover: css.rgb(241),
+  backgroundFocus: css.rgb(255),
+  backgroundActive: css.rgb(180),
+  backgroundDisabled: css.rgb(255),
+
+  border: css.color.transparent,
+  borderHover: css.color.transparent,
+  borderFocus: css.color.transparent,
+  borderActive: css.rgb(180),
+  borderDisabled: css.color.transparent,
+
+  shadowFocus: css.none,
+  shadowActive: css.none,
+}, {displayName: 'QuietButton'});
+
+export default function Button({
+  width = 1,
+  height = 1,
+  dim,
+  emphasis,
+  cellSize = CELL_SIZE,
+  ...props
+}) {
+  width = width * cellSize;
+  height = height * cellSize;
+  let style = {
+    width, height,
+    padding: 0,
+    fontSize: '90%',
+    fontWeight: emphasis ? 'bold' : 'normal',
+    color: dim ? css.rgb(180) : undefined,
   };
-
-  static defaultProps = {
-    size: {}
-  };
-
-  static stylesheet = Stylesheet.create({
-    Self: {
-      borderRadius: 4,
-      padding: 5,
-      display: 'inline-block',
-      textDecoration: 'none',
-      cursor: 'pointer',
-      textAlign: 'center',
-      color: '#666',
-      userSelect: 'none',
-      WebkitUserSelect: 'none',
-      border: '1px solid transparent',
-
-      dimmed: {
-        color: '#bbbbbb',
-      },
-
-      bold: {
-        fontWeight: 'bold',
-      },
-
-      hover: {
-        color: '#262626',
-        backgroundColor: '#f5f5f5',
-      },
-
-      active: {
-        color: '#262626',
-        backgroundColor: '#dddddd !important',
-      },
-
-      focus: {
-        outline: 'none',
-        border: '1px solid #B7B7B7',
-      }
-    }
-  }, {styleHostComponent});
-
-  render() {
-    let {
-      active, bold, size: {width, height}, dimmed,
-      color, backgroundColor,
-      ...props
-    } = this.props;
-    let stylesheet = this.constructor.stylesheet;
-    return (
-      <stylesheet.Self
-        {...props}
-        state={{bold, dimmed, active}}
-        style={{width, height, color, backgroundColor}}
-        role="button"
-        />
-    );
-  }
+  return <ButtonBase {...props} style={style} />;
 }

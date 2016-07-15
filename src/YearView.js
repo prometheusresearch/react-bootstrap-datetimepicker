@@ -3,19 +3,48 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind           from 'autobind-decorator';
-import chunk              from 'lodash/array/chunk';
-import React, {PropTypes} from 'react';
-import Year               from './Year';
-import Paginator          from './Paginator';
+import React from 'react';
+import chunk from 'lodash/array/chunk';
+
+import Paginator from './Paginator';
+import Button from './Button';
+
+class Year extends React.Component {
+
+  static propTypes = {
+    year: React.PropTypes.number,
+    outOfRange: React.PropTypes.bool,
+    active: React.PropTypes.bool,
+    onClick: React.PropTypes.func,
+  };
+
+  render() {
+    let {year, outOfRange, active, ...props} = this.props;
+    return (
+      <Button
+        {...props}
+        width={7 / 3}
+        dim={outOfRange}
+        active={active}
+        onClick={this.onClick}
+        tabIndex={0}>
+        {year}
+      </Button>
+    );
+  }
+
+  onClick = () => {
+    this.props.onClick(this.props.year);
+  };
+}
 
 export default class YearView extends React.Component {
 
   static propTypes = {
-    viewDate: PropTypes.object.isRequired,
-    selectedDate: PropTypes.object.isRequired,
-    onViewDate: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired,
+    viewDate: React.PropTypes.object.isRequired,
+    selectedDate: React.PropTypes.object.isRequired,
+    onViewDate: React.PropTypes.func.isRequired,
+    onClose: React.PropTypes.func.isRequired,
   }
 
   render() {
@@ -42,21 +71,18 @@ export default class YearView extends React.Component {
     );
   }
 
-  @autobind
-  onPrevDecade() {
+  onPrevDecade = () => {
     this.props.onViewDate(this.props.viewDate.clone().subtract(10, 'years'));
-  }
+  };
 
-  @autobind
-  onNextDecade() {
+  onNextDecade = () => {
     this.props.onViewDate(this.props.viewDate.clone().add(10, 'years'));
-  }
+  };
 
-  @autobind
-  onYearClick(year) {
+  onYearClick = (year) => {
     this.props.onViewDate(this.props.viewDate.clone().year(year));
     this.props.onClose();
-  }
+  };
 }
 
 /**
