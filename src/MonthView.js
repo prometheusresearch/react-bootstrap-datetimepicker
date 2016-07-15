@@ -3,7 +3,7 @@
  * @copyright 2015-present Prometheus Research, LLC
  */
 
-import chunk from 'lodash/array/chunk';
+import chunk from 'lodash/chunk';
 import moment from 'moment';
 import React from 'react';
 

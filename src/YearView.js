@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import chunk from 'lodash/array/chunk';
+import chunk from 'lodash/chunk';
 
 import Paginator from './Paginator';
 import Button from './Button';

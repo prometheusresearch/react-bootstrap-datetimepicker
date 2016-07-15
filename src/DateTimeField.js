@@ -9,7 +9,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as Icon from './Icon';
 import autobind                      from 'autobind-decorator';
-import debounce                      from 'lodash/function/debounce';
+import debounce from 'lodash/debounce';
 import emptyFunction                 from 'empty/function';
 import moment                        from 'moment';
 import Tether                        from 'tether';

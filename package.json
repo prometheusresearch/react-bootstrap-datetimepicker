@@ -35,10 +35,11 @@
     "react-heatpack": "github:andreypopp/react-heatpack"
   },
   "dependencies": {
+    "@prometheusresearch/react-ui": "^0.18.0",
     "autobind-decorator": "^1.3.2",
     "empty": "^0.10.1",
     "keymirror": "^0.1.1",
-    "lodash": "^3.10.1",
+    "lodash": "^4.0.0",
     "moment": "^2.8.2",
     "react-dom-stylesheet": "^0.6.0",
     "react-icons": "^2.2.1",
