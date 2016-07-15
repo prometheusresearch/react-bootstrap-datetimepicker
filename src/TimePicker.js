@@ -25,7 +25,7 @@ class HourButton extends React.Component {
   onMouseLeave = () => this.setState({hover: false});
 
   render() {
-    let {date, selectedDate, onSelectedDate, ...props} = this.props;
+    let {date, selectedDate, onSelectedDate} = this.props;
     let {hover} = this.state;
     let selected = selectedDate.hour() === date.hour();
     return (
@@ -71,7 +71,7 @@ class HourButton extends React.Component {
 class MinuteButton extends React.Component {
 
   render() {
-    let {date, hover, selectedDate, renderSelected, ...props} = this.props;
+    let {date, hover, selectedDate, renderSelected} = this.props;
     let selected = (
       selectedDate.hour() === date.hour() &&
       selectedDate.minutes() === date.minutes()

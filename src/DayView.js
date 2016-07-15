@@ -25,7 +25,7 @@ class Day extends React.Component {
   };
 
   render() {
-    let {date, active, outOfRange, ...props} = this.props;
+    let {date, active, outOfRange} = this.props;
     return (
       <Button
         dim={outOfRange}
