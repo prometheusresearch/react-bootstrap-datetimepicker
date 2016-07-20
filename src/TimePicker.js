@@ -41,23 +41,15 @@ class HourButton extends React.Component {
         <MinuteButton
           hover={hover}
           selectedDate={selectedDate}
-          renderSelected={minutes => minutes <= 20}
+          renderSelected={minutes => minutes < 30}
           date={date}
-          date={date.clone().add(15, 'minutes')}
           onSelectedDate={onSelectedDate}
           />
         <MinuteButton
           hover={hover}
           selectedDate={selectedDate}
-          renderSelected={minutes => minutes > 20 && minutes < 40}
+          renderSelected={minutes => minutes >= 30}
           date={date.clone().add(30, 'minutes')}
-          onSelectedDate={onSelectedDate}
-          />
-        <MinuteButton
-          hover={hover}
-          selectedDate={selectedDate}
-          renderSelected={minutes => minutes >= 40}
-          date={date.clone().add(45, 'minutes')}
           onSelectedDate={onSelectedDate}
           />
       </ReactUI.Block>
