@@ -5,7 +5,7 @@
 import * as React from 'react';
 import * as ReactUI from '@prometheusresearch/react-ui';
 
-import * as Icon from './Icon';
+import {AngleLeft, AngleRight} from './Icon';
 import Button from './Button';
 
 export default class Paginator extends React.Component {
@@ -21,11 +21,11 @@ export default class Paginator extends React.Component {
   render() {
     let {onPrev, onNext, onUp, title, children} = this.props;
     return (
-      <ReactUI.Block>
-        <ReactUI.Block textAlign="center" height={32}>
+      <ReactUI.Block width={210}>
+        <ReactUI.Block textAlign="center" height={30}>
           <Button
             onClick={onPrev}
-            icon={<Icon.AngleLeft />}
+            icon={<AngleLeft />}
             style={{height: 30, width: 30, padding: 0}}
             />
           <Button
@@ -35,7 +35,7 @@ export default class Paginator extends React.Component {
           </Button>
           <Button
             onClick={onNext}
-            icon={<Icon.AngleRight />}
+            icon={<AngleRight />}
             />
         </ReactUI.Block>
         <ReactUI.Block>

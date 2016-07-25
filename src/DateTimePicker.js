@@ -7,11 +7,10 @@ import autobind                      from 'autobind-decorator';
 import * as Icon from './Icon';
 import React, {PropTypes}            from 'react';
 import keyMirror                     from 'keymirror';
-import DatePicker                    from './DatePicker';
-import TimePicker                    from './TimePicker';
-import Button                        from './Button';
-import * as Stylesheet               from 'react-stylesheet';
-import {style as styleHostComponent}           from 'react-dom-stylesheet';
+import DatePicker                    from './datepicker/DatePicker';
+import TimePicker                    from './timepicker/TimePicker';
+import {Button} from './ui';
+import {style as styleHostComponent} from 'react-dom-stylesheet';
 
 let Mode = keyMirror({
   date: null,

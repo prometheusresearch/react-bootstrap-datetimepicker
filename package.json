@@ -8,7 +8,7 @@
     "url": "http://github.com/prometheusresearch/react-datetimepicker"
   },
   "rex": {},
-  "main": "./lib/DateTimeField.js",
+  "main": "./lib/index.js",
   "keywords": [
     "datetime",
     "datetimepicker",

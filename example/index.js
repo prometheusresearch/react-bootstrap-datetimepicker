@@ -7,11 +7,11 @@ import 'normalize.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 
-import React              from 'react';
-import moment             from 'moment';
+import moment from 'moment';
+import React from 'react';
 import {create as createStylesheet} from 'react-stylesheet';
 import {style as styleHostComponent} from 'react-dom-stylesheet';
-import DateTimeField      from '../src';
+import {DatePicker, TimePicker, DateField} from '../src';
 
 let colors = {
   brand0: 'rgb(1, 60, 154)',
@@ -93,27 +93,60 @@ export default class Example extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {value: null};
+    this.state = {
+      value: moment(),
+      dateMode: 'days',
+      viewDate: moment(),
+    };
   }
 
-	render() {
-		return (
+  render() {
+    return (
       <styled.root>
         <styled.content>
           <styled.pane>
 
-            <styled.header>React DateTimePicker</styled.header>
+            <styled.header>DatePicker</styled.header>
 
             <styled.demo>
               <p>
                 Basic usage:   
               </p>
-              <styled.code>
-{`<DateTimeField />`}
-              </styled.code>
+              <styled.code>{'<DateField />'}</styled.code>
               <pre>{JSON.stringify(this.state.value, null, 2)}</pre>
-              <DateTimeField
-                mode="datetime"
+              <DatePicker
+                value={this.state.value}
+                viewDate={this.state.viewDate}
+                onViewDate={viewDate => this.setState({viewDate})}
+                onChange={value => this.setState({value})}
+                mode={this.state.dateMode}
+                onMode={dateMode => this.setState({dateMode})}
+                />
+            </styled.demo>
+
+            <styled.header>TimePicker</styled.header>
+
+            <styled.demo>
+              <p>
+                Basic usage:
+              </p>
+              <styled.code>{'<DateField />'}</styled.code>
+              <pre>{JSON.stringify(this.state.value, null, 2)}</pre>
+              <TimePicker
+                value={this.state.value}
+                onChange={value => this.setState({value})}
+                />
+            </styled.demo>
+
+            <styled.header>DateField</styled.header>
+
+            <styled.demo>
+              <p>
+                Basic usage:   
+              </p>
+              <styled.code>{'<DateField />'}</styled.code>
+              <pre>{JSON.stringify(this.state.value, null, 2)}</pre>
+              <DateField
                 value={this.state.value}
                 onChange={value => this.setState({value})}
                 />

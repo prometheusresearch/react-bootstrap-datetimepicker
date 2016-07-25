@@ -1,18 +1,17 @@
 /**
- * @copyright 2015 Prometheus Research, LLC
+ * @copyright 2015-present Prometheus Research, LLC
  */
 
-import autobind            from 'autobind-decorator';
-import React, {PropTypes}  from 'react';
-import ReactDOM            from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 export default class Layer extends React.Component {
 
   static propTypes = {
-    didMount: PropTypes.func,
-    didUpdate: PropTypes.func,
-    willUnmount: PropTypes.func,
-    children: PropTypes.node,
+    didMount: React.PropTypes.func,
+    didUpdate: React.PropTypes.func,
+    willUnmount: React.PropTypes.func,
+    children: React.PropTypes.node,
   };
 
   constructor(props) {
@@ -50,15 +49,13 @@ export default class Layer extends React.Component {
     this._component = null;
   }
 
-  @autobind
-  _didMount() {
+  _didMount = () => {
     if (this.props.didMount) {
       this.props.didMount(this._element);
     }
   }
 
-  @autobind
-  _didUpdate() {
+  _didUpdate = () => {
     if (this.props.didUpdate) {
       this.props.didUpdate(this._element);
     }

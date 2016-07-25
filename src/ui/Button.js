@@ -1,12 +1,12 @@
 /**
- * @copyright 2015, Prometheus Research, LLC
+ * @copyright 2015-present, Prometheus Research, LLC
  */
 
 import * as React from 'react';
 import * as ReactUI from '@prometheusresearch/react-ui';
 import {style, css} from '@prometheusresearch/react-ui/stylesheet';
 
-const CELL_SIZE = 30;
+import {CELL_SIZE} from './theme';
 
 let ButtonBase = style(ReactUI.Button, {
   textWidth: 300,
@@ -31,7 +31,7 @@ let ButtonBase = style(ReactUI.Button, {
 
   shadowFocus: css.none,
   shadowActive: css.none,
-}, {displayName: 'QuietButton'});
+}, {displayName: 'ButtonBase'});
 
 export default function Button({
   width = 1,
