@@ -8,8 +8,22 @@ import React from 'react';
 import * as ReactUI from '@prometheusresearch/react-ui';
 import {css, create} from '@prometheusresearch/react-ui/stylesheet';
 
-import {Paginator} from '../ui';
+import {Paginator, Label} from '../ui';
 import Day from './Day';
+
+function DayOfWeekRow() {
+  return (
+    <ReactUI.Block>
+      <Label height={0.6}>Sun</Label>
+      <Label height={0.6}>Mon</Label>
+      <Label height={0.6}>Tue</Label>
+      <Label height={0.6}>Wed</Label>
+      <Label height={0.6}>Thu</Label>
+      <Label height={0.6}>Fri</Label>
+      <Label height={0.6}>Sat</Label>
+    </ReactUI.Block>
+  );
+}
 
 export default class DayView extends React.Component {
 
@@ -57,6 +71,7 @@ export default class DayView extends React.Component {
         onPrev={this.onPrevMonth}
         onNext={this.onNextMonth}
         onUp={this.props.showMonths}>
+        <DayOfWeekRow />
         {this.renderDays()}
       </Paginator>
     );

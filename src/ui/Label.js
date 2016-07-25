@@ -9,6 +9,8 @@ import {style, css} from '@prometheusresearch/react-ui/stylesheet';
 import {CELL_SIZE} from './theme';
 
 let LabelBase = style(ReactUI.Block, {
+  textAlign: 'center',
+  cursor: 'default',
   fontWidth: 300,
   color: css.rgb(70),
   background: css.color.transparent,
@@ -20,6 +22,7 @@ export default function Label({
   dim,
   emphasis,
   cellSize = CELL_SIZE,
+  children,
   ...props
 }) {
   width = width * cellSize;
@@ -31,6 +34,12 @@ export default function Label({
     fontWeight: emphasis ? 'bold' : 'normal',
     color: dim ? css.rgb(180) : undefined,
   };
-  return <LabelBase {...props} inline style={style} />;
+  return (
+    <LabelBase {...props} inline style={style}>
+      <div style={{verticalAlign: 'middle'}}>
+        {children}
+      </div>
+    </LabelBase>
+  );
 }
 
