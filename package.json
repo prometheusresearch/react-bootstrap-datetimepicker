@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "react-stylesheet": "^1.0.0",
-    "react-dom-stylesheet": "^0.7.0",
+    "react-dom-stylesheet": "^0.8.3",
     "autobind-decorator": "^1.3.2",
     "empty": "^0.10.1",
     "keymirror": "^0.1.1",
