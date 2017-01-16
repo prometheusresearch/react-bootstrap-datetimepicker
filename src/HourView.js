@@ -3,7 +3,6 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind           from 'autobind-decorator';
 import React, {PropTypes} from 'react';
 import Glyphicon          from './Glyphicon';
 import Hour               from './Hour';
@@ -68,8 +67,7 @@ export default class HourView extends React.Component {
     );
   }
 
-  @autobind
-  onHourClick(hour) {
+  onHourClick = (hour) => {
     let selectedDate = this.props.selectedDate.hours(hour);
     this.props.onSelectedDate(selectedDate);
     this.props.onClose();

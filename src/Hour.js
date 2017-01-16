@@ -3,7 +3,6 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind           from 'autobind-decorator';
 import React, {PropTypes} from 'react';
 import Button             from './Button';
 
@@ -25,8 +24,7 @@ export default class Hour extends React.Component {
     );
   }
 
-  @autobind
-  onClick() {
+  onClick = () => {
     this.props.onClick(this.props.hour);
   }
 }

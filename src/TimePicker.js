@@ -3,7 +3,6 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind           from 'autobind-decorator';
 import keyMirror          from 'keymirror';
 import React, {PropTypes} from 'react';
 import MinuteView         from './MinuteView';
@@ -88,42 +87,35 @@ export default class TimePicker extends React.Component {
     );
   }
 
-  @autobind
-  onPrevHour() {
+  onPrevHour = () => {
     let selectedDate = this.props.selectedDate.subtract(1, 'hours');
     this.props.onSelectedDate(selectedDate);
   }
 
-  @autobind
-  onNextHour() {
+  onNextHour = () => {
     let selectedDate = this.props.selectedDate.add(1, 'hours');
     this.props.onSelectedDate(selectedDate);
   }
 
-  @autobind
-  onPrevMinute() {
+  onPrevMinute = () => {
     let selectedDate = this.props.selectedDate.subtract(1, 'minutes');
     this.props.onSelectedDate(selectedDate);
   }
 
-  @autobind
-  onNextMinute() {
+  onNextMinute = () => {
     let selectedDate = this.props.selectedDate.add(1, 'minutes');
     this.props.onSelectedDate(selectedDate);
   }
 
-  @autobind
-  _setTimeMode() {
+  _setTimeMode = () => {
     this.props.onActiveMode(Mode.time);
   }
 
-  @autobind
-  _setMinutesMode() {
+  _setMinutesMode = () => {
     this.props.onActiveMode(Mode.minutes);
   }
 
-  @autobind
-  _setHoursMode() {
+  _setHoursMode = () => {
     this.props.onActiveMode(Mode.hours);
   }
 

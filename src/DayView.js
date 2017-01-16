@@ -3,17 +3,37 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind                       from 'autobind-decorator';
 import moment                         from 'moment';
 import React, {PropTypes}             from 'react';
-import * as Stylesheet                from 'react-stylesheet';
-import {style as styleHostComponent}            from 'react-dom-stylesheet';
+import {style}                        from 'react-stylesheet';
 import Day                            from './Day';
 import Button                         from './Button';
 
 function renderDay(props) {
   return <Day {...props} />;
 }
+
+let DayViewRoot = style('div', {
+  displayName: 'DayViewRoot',
+  base: {
+    display: 'block',
+  }
+});
+
+let DayViewDayWrapper = style('td', {
+  displayName: 'DayViewDayWrapper',
+  base: {
+    textAlign: 'center',
+  },
+});
+
+let DayViewDayOfWeek = style('th', {
+  displayName: 'DayViewDayOfWeek',
+  base: {
+    textAlign: 'center',
+    padding: 5
+  }
+});
 
 export default class DayView extends React.Component {
 
@@ -31,29 +51,16 @@ export default class DayView extends React.Component {
 
   static defaultProps = {
     showToday: true,
-    renderDay
+    renderDay,
+    stylesheet: {
+      Root: DayViewRoot,
+      DayWrapper: DayViewDayWrapper,
+      DayOfWeek: DayViewDayOfWeek,
+    },
   };
 
-  static stylesheet = Stylesheet.create({
-
-    Root: {
-      display: 'block',
-    },
-
-    DayWrapper: {
-      Component: 'td',
-      textAlign: 'center',
-    },
-
-    DayOfWeek: {
-      Component: 'th',
-      textAlign: 'center',
-      padding: 5
-    }
-  }, {styleHostComponent});
-
   render() {
-    let {Root, DayOfWeek} = this.constructor.stylesheet;
+    let {Root, DayOfWeek} = this.props.stylesheet;
     return (
       <Root style={this.props.style}>
         <table style={this.props.tableStyle}>
@@ -93,19 +100,17 @@ export default class DayView extends React.Component {
     );
   }
 
-  @autobind
-  onNextMonth() {
+  onNextMonth = () => {
     let viewDate = this.props.viewDate.clone().add(1, 'months');
     this.props.onViewDate(viewDate);
   }
 
-  @autobind
-  onPrevMonth() {
+  onPrevMonth = () => {
     this.props.onViewDate(this.props.viewDate.clone().subtract(1, 'months'));
   }
 
   renderDays() {
-    let {DayWrapper} = this.constructor.stylesheet;
+    let {DayWrapper} = this.props.stylesheet;
     let {viewDate, selectedDate, showToday} = this.props;
 
     let today = moment();

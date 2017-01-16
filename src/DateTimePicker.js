@@ -3,15 +3,13 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind                      from 'autobind-decorator';
 import React, {PropTypes}            from 'react';
 import keyMirror                     from 'keymirror';
 import DatePicker                    from './DatePicker';
 import TimePicker                    from './TimePicker';
 import Glyphicon                     from './Glyphicon';
 import Button                        from './Button';
-import * as Stylesheet               from 'react-stylesheet';
-import {style as styleHostComponent}           from 'react-dom-stylesheet';
+import {style}                       from 'react-stylesheet';
 
 let Mode = keyMirror({
   date: null,
@@ -19,9 +17,26 @@ let Mode = keyMirror({
   datetime: null,
 });
 
+let DateTimePickerRoot = style('div', {
+  displayName: 'DateTimePickerRoot',
+  base: {
+    focus: {
+      outline: 'none'
+    }
+  },
+});
+
 export default class DateTimePicker extends React.Component {
 
   static Mode = Mode;
+
+  static defaultProps = {
+    stylesheet: {
+      Root: DateTimePickerRoot,
+      DatePicker: DatePicker,
+      TimePicker: TimePicker,
+    },
+  };
 
   static propTypes = {
     activeMode: PropTypes.object.isRequired,
@@ -43,24 +58,15 @@ export default class DateTimePicker extends React.Component {
     ]),
   }
 
-  static stylesheet = Stylesheet.create({
-    Self: {
-      focus: {
-        outline: 'none'
-      }
-    },
-    DatePicker: DatePicker,
-    TimePicker: TimePicker,
-  }, {styleHostComponent});
-
   render() {
     let {
       activeMode, mode,
       viewDate, onViewDate, selectedDate, onSelectedDate,
+      stylesheet,
     } = this.props;
-    let {Self, DatePicker, TimePicker} = this.constructor.stylesheet;
+    let {Root, DatePicker, TimePicker} = stylesheet;
     return (
-      <Self
+      <Root
         tabIndex={0}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}>
@@ -88,25 +94,22 @@ export default class DateTimePicker extends React.Component {
             selectedDate={selectedDate}
             onSelectedDate={onSelectedDate}
             />}
-      </Self>
+      </Root>
     );
   }
 
-  @autobind
-  _onActiveMode() {
+  _onActiveMode = () => {
     let {activeMode} = this.props;
     let self = activeMode.self === Mode.date ?  Mode.time : Mode.date;
     this.props.onActiveMode({...activeMode, self});
   }
 
-  @autobind
-  _onActiveDateMode(date) {
+  _onActiveDateMode = (date) => {
     let {activeMode} = this.props;
     this.props.onActiveMode({...activeMode, date});
   }
 
-  @autobind
-  _onActiveTimeMode(time) {
+  _onActiveTimeMode = (time) => {
     let {activeMode} = this.props;
     this.props.onActiveMode({...activeMode, time});
   }

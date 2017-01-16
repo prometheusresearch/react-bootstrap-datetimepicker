@@ -3,8 +3,7 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind                      from 'autobind-decorator';
-import debounce                      from 'lodash/function/debounce';
+import debounce                      from 'lodash/debounce';
 import emptyFunction                 from 'empty/function';
 import moment                        from 'moment';
 import React, {PropTypes}            from 'react';
@@ -15,8 +14,7 @@ import DateTimePicker                from './DateTimePicker';
 import DatePicker                    from './DatePicker';
 import TimePicker                    from './TimePicker';
 import Glyphicon                     from './Glyphicon';
-import * as Stylesheet               from 'react-stylesheet';
-import {style as styleHostComponent}           from 'react-dom-stylesheet';
+import {style}                       from 'react-stylesheet';
 
 const TETHER_CONFIG = {
   attachment: 'top left',
@@ -31,6 +29,75 @@ const TETHER_CONFIG = {
     }
   ]
 };
+
+
+let DateTimeFieldRoot = 'div';
+
+let DateTimeFieldField = style('div', {
+  base: {
+    display: 'table'
+  }
+});
+
+let DateTimeFieldInput = style('input', {
+  base: {
+    display: 'table-cell',
+    float: 'left',
+    marginBottom: 0,
+    width: '100%',
+    height: 34,
+    padding: '6px 12px',
+    fontSize: '14px',
+    lineHeight: 1.42857143,
+    color: '#555',
+    backgroundColor: '#fff',
+    backgroundImage: 'none',
+    border: '1px solid #ccc',
+    borderRadius: 4,
+    boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075)',
+    transition: 'border-color ease-in-out .15s,box-shadow ease-in-out .15s',
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+
+    focus: {
+      borderColor: '#66afe9',
+      outline: 0,
+      boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)',
+    }
+  }
+});
+
+let DateTimeFieldButton = style('span', {
+  base: {
+    cursor: 'pointer',
+    display: 'table-cell',
+    padding: '6px 12px',
+    fontSize: '14px',
+    fontWeight: 400,
+    lineHeight: 1,
+    verticalAlign: 'middle',
+    color: '#555',
+    textAlign: 'center',
+    backgroundColor: '#eee',
+    border: '1px solid #ccc',
+    borderLeft: 'none',
+    borderRadius: 4,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+  },
+});
+
+let DateTimeFieldDropdown = style('div', {
+  base: {
+    zIndex: 15000,
+    padding: 5,
+    backgroundColor: '#fff',
+    backgroundClip: 'padding-box',
+    border: '1px solid rgba(0,0,0,.15)',
+    borderRadius: 4,
+    boxShadow: '0 6px 12px rgba(0,0,0,.175)',
+  }
+});
 
 export default class DateTimeField extends React.Component {
 
@@ -52,74 +119,14 @@ export default class DateTimeField extends React.Component {
     format: 'x',
     mode: DateTimePicker.Mode.datetime,
     onChange: emptyFunction,
+    stylesheet: {
+      Root: DateTimeFieldRoot,
+      Field: DateTimeFieldField,
+      Input: DateTimeFieldInput,
+      Button: DateTimeFieldButton,
+      Dropdown: DateTimeFieldDropdown,
+    },
   };
-
-  static stylesheet = Stylesheet.create({
-
-    Root: 'div',
-
-    Field: {
-      display: 'table'
-    },
-
-    Input: {
-      Component: 'input',
-
-      display: 'table-cell',
-      float: 'left',
-      marginBottom: 0,
-      width: '100%',
-      height: 34,
-      padding: '6px 12px',
-      fontSize: '14px',
-      lineHeight: 1.42857143,
-      color: '#555',
-      backgroundColor: '#fff',
-      backgroundImage: 'none',
-      border: '1px solid #ccc',
-      borderRadius: 4,
-      boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075)',
-      transition: 'border-color ease-in-out .15s,box-shadow ease-in-out .15s',
-      borderTopRightRadius: 0,
-      borderBottomRightRadius: 0,
-
-      focus: {
-        borderColor: '#66afe9',
-        outline: 0,
-        boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)',
-      }
-    },
-
-    Button: {
-      Component: 'span',
-
-      cursor: 'pointer',
-      display: 'table-cell',
-      padding: '6px 12px',
-      fontSize: '14px',
-      fontWeight: 400,
-      lineHeight: 1,
-      verticalAlign: 'middle',
-      color: '#555',
-      textAlign: 'center',
-      backgroundColor: '#eee',
-      border: '1px solid #ccc',
-      borderLeft: 'none',
-      borderRadius: 4,
-      borderTopLeftRadius: 0,
-      borderBottomLeftRadius: 0,
-    },
-
-    Dropdown: {
-      zIndex: 15000,
-      padding: 5,
-      backgroundColor: '#fff',
-      backgroundClip: 'padding-box',
-      border: '1px solid rgba(0,0,0,.15)',
-      borderRadius: 4,
-      boxShadow: '0 6px 12px rgba(0,0,0,.175)',
-    }
-  }, {styleHostComponent});
 
   constructor(props) {
     super(props);
@@ -155,9 +162,9 @@ export default class DateTimeField extends React.Component {
   }
 
   render() {
-    let {mode} = this.props;
+    let {mode, stylesheet} = this.props;
     let {open} = this.state;
-    let {Root, Field, Input, Button, Dropdown} = this.constructor.stylesheet;
+    let {Root, Field, Input, Button, Dropdown} = stylesheet;
     return (
       <Root>
         <Field onFocus={this._open} onBlur={this._close}>
@@ -232,38 +239,32 @@ export default class DateTimeField extends React.Component {
     }
   }
 
-  @autobind
-  _onActiveMode(activeMode) {
+  _onActiveMode = (activeMode) => {
     this.setState({activeMode});
   }
 
-  @autobind
-  _onClick() {
+  _onClick = () => {
     ReactDOM.findDOMNode(this.refs.input).focus();
   }
 
-  @autobind
-  _onLayerDidMount(element) {
+  _onLayerDidMount = (element) => {
     let target = ReactDOM.findDOMNode(this.refs.input);
     this._tether = new Tether({element, target, ...TETHER_CONFIG});
   }
 
-  @autobind
-  _onLayerDidUpdate() {
+  _onLayerDidUpdate = () => {
     if (this._tetherNeedPosition) {
       this._tetherNeedPosition = false;
       this._tether.position();
     }
   }
 
-  @autobind
-  _onLayerWillUnmount() {
+  _onLayerWillUnmount = () => {
     this._tether.disable();
     this._tether = null;
   }
 
-  @autobind
-  _onChange(e) {
+  _onChange = (e) => {
     let value = e.target == null ? e : e.target.value; // eslint-disable-line eqeqeq
     let nextState = {inputValue: value};
     let date = moment(value, this.inputFormat, true);
@@ -279,21 +280,18 @@ export default class DateTimeField extends React.Component {
       () => this.props.onChange(value === '' ? null : date.format(this.props.format)));
   }
 
-  @autobind
-  _onViewDate(viewDate) {
+  _onViewDate = (viewDate) => {
     this.setState({viewDate});
   }
 
-  @autobind
-  _onSelectedDate(date) {
+  _onSelectedDate = (date) => {
     this.setState({
       selectedDate: date,
       viewDate: date,
     }, this._onSelectedDateUpdated);
   }
 
-  @autobind
-  _onSelectedDateUpdated() {
+  _onSelectedDateUpdated = () => {
     let {selectedDate} = this.state;
     let inputValue = selectedDate.format(this.inputFormat);
     let value = selectedDate.format(this.props.format);
@@ -312,18 +310,15 @@ export default class DateTimeField extends React.Component {
     }
   }
 
-  @autobind
-  _setOpen(open) {
+  _setOpen = (open) => {
     this.setState({open});
   }
 
-  @autobind
-  _open() {
+  _open = () => {
     this._setOpenDebounced(true);
   }
 
-  @autobind
-  _close() {
+  _close = () => {
     this._setOpenDebounced(false);
   }
 }

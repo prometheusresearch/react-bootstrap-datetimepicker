@@ -3,11 +3,24 @@
  */
 
 import React, {PropTypes}             from 'react';
-import * as Stylesheet                from 'react-stylesheet';
-import {style as styleHostComponent}            from 'react-dom-stylesheet';
+import {style}                        from 'react-stylesheet';
 import Button                         from './Button';
 
+let PaginatorControls = style('div', {
+  displayName: 'PaginatorControls',
+  base: {
+    height: 32,
+    textAlign: 'center',
+  }
+});
+
 export default class Paginator extends React.Component {
+
+  static defaultProps = {
+    stylesheet: {
+      Controls: PaginatorControls,
+    },
+  };
 
   static propTypes = {
     onPrev: PropTypes.func,
@@ -17,16 +30,8 @@ export default class Paginator extends React.Component {
     children: PropTypes.node,
   };
 
-  static stylesheet = Stylesheet.create({
-    Controls: {
-      height: 32,
-      textAlign: 'center'
-    }
-  }, {styleHostComponent});
-
   render() {
-    let {onPrev, onNext, onUp, title, children} = this.props;
-    let stylesheet = this.constructor.stylesheet;
+    let {onPrev, onNext, onUp, title, children, stylesheet} = this.props;
     return (
       <div>
         <stylesheet.Controls>

@@ -3,7 +3,6 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind             from 'autobind-decorator';
 import React, {PropTypes}   from 'react';
 import Button               from './Button';
 
@@ -31,8 +30,7 @@ export default class Day extends React.Component {
     );
   }
 
-  @autobind
-  onClick() {
+  onClick = () => {
     if (this.props.onClick) {
       this.props.onClick(this.props.date);
     }

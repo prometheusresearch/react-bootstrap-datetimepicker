@@ -3,8 +3,7 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind           from 'autobind-decorator';
-import chunk              from 'lodash/array/chunk';
+import chunk              from 'lodash/chunk';
 import React, {PropTypes} from 'react';
 import Year               from './Year';
 import Paginator          from './Paginator';
@@ -42,18 +41,15 @@ export default class YearView extends React.Component {
     );
   }
 
-  @autobind
-  onPrevDecade() {
+  onPrevDecade = () => {
     this.props.onViewDate(this.props.viewDate.clone().subtract(10, 'years'));
   }
 
-  @autobind
-  onNextDecade() {
+  onNextDecade = () => {
     this.props.onViewDate(this.props.viewDate.clone().add(10, 'years'));
   }
 
-  @autobind
-  onYearClick(year) {
+  onYearClick = (year) => {
     this.props.onViewDate(this.props.viewDate.clone().year(year));
     this.props.onClose();
   }

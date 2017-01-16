@@ -3,7 +3,6 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind           from 'autobind-decorator';
 import React, {PropTypes} from 'react';
 import Glyphicon          from './Glyphicon';
 import Minute             from './Minute';
@@ -50,8 +49,7 @@ export default class MinuteView extends React.Component {
     );
   }
 
-  @autobind
-  onMinuteClick(minute) {
+  onMinuteClick = (minute) => {
     let selectedDate = this.props.selectedDate.minutes(minute);
     this.props.onSelectedDate(selectedDate);
     this.props.onClose();

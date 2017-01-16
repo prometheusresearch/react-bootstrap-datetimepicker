@@ -8,9 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 
 import React              from 'react';
-import moment             from 'moment';
-import {create as createStylesheet} from 'react-stylesheet';
-import {style as styleHostComponent} from 'react-dom-stylesheet';
+import {style}            from 'react-stylesheet';
 import DateTimeField      from '../src';
 
 let colors = {
@@ -21,6 +19,17 @@ let colors = {
   base1: 'rgb(255, 255, 255)',
 
 };
+
+function createStylesheet(obj) {
+  let stylesheet = {};
+  for (let k in obj) {
+    if (obj.hasOwnProperty(k)) {
+      let {Component = 'div', ...base} = obj[k];
+      stylesheet[k] = style(Component, {base});
+    }
+  }
+  return stylesheet;
+}
 
 let styled = createStylesheet({
 
@@ -87,12 +96,12 @@ let styled = createStylesheet({
     padding: 10,
     marginBottom: 10
   }
-}, {styleHostComponent});
+});
 
 export default class Example extends React.Component {
 
 	render() {
-		return (
+    return (
       <styled.root>
         <styled.content>
           <styled.pane>

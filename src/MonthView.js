@@ -3,8 +3,7 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind             from 'autobind-decorator';
-import chunk                from 'lodash/array/chunk';
+import chunk                from 'lodash/chunk';
 import moment               from 'moment';
 import React, {PropTypes}   from 'react';
 import Month                from './Month';
@@ -57,18 +56,15 @@ export default class MonthView extends React.Component {
     );
   }
 
-  @autobind
-  onNextYear() {
+  onNextYear = () => {
     this.props.onViewDate(this.props.viewDate.clone().add(1, 'years'));
   }
 
-  @autobind
-  onPrevYear() {
+  onPrevYear = () => {
     this.props.onViewDate(this.props.viewDate.clone().subtract(1, 'years'));
   }
 
-  @autobind
-  onMonthClick(month) {
+  onMonthClick = (month) => {
     this.props.onViewDate(this.props.viewDate.clone().month(month));
     this.props.onClose();
   }

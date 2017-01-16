@@ -1,9 +1,8 @@
 /**
  * @copyright 2014 Quri, Loïc CHOLLIER
- * @copyright 2015 Prometheus Research, LLC
+ * @copyright 2016 Prometheus Research, LLC
  */
 
-import autobind           from 'autobind-decorator';
 import keyMirror          from 'keymirror';
 import React, {PropTypes} from 'react';
 import DayView            from './DayView';
@@ -81,18 +80,15 @@ export default class DatePicker extends React.Component {
     );
   }
 
-  @autobind
-  showMonths() {
+  showMonths = () => {
     this.props.onActiveMode(Mode.months);
   }
 
-  @autobind
-  showYears() {
+  showYears = () => {
     this.props.onActiveMode(Mode.years);
   }
 
-  @autobind
-  showDays() {
+  showDays = () => {
     this.props.onActiveMode(Mode.days);
   }
 }

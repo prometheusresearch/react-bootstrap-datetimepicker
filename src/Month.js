@@ -3,7 +3,6 @@
  * @copyright 2015 Prometheus Research, LLC
  */
 
-import autobind             from 'autobind-decorator';
 import moment               from 'moment';
 import React, {PropTypes}   from 'react';
 import Button               from './Button';
@@ -32,8 +31,7 @@ export default class Month extends React.Component {
     );
   }
 
-  @autobind
-  onClick() {
+  onClick = () => {
     if (this.props.onClick) {
       this.props.onClick(this.props.month);
     }
