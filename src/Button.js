@@ -8,8 +8,8 @@ import {style} from 'react-stylesheet';
 let ButtonRoot = style('div', {
   displayName: 'ButtonRoot',
   base: {
-    borderRadius: 4,
-    padding: 5,
+    borderRadius: 2,
+    padding: 4,
     display: 'inline-block',
     textDecoration: 'none',
     cursor: 'pointer',

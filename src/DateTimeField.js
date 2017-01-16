@@ -37,14 +37,11 @@ let DateTimeFieldRoot = 'div';
 let DateTimeFieldField = style('div', {
   base: {
     position: 'relative',
-    display: 'table'
   }
 });
 
 let DateTimeFieldInput = style(InputRoot, {
   base: {
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
     paddingRight: 40,
   }
 });
@@ -58,7 +55,6 @@ let DateTimeFieldButton = style('span', {
     right: 3,
     padding: '6px 12px',
     fontSize: '12px',
-    fontWeight: 400,
     lineHeight: 1,
     verticalAlign: 'middle',
     color: '#555',
@@ -73,7 +69,7 @@ let DateTimeFieldDropdown = style('div', {
     backgroundColor: '#fff',
     backgroundClip: 'padding-box',
     border: '1px solid rgba(0,0,0,.15)',
-    borderRadius: 4,
+    borderRadius: 2,
     boxShadow: '0 6px 12px rgba(0,0,0,.175)',
   }
 });
