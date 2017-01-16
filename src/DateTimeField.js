@@ -36,6 +36,7 @@ let DateTimeFieldRoot = 'div';
 
 let DateTimeFieldField = style('div', {
   base: {
+    position: 'relative',
     display: 'table'
   }
 });
@@ -44,6 +45,7 @@ let DateTimeFieldInput = style(InputRoot, {
   base: {
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
+    paddingRight: 40,
   }
 });
 
@@ -51,19 +53,16 @@ let DateTimeFieldButton = style('span', {
   base: {
     cursor: 'pointer',
     display: 'table-cell',
+    position: 'absolute',
+    top: 3,
+    right: 3,
     padding: '6px 12px',
     fontSize: '12px',
     fontWeight: 400,
     lineHeight: 1,
     verticalAlign: 'middle',
     color: '#555',
-    textAlign: 'center',
-    backgroundColor: '#eee',
-    border: '1px solid #ccc',
-    borderLeft: 'none',
-    borderRadius: 2,
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
+    textAlign: 'center'
   },
 });
 
@@ -139,18 +138,19 @@ export default class DateTimeField extends React.Component {
 
       inputValue: this.props.dateTime ?
         date.format(this.inputFormat) :
-        this.props.defaultText
+        ''
     };
   }
 
   render() {
-    let {mode, stylesheet} = this.props;
+    let {mode, stylesheet, defaultText} = this.props;
     let {open} = this.state;
     let {Root, Field, Input, Button, Dropdown} = stylesheet;
     return (
       <Root>
         <Field onFocus={this._open} onBlur={this._close}>
           <Input
+            placeholder={defaultText}
             state={{focus: open}}
             ref={this._onInputRef}
             type="text"
