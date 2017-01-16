@@ -16,7 +16,11 @@ export default class Day extends React.Component {
   };
 
   render() {
-    let {date, active, outOfRange, ...props} = this.props;
+    let {
+      date, active, outOfRange,
+      showToday, today,
+      ...props
+    } = this.props;
     return (
       <Button
         size={{width: 32, height: 32}}

@@ -34,10 +34,13 @@ let ButtonRoot = style('div', {
       border: '1px solid #B7B7B7',
     }
   },
+  active: {
+    color: '#262626',
+    backgroundColor: '#dddddd !important',
+  },
   dimmed: {
     color: '#bbbbbb',
   },
-
   bold: {
     fontWeight: 'bold',
   },
@@ -69,7 +72,7 @@ export default class Button extends React.Component {
     return (
       <stylesheet.Root
         {...props}
-        state={{bold, dimmed, active}}
+        variant={{bold, dimmed, active}}
         style={{width, height, color, backgroundColor}}
         role="button"
         />

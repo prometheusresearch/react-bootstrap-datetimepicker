@@ -77,7 +77,7 @@ let DateTimeFieldDropdown = style('div', {
 export default class DateTimeField extends React.Component {
 
   static propTypes = {
-    dateTime: PropTypes.string,
+    dateTime: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     onChange: PropTypes.func,
     format: PropTypes.string,
     inputProps: PropTypes.object,
@@ -147,7 +147,6 @@ export default class DateTimeField extends React.Component {
         <Field onFocus={this._open} onBlur={this._close}>
           <Input
             placeholder={defaultText}
-            state={{focus: open}}
             ref={this._onInputRef}
             type="text"
             onChange={this._onChange}
