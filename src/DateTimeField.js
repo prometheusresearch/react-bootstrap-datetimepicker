@@ -8,13 +8,14 @@ import emptyFunction                 from 'empty/function';
 import moment                        from 'moment';
 import React, {PropTypes}            from 'react';
 import ReactDOM                      from 'react-dom';
+import {style}                       from 'react-stylesheet';
+import {InputRoot}                   from '@prometheusresearch/react-ui/lib/Input';
 import Tether                        from 'tether';
 import Layer                         from './Layer';
 import DateTimePicker                from './DateTimePicker';
 import DatePicker                    from './DatePicker';
 import TimePicker                    from './TimePicker';
-import Glyphicon                     from './Glyphicon';
-import {style}                       from 'react-stylesheet';
+import * as Icon                     from './Icon';
 
 const TETHER_CONFIG = {
   attachment: 'top left',
@@ -39,31 +40,10 @@ let DateTimeFieldField = style('div', {
   }
 });
 
-let DateTimeFieldInput = style('input', {
+let DateTimeFieldInput = style(InputRoot, {
   base: {
-    display: 'table-cell',
-    float: 'left',
-    marginBottom: 0,
-    width: '100%',
-    height: 34,
-    padding: '6px 12px',
-    fontSize: '14px',
-    lineHeight: 1.42857143,
-    color: '#555',
-    backgroundColor: '#fff',
-    backgroundImage: 'none',
-    border: '1px solid #ccc',
-    borderRadius: 4,
-    boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075)',
-    transition: 'border-color ease-in-out .15s,box-shadow ease-in-out .15s',
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
-
-    focus: {
-      borderColor: '#66afe9',
-      outline: 0,
-      boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)',
-    }
   }
 });
 
@@ -72,7 +52,7 @@ let DateTimeFieldButton = style('span', {
     cursor: 'pointer',
     display: 'table-cell',
     padding: '6px 12px',
-    fontSize: '14px',
+    fontSize: '12px',
     fontWeight: 400,
     lineHeight: 1,
     verticalAlign: 'middle',
@@ -81,7 +61,7 @@ let DateTimeFieldButton = style('span', {
     backgroundColor: '#eee',
     border: '1px solid #ccc',
     borderLeft: 'none',
-    borderRadius: 4,
+    borderRadius: 2,
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
   },
@@ -131,6 +111,8 @@ export default class DateTimeField extends React.Component {
   constructor(props) {
     super(props);
 
+    this._input = null;
+
     this._tether = null;
     this._tetherNeedPosition = null;
     this._setOpenDebounced = debounce(this._setOpen, 0);
@@ -170,7 +152,7 @@ export default class DateTimeField extends React.Component {
         <Field onFocus={this._open} onBlur={this._close}>
           <Input
             state={{focus: open}}
-            ref="input"
+            ref={this._onInputRef}
             type="text"
             onChange={this._onChange}
             value={this.state.inputValue}
@@ -178,9 +160,8 @@ export default class DateTimeField extends React.Component {
             />
           <Button
             onClick={this._onClick}
-            role="button"
-            ref="button">
-            <Glyphicon glyph={mode === DateTimePicker.Mode.time ? 'time' : 'calendar'} />
+            role="button">
+            {mode === DateTimePicker.Mode.time ? <Icon.Clock /> : <Icon.Calendar />}
           </Button>
         </Field>
         {open &&
@@ -239,16 +220,20 @@ export default class DateTimeField extends React.Component {
     }
   }
 
+  _onInputRef = input => {
+    this._input = input;
+  };
+
   _onActiveMode = (activeMode) => {
     this.setState({activeMode});
   }
 
   _onClick = () => {
-    ReactDOM.findDOMNode(this.refs.input).focus();
+    ReactDOM.findDOMNode(this._input).focus();
   }
 
   _onLayerDidMount = (element) => {
-    let target = ReactDOM.findDOMNode(this.refs.input);
+    let target = ReactDOM.findDOMNode(this._input);
     this._tether = new Tether({element, target, ...TETHER_CONFIG});
   }
 
@@ -303,7 +288,7 @@ export default class DateTimeField extends React.Component {
           ...this.state.activeMode,
           self: DateTimePicker.Mode.time
         });
-        ReactDOM.findDOMNode(this.refs.input).focus();
+        ReactDOM.findDOMNode(this._input).focus();
       }
     } else if (this.props.mode === DateTimePicker.Mode.date) {
       this._close();

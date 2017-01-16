@@ -4,9 +4,9 @@
  */
 
 import React, {PropTypes} from 'react';
-import Glyphicon          from './Glyphicon';
 import Hour               from './Hour';
 import Button             from './Button';
+import * as Icon          from './Icon';
 
 export default class HourView extends React.Component {
 
@@ -21,7 +21,7 @@ export default class HourView extends React.Component {
     return (
       <div data-action="selectHour">
         <Button size={{width: '100%'}} onClick={onClose}>
-          <Glyphicon glyph="time" />
+          <Icon.Clock />
         </Button>
         <table>
           <tbody>

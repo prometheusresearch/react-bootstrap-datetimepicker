@@ -4,9 +4,9 @@
  */
 
 import React, {PropTypes} from 'react';
-import Glyphicon          from './Glyphicon';
 import Minute             from './Minute';
 import Button             from './Button';
+import * as Icon          from './Icon';
 
 export default class MinuteView extends React.Component {
 
@@ -21,7 +21,7 @@ export default class MinuteView extends React.Component {
     return (
       <div data-action="selectMinute">
         <Button size={{width: '100%'}} onClick={onClose}>
-          <Glyphicon glyph="time" />
+          <Icon.Clock />
         </Button>
         <table>
           <tbody>

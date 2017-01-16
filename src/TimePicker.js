@@ -7,8 +7,8 @@ import keyMirror          from 'keymirror';
 import React, {PropTypes} from 'react';
 import MinuteView         from './MinuteView';
 import HourView           from './HourView';
-import Glyphicon          from './Glyphicon';
 import Button             from './Button';
+import * as Icon          from './Icon';
 
 let Mode = keyMirror({
   time: null,
@@ -39,11 +39,11 @@ export default class TimePicker extends React.Component {
               <tbody>
                 <tr>
                   <td>
-                    <Button onClick={this.onNextHour}><Glyphicon glyph="chevron-up" /></Button>
+                    <Button onClick={this.onNextHour}><Icon.ChevronUp /></Button>
                   </td>
                   <td />
                   <td>
-                    <Button onClick={this.onNextMinute}><Glyphicon glyph="chevron-up" /></Button>
+                    <Button onClick={this.onNextMinute}><Icon.ChevronUp /></Button>
                   </td>
                 </tr>
                 <tr>
@@ -61,11 +61,11 @@ export default class TimePicker extends React.Component {
                 </tr>
                 <tr>
                   <td>
-                    <Button onClick={this.onPrevHour}><Glyphicon glyph="chevron-down" /></Button>
+                    <Button onClick={this.onPrevHour}><Icon.ChevronDown /></Button>
                   </td>
                   <td />
                   <td>
-                    <Button onClick={this.onPrevMinute}><Glyphicon glyph="chevron-down" /></Button>
+                    <Button onClick={this.onPrevMinute}><Icon.ChevronDown /></Button>
                   </td>
                 </tr>
               </tbody>

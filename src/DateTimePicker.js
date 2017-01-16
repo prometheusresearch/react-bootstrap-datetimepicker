@@ -4,12 +4,12 @@
  */
 
 import React, {PropTypes}            from 'react';
+import {style}                       from 'react-stylesheet';
 import keyMirror                     from 'keymirror';
 import DatePicker                    from './DatePicker';
 import TimePicker                    from './TimePicker';
-import Glyphicon                     from './Glyphicon';
 import Button                        from './Button';
-import {style}                       from 'react-stylesheet';
+import * as Icon                     from './Icon';
 
 let Mode = keyMirror({
   date: null,
@@ -83,7 +83,7 @@ export default class DateTimePicker extends React.Component {
           <Button
             size={{width: '100%'}}
             onClick={this._onActiveMode}>
-            <Glyphicon glyph={activeMode.self === Mode.date ? 'time' : 'calendar'} />
+            {mode === DateTimePicker.Mode.time ? <Icon.Clock /> : <Icon.Calendar />}
           </Button>}
         {activeMode.self === Mode.time &&
           <TimePicker
